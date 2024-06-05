@@ -12,7 +12,7 @@ public class MainApp extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("prompt-connect.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-        stage.setTitle("connect to db");
+        stage.setTitle("Connect to Database");
         stage.setScene(scene);
         stage.show();
     }

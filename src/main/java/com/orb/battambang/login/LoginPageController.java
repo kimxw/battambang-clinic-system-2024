@@ -69,19 +69,19 @@ public class LoginPageController extends DatabaseConnection{
                     Stage stage = (Stage) loginMessageLabel.getScene().getWindow();
                     String role = getRoleByUsername(username);
                     if (role.equals("Reception")) {
-                        //stage.close();
-                        //openRegistrationWindow();
+                        openPatientRegistration();
+                        stage.close();
                     } else if (role.equals("CheckUpStation")) {
                         stage.close();
-                        //openCheckUpStationWindow();
+                        openCheckupMenu();
 
                     } else if (role.equals("Doctor")) {
-                        //openDoctorConsultWindow();
                         stage.close();
+                        openDoctorConsult();
 
                     } else if (role.equals("Pharmacy")) {
-                        //openPharmacistDispenseWindow();
                         stage.close();
+                        openMedicineDispense();
 
                     } else {
                         stage.close();
@@ -117,6 +117,66 @@ public class LoginPageController extends DatabaseConnection{
         }
 
         return role;
+    }
+
+    private void openPatientRegistration() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            newUserStage.setTitle("reception");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void openCheckupMenu() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            newUserStage.setTitle("Reception");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void openDoctorConsult() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("doctor-consult.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            newUserStage.setTitle("Reception");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void openMedicineDispense() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("medicine-dispense.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            newUserStage.setTitle("Reception");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
 }

@@ -14,12 +14,15 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="26.0" layoutY="41.0" prefHeight="10.0" prefWidth="237.0" text="Connect to database">
+      <Label layoutX="25.0" layoutY="47.0" prefHeight="10.0" prefWidth="237.0" text="Connect to database" textFill="#4b4b4b">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="connectButton" layoutX="26.0" layoutY="200.0" mnemonicParsing="false" onAction="#onConnectButton" style="-fx-background-color: #454545;" text="Connect" textFill="WHITE" />
-      <Label fx:id="warningLabel" layoutX="25.0" layoutY="105.0" prefHeight="18.0" prefWidth="281.0" textFill="#dd2525" />
+      <Button fx:id="connectButton" layoutX="26.0" layoutY="200.0" mnemonicParsing="false" onAction="#onConnectButton" style="-fx-background-color: #7f7f7f;" text="Connect" textFill="WHITE" />
+      <Label fx:id="warningLabel" layoutX="25.0" layoutY="101.0" prefHeight="18.0" prefWidth="281.0" textFill="#dd2525">
+         <font>
+            <Font size="13.0" />
+         </font></Label>
    </children>
 </AnchorPane>
