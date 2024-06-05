@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="332.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.login.PromptConnectController">
+   <children>
+      <TextField fx:id="pathTextField" layoutX="25.0" layoutY="155.0" prefHeight="25.0" prefWidth="281.0" />
+      <Label layoutX="25.0" layoutY="128.0" text="Add absolute path to database here:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="41.0" prefHeight="10.0" prefWidth="237.0" text="Connect to database">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="connectButton" layoutX="26.0" layoutY="200.0" mnemonicParsing="false" onAction="#onConnectButton" style="-fx-background-color: #454545;" text="Connect" textFill="WHITE" />
+      <Label fx:id="warningLabel" layoutX="25.0" layoutY="105.0" prefHeight="18.0" prefWidth="281.0" textFill="#dd2525" />
+   </children>
+</AnchorPane>
