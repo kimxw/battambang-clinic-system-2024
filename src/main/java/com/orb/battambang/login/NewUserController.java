@@ -61,7 +61,7 @@ public class NewUserController extends DatabaseConnection implements Initializab
         String password = passwordPasswordField.getText();
         String role = roleChoiceBox.getValue();
 
-        String insertFields = "INSERT INTO staffTable(firstname, lastname, username, password, role) VALUES ('";
+        String insertFields = "INSERT INTO staffTable(firstName, lastName, username, password, role) VALUES ('";
         String insertValues = firstname + "', '" + lastname + "', '" + username + "', '" + password + "', '" + role + "')";
         String insertToCreate = insertFields + insertValues;
 

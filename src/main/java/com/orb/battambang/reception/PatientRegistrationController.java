@@ -64,7 +64,7 @@ public class PatientRegistrationController extends DatabaseConnection implements
         sexTableColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
         phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 
-        String patientViewQuery = "SELECT QueueNumber, Name, Age, Sex, PhoneNumber FROM patientQueueTable;";
+        String patientViewQuery = "SELECT queueNumber, name, age, sex, phoneNumber FROM patientQueueTable;";
 
         try (
              Statement statement = connection.createStatement();
@@ -169,7 +169,7 @@ public class PatientRegistrationController extends DatabaseConnection implements
             patientObservableList.remove(selectedItem);
 
             try {
-                String deleteQuery = "DELETE FROM patientQueueTable WHERE QueueNumber = " + selectedItem.getQueueNo();
+                String deleteQuery = "DELETE FROM patientQueueTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(deleteQuery);
                 Labels.showMessageLabel(messageLabel3, "Patient deleted successfully.", true);
