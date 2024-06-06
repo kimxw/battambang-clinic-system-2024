@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.reception.PatientSearchController">
+   <children>
+      <TableView fx:id="patientTableView" layoutX="59.0" layoutY="60.0" prefHeight="397.0" prefWidth="584.0">
+         <columns>
+            <TableColumn fx:id="queuenoTableColumn" prefWidth="90.0" text="Queue no." />
+            <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="188.0" text="Name" />
+            <TableColumn fx:id="ageTableColumn" minWidth="5.0" prefWidth="60.0" text="Age" />
+            <TableColumn fx:id="sexTableColumn" prefWidth="74.0" text="Sex" />
+            <TableColumn fx:id="phoneNumberTableColumn" prefWidth="144.0" text="Phone number" />
+         </columns>
+      </TableView>
+      <Label layoutX="64.0" layoutY="17.0" text="Find patient">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="queueSearchTextField" layoutX="172.0" layoutY="15.0" prefHeight="30.0" prefWidth="118.0" promptText="Queue no.">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="nameSearchTextField" layoutX="307.0" layoutY="16.0" prefHeight="30.0" prefWidth="150.0" promptText="Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="295.0" layoutY="9.0" text="|" textFill="#aeaeae">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <TextField fx:id="phoneNumberSearchTextField" layoutX="474.0" layoutY="15.0" prefHeight="30.0" prefWidth="166.0" promptText="Phone number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="462.0" layoutY="9.0" text="|" textFill="#aeaeae">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
