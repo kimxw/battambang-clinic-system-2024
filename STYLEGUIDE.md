@@ -80,7 +80,7 @@ CREATE TABLE patientQueueTable (
 
 ```java
 // Package Name and class imports
-package your.package.name;
+package com.org.battambang;
 
 // JavaFX Imports
 import javafx.application.Application;
