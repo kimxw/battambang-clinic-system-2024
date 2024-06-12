@@ -95,7 +95,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
-        if (queueNumberTextField.getText().isEmpty()) {
+        if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());

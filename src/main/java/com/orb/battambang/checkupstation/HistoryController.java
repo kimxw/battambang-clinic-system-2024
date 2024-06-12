@@ -84,7 +84,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
-        if (queueNumberTextField.getText().isEmpty()) {
+        if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
