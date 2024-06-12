@@ -70,14 +70,14 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Label fx:id="warningLabel" layoutX="236.0" layoutY="326.0" prefHeight="17.0" prefWidth="134.0" />
+            <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="163.0" layoutY="326.0" prefHeight="17.0" prefWidth="207.0" />
             <Button layoutX="222.0" layoutY="112.0" mnemonicParsing="false" onAction="#bmiButtonOnAction" prefHeight="5.0" prefWidth="58.0" text="Calculate">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <Rectangle fx:id="categoryRectangle" arcHeight="18.0" arcWidth="18.0" fill="#fefefe" height="19.0" layoutX="135.0" layoutY="146.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" style="-fx-fill: #dddddd;" width="109.0" />
-            <Label fx:id="categoryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="142.0" layoutY="146.0" prefHeight="17.0" prefWidth="98.0" textAlignment="CENTER" textFill="WHITE" />
+            <Rectangle fx:id="categoryRectangle" arcHeight="18.0" arcWidth="18.0" fill="#fefefe" height="19.0" layoutX="135.0" layoutY="146.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" style="-fx-fill: #dddddd;" width="149.0" />
+            <Label fx:id="categoryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="142.0" layoutY="146.0" prefHeight="17.0" prefWidth="134.0" textAlignment="CENTER" textFill="WHITE" />
          </children>
       </Pane>
       <Pane fx:id="particularsPane" layoutX="79.0" layoutY="173.0" prefHeight="328.0" prefWidth="222.0">

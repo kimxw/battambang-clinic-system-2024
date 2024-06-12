@@ -95,7 +95,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        // String snellensRecordQuery = "";
+        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
         // String hearingRecordQuery = "";
         // String historyRecordQuery = "";
 
@@ -131,7 +131,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 return;
             }
 
-            // Check BMI record
+            // update record labels
             ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
             if (bmiResultSet.next()) {
                 status1Rectangle.setStyle("-fx-fill: #9dd895;");
@@ -141,8 +141,14 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 status1Label.setText("Incomplete");
             }
 
-            // ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            // Update status based on snellensResultSet
+            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
+            if (snellensResultSet.next()) {
+                status2Rectangle.setStyle("-fx-fill: #9dd895;");
+                status2Label.setText(" Complete");
+            } else {
+                status2Rectangle.setStyle("-fx-fill: #fa8072;");
+                status2Label.setText("Incomplete");
+            }
 
             // ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
             // Update status based on hearingResultSet
