@@ -78,6 +78,7 @@ public class NewUserController extends DatabaseConnection implements Initializab
 
             statement.executeUpdate(insertToCreate);
             Labels.showMessageLabel(usermessageLabel, "User created successfully!", true);
+            statement.close();
         } catch (Exception e) {
             Labels.showMessageLabel(usermessageLabel, "Invalid fields.", false);
             e.printStackTrace();
