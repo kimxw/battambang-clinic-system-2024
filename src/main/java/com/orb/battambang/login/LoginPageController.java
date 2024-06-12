@@ -1,11 +1,12 @@
 package com.orb.battambang.login;
-import com.orb.battambang.MainApp;
-import com.orb.battambang.util.Labels;
 
+import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
+import com.orb.battambang.util.Labels;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,11 +14,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class LoginPageController extends DatabaseConnection{
+
+    double x, y;
 
     @FXML
     private Label loginMessageLabel;
@@ -68,23 +70,24 @@ public class LoginPageController extends DatabaseConnection{
                 if (resultSet.getInt(1) == 1) {
                     Stage stage = (Stage) loginMessageLabel.getScene().getWindow();
                     String role = getRoleByUsername(username);
-                    if (role.equals("Reception")) {
-                        openPatientRegistration();
-                        stage.close();
-                    } else if (role.equals("CheckUpStation")) {
-                        stage.close();
-                        openCheckupMenu();
-
-                    } else if (role.equals("Doctor")) {
-                        stage.close();
-                        openDoctorConsult();
-
-                    } else if (role.equals("Pharmacy")) {
-                        stage.close();
-                        openMedicineDispense();
-
-                    } else {
-                        stage.close();
+                    switch (role) {
+                        case "Reception" -> {
+                            openPatientRegistration();
+                            stage.close();
+                        }
+                        case "CheckUpStation" -> {
+                            stage.close();
+                            openCheckupMenu();
+                        }
+                        case "Doctor" -> {
+                            stage.close();
+                            openDoctorConsult();
+                        }
+                        case "Pharmacy" -> {
+                            stage.close();
+                            openMedicineDispense();
+                        }
+                        default -> stage.close();
                     }
 
                 } else {
@@ -124,7 +127,7 @@ public class LoginPageController extends DatabaseConnection{
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
-            newUserStage.setTitle("reception");
+            newUserStage.setTitle("Reception");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
             newUserStage.show();
@@ -135,26 +138,42 @@ public class LoginPageController extends DatabaseConnection{
     }
 
     public void openCheckupMenu() {
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
-            newUserStage.setTitle("Reception");
-            //newUserStage.initStyle(StageStyle.UNDECORATED);
-            newUserStage.setScene(scene);
-            newUserStage.show();
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+
+            // Add the event handler to the root node or any specific node
+            root.setOnMousePressed(event -> {
+                x = event.getSceneX();
+                y = event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                stage.setX(event.getScreenX());
+                stage.setY(event.getScreenY());
+            });
+
+            stage.setTitle("Check-up Stations");
+            // newUserStage.initStyle(StageStyle.UNDECORATED);
+
+            Scene scene = new Scene(root, 1080, 600);
+            stage.setScene(scene);
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
         }
     }
 
+
     public void openDoctorConsult() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("doctor-consult.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
-            newUserStage.setTitle("Reception");
+            newUserStage.setTitle("Doctor Consult");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
             newUserStage.show();
@@ -169,7 +188,7 @@ public class LoginPageController extends DatabaseConnection{
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("medicine-dispense.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
-            newUserStage.setTitle("Reception");
+            newUserStage.setTitle("Pharmacy");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
             newUserStage.show();
