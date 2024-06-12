@@ -63,7 +63,7 @@
             <TextField fx:id="wpLeftTextField" layoutX="253.0" layoutY="93.0" prefHeight="25.0" prefWidth="84.0" />
             <TextField fx:id="npRightTextField" layoutX="141.0" layoutY="134.0" prefHeight="25.0" prefWidth="84.0" />
             <TextField fx:id="npLeftTextField" layoutX="253.0" layoutY="134.0" prefHeight="25.0" prefWidth="84.0" />
-            <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="195.0" layoutY="326.0" prefHeight="17.0" prefWidth="176.0" />
+            <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="184.0" layoutY="326.0" prefHeight="17.0" prefWidth="194.0" />
          </children>
       </Pane>
       <Pane fx:id="particularsPane" layoutX="79.0" layoutY="173.0" prefHeight="328.0" prefWidth="222.0">
