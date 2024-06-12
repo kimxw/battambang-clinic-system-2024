@@ -9,11 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import org.w3c.dom.Text;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,6 +58,21 @@ public class SnellensTestController extends CheckupMenuController implements Ini
     @FXML
     private Pane particularsPane;
 
+    @FXML
+    private Label warningLabel;
+    @FXML
+    private Label queueNoLabel;
+    @FXML
+    private TextField wpRightTextField;
+    @FXML
+    private TextField wpLeftTextField;
+    @FXML
+    private TextField npRightTextField;
+    @FXML
+    private TextField npLeftTextField;
+    @FXML
+    private TextArea additionalNotesTextArea;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize any necessary data here
@@ -77,15 +95,42 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+
+            String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
+            try (Statement statement = connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(patientQuery);
+
+                if (resultSet.next()) {
+                    wpRightTextField.setText(resultSet.getString("wpRight"));
+                    wpLeftTextField.setText(resultSet.getString("wpLeft"));
+                    npRightTextField.setText(resultSet.getString("npRight"));
+                    npLeftTextField.setText(resultSet.getString("npLeft"));
+                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+                } else {
+                    clearFields();
+                }
+            } catch (SQLException ex) {
+                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+                clearFields();
+            }
         }
+    }
+
+    private void clearFields() {
+        wpRightTextField.setText("");
+        wpLeftTextField.setText("");
+        npRightTextField.setText("");
+        npLeftTextField.setText("");
+        additionalNotesTextArea.setText("");
     }
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        // String snellensRecordQuery = "";
+        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
         // String hearingRecordQuery = "";
         // String historyRecordQuery = "";
 
@@ -100,11 +145,13 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 String sex = patientResultSet.getString("sex");
                 String phoneNumber = patientResultSet.getString("phoneNumber");
 
+                queueNoLabel.setText(String.valueOf(queueNumber));
                 nameLabel.setText(name);
                 ageLabel.setText(String.valueOf(age));
                 sexLabel.setText(sex);
                 phoneNumberLabel.setText(phoneNumber);
             } else {
+                queueNoLabel.setText("");
                 nameLabel.setText("");
                 ageLabel.setText("");
                 sexLabel.setText("");
@@ -121,7 +168,7 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 return;
             }
 
-            // Check BMI record
+            // update record labels
             ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
             if (bmiResultSet.next()) {
                 status1Rectangle.setStyle("-fx-fill: #9dd895;");
@@ -131,8 +178,14 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 status1Label.setText("Incomplete");
             }
 
-            // ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            // Update status based on snellensResultSet
+            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
+            if (snellensResultSet.next()) {
+                status2Rectangle.setStyle("-fx-fill: #9dd895;");
+                status2Label.setText(" Complete");
+            } else {
+                status2Rectangle.setStyle("-fx-fill: #fa8072;");
+                status2Label.setText("Incomplete");
+            }
 
             // ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
             // Update status based on hearingResultSet
@@ -143,8 +196,47 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             // Close the statement
             statement.close();
         } catch (SQLException exc) {
-            exc.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
+        }
+    }
+
+    @FXML
+    public void updateButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
+        } else {
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            addSnellensTest(queueNumber);
+            updateParticularsPane(queueNumber);
+        }
+    }
+
+    private void addSnellensTest(int queueNumber) {
+        try {
+            String wpRight = wpRightTextField.getText().isEmpty() ? null : wpRightTextField.getText();
+            String wpLeft = wpLeftTextField.getText().isEmpty() ? null : wpLeftTextField.getText();
+            String npRight = npRightTextField.getText().isEmpty() ? null : npRightTextField.getText();
+            String npLeft = npLeftTextField.getText().isEmpty() ? null : npLeftTextField.getText();
+            String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
+
+            String insertToCreate = "INSERT OR REPLACE INTO snellensTestTable (queueNumber, wpRight, wpLeft, npRight, npLeft, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
+                preparedStatement.setInt(1, queueNumber);
+                preparedStatement.setString(2, wpRight);
+                preparedStatement.setString(3, wpLeft);
+                preparedStatement.setString(4, npRight);
+                preparedStatement.setString(5, npLeft);
+                preparedStatement.setString(6, notes);
+
+                preparedStatement.executeUpdate();
+                Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+            }
+
+        } catch (Exception e2) {
+            Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
         }
     }
 }

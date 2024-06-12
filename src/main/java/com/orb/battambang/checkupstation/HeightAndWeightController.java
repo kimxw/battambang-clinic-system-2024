@@ -115,7 +115,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                     clearFields();
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
                 Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
                 clearFields();
             }
@@ -131,11 +130,10 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         categoryRectangle.setStyle("-fx-fill: #dddddd;");
     }
 
-
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        // String snellensRecordQuery = "";
+        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
         // String hearingRecordQuery = "";
         // String historyRecordQuery = "";
 
@@ -173,18 +171,24 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 return;
             }
 
-            // Check BMI record
+            // update record labels
             ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
             if (bmiResultSet.next()) {
-                status1Rectangle.setStyle("-fx-fill: #94b447;");
+                status1Rectangle.setStyle("-fx-fill: #9dd895;");
                 status1Label.setText(" Complete");
             } else {
                 status1Rectangle.setStyle("-fx-fill: #fa8072;");
                 status1Label.setText("Incomplete");
             }
 
-            // ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            // Update status based on snellensResultSet
+            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
+            if (snellensResultSet.next()) {
+                status2Rectangle.setStyle("-fx-fill: #9dd895;");
+                status2Label.setText(" Complete");
+            } else {
+                status2Rectangle.setStyle("-fx-fill: #fa8072;");
+                status2Label.setText("Incomplete");
+            }
 
             // ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
             // Update status based on hearingResultSet
@@ -195,14 +199,13 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             // Close the statement
             statement.close();
         } catch (SQLException exc) {
-            exc.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
     }
 
     @FXML
     public void updateButtonOnAction(ActionEvent e) {
-        if (queueNumberTextField.getText().isEmpty()) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
@@ -237,12 +240,10 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
             } catch (SQLException e1) {
                 Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
-                e1.printStackTrace();
             }
 
         } catch (Exception e2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
-            e2.printStackTrace();
         }
     }
 
@@ -267,7 +268,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                     sex = resultSet.getString("sex");
                 }
             } catch (SQLException exc) {
-                exc.printStackTrace();
                 Labels.showMessageLabel(warningLabel, "Error fetching patient data.", false);
                 return;
             }
