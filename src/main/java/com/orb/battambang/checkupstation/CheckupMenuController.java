@@ -33,6 +33,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
     @FXML
     private Label queueSelectLabel;
     @FXML
+    private Label queueNoLabel;
+    @FXML
     private Label nameLabel;
     @FXML
     private Label ageLabel;
@@ -87,6 +89,7 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 // Hide particularsPane when typing starts
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
+                    clearParticularsFields();
                 }
             }
         });
@@ -145,8 +148,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
         String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        // String hearingRecordQuery = "";
-        // String historyRecordQuery = "";
+        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
@@ -159,11 +162,13 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 String sex = patientResultSet.getString("sex");
                 String phoneNumber = patientResultSet.getString("phoneNumber");
 
+                queueNoLabel.setText(String.valueOf(queueNumber));
                 nameLabel.setText(name);
                 ageLabel.setText(String.valueOf(age));
                 sexLabel.setText(sex);
                 phoneNumberLabel.setText(phoneNumber);
             } else {
+                queueNoLabel.setText("");
                 nameLabel.setText("");
                 ageLabel.setText("");
                 sexLabel.setText("");
@@ -199,16 +204,37 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 status2Label.setText("Incomplete");
             }
 
-            // ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            // Update status based on hearingResultSet
+            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
+            if (hearingResultSet.next()) {
+                status3Rectangle.setStyle("-fx-fill: #9dd895;");
+                status3Label.setText(" Complete");
+            } else {
+                status3Rectangle.setStyle("-fx-fill: #fa8072;");
+                status3Label.setText("Incomplete");
+            }
 
-            // ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            // Update status based on historyResultSet
+            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
+            if (historyResultSet.next()) {
+                status4Rectangle.setStyle("-fx-fill: #9dd895;");
+                status4Label.setText(" Complete");
+            } else {
+                status4Rectangle.setStyle("-fx-fill: #fa8072;");
+                status4Label.setText("Incomplete");
+            }
 
             // Close the statement
             statement.close();
         } catch (SQLException exc) {
+            exc.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
+    }
+
+    private void clearParticularsFields() {
+        queueNoLabel.setText("");
+        nameLabel.setText("");
+        ageLabel.setText("");
+        sexLabel.setText("");
+        phoneNumberLabel.setText("");
     }
 }

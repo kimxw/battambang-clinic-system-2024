@@ -83,6 +83,7 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 // Hide particularsPane when typing starts
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
+                    clearParticularsFields();
                 }
             }
         });
@@ -131,8 +132,8 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
         String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        // String hearingRecordQuery = "";
-        // String historyRecordQuery = "";
+        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
@@ -187,15 +188,28 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 status2Label.setText("Incomplete");
             }
 
-            // ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            // Update status based on hearingResultSet
+            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
+            if (hearingResultSet.next()) {
+                status3Rectangle.setStyle("-fx-fill: #9dd895;");
+                status3Label.setText(" Complete");
+            } else {
+                status3Rectangle.setStyle("-fx-fill: #fa8072;");
+                status3Label.setText("Incomplete");
+            }
 
-            // ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            // Update status based on historyResultSet
+            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
+            if (historyResultSet.next()) {
+                status4Rectangle.setStyle("-fx-fill: #9dd895;");
+                status4Label.setText(" Complete");
+            } else {
+                status4Rectangle.setStyle("-fx-fill: #fa8072;");
+                status4Label.setText("Incomplete");
+            }
 
             // Close the statement
             statement.close();
         } catch (SQLException exc) {
+            exc.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
     }
@@ -205,7 +219,7 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
-            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
             addSnellensTest(queueNumber);
             updateParticularsPane(queueNumber);
         }
@@ -238,5 +252,13 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         } catch (Exception e2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
         }
+    }
+
+    private void clearParticularsFields() {
+        queueNoLabel.setText("");
+        nameLabel.setText("");
+        ageLabel.setText("");
+        sexLabel.setText("");
+        phoneNumberLabel.setText("");
     }
 }
