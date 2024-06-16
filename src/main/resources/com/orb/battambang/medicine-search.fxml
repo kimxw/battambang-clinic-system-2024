@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.MedicineSearchController">
+    <children>
+        <TableView fx:id="medicineTableView" layoutX="59.0" layoutY="60.0" prefHeight="397.0" prefWidth="584.0">
+            <columns>
+                <TableColumn fx:id="idTableColumn" prefWidth="90.0" text="ID" />
+                <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="254.0" text="Name" />
+                <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="116.3333740234375" text="Quantity (mg)" />
+                <TableColumn fx:id="stockTableColumn" prefWidth="122.9998779296875" text="Stock (unit)" />
+            </columns>
+        </TableView>
+        <Label layoutX="64.0" layoutY="17.0" text="Find Medicine:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <TextField fx:id="idSearchTextField" layoutX="172.0" layoutY="15.0" prefHeight="30.0" prefWidth="118.0" promptText="ID">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="nameSearchTextField" layoutX="307.0" layoutY="16.0" prefHeight="30.0" prefWidth="150.0" promptText="Name">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+        <Label layoutX="295.0" layoutY="9.0" text="|" textFill="#aeaeae">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Label>
+    </children>
+</Pane>

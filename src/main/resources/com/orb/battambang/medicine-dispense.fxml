@@ -2,22 +2,78 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.MedicineDispenseController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1092.0" style="-fx-background-color: #2a2a2a;">
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#ebebeb" height="233.0" layoutX="667.0" layoutY="163.0" stroke="WHITE" strokeType="INSIDE" width="344.0" />
+      <AnchorPane layoutX="-16.0" layoutY="-13.0" prefHeight="84.0" prefWidth="1099.0" style="-fx-background-color: #2a2a2a;">
          <children>
-            <Label layoutX="41.0" layoutY="27.0" text="Pharmacy" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Label>
-            <Button fx:id="switchUserButton" layoutX="948.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
-         </children>
-      </AnchorPane>
-      <Label layoutX="521.0" layoutY="293.0" text="No preview" />
+            <Button fx:id="switchUserButton" layoutX="933.0" layoutY="34.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
+         </children></AnchorPane>
+      <TableView fx:id="medicineTableView" layoutX="31.0" layoutY="148.0" prefHeight="429.0" prefWidth="584.0">
+         <columns>
+            <TableColumn fx:id="idTableColumn" prefWidth="90.0" text="ID" />
+            <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="238.6666259765625" text="Name" />
+            <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="122.0" text="Quantity (mg)" />
+            <TableColumn fx:id="stockTableColumn" prefWidth="132.3333740234375" text="Stock (unit)" />
+         </columns>
+      </TableView>
+      <Label layoutX="34.0" layoutY="14.0" prefHeight="39.0" prefWidth="657.0" text="Pharmacy" textFill="WHITE">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="676.0" layoutY="133.0" text="Enter Medicine Details">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="690.0" layoutY="182.0" text="ID">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="696.0" layoutY="257.0" text="Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="694.0" layoutY="292.0" text="Quantity (mg)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="696.0" layoutY="354.0" text="Numer of Units">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="inputIdTextField" layoutX="810.0" layoutY="179.0" />
+      <TextField fx:id="inputNameTextField" layoutX="812.0" layoutY="254.0" />
+      <TextField fx:id="inputUnitTextField" layoutX="815.0" layoutY="351.0" prefHeight="26.0" prefWidth="152.0" promptText="how many units to dispense?">
+         <font>
+            <Font size="10.0" />
+         </font></TextField>
+      <Button fx:id="dispenseButton" layoutX="931.0" layoutY="409.0" mnemonicParsing="false" onAction="#dispenseButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #bdd9ba;" text="Dispense" />
+      <Button fx:id="searchButton" layoutX="634.0" layoutY="535.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #b2c6dd;" text="Search" />
+      <Label fx:id="messageLabel1" layoutX="687.0" layoutY="377.0" prefHeight="18.0" prefWidth="223.0" />
+      <Label fx:id="messageLabel2" layoutX="713.0" layoutY="490.0" prefHeight="18.0" prefWidth="250.0" />
+      <Label layoutX="31.0" layoutY="107.0" text="Medicine Dispensary">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="inputQuantityTextField" layoutX="815.0" layoutY="288.0" />
+      <Line endX="1011.0" endY="327.0" startX="667.0" startY="327.0" stroke="#b3adad" />
+      <Label layoutX="832.0" layoutY="220.0" text="OR" />
+      <Line endX="1011.0" endY="327.0" layoutX="-2.0" layoutY="-99.0" startX="669.0" startY="327.0" stroke="#b3adad" />
    </children>
 </Pane>
