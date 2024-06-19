@@ -5,6 +5,8 @@ import com.orb.battambang.util.Labels;
 import com.orb.battambang.connection.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,28 +52,82 @@ public class MedicineDispenseController extends DatabaseConnection implements In
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set cell value factories
-        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
-        stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
 
         String medicineViewQuery = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable;";
 
-        try (
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(medicineViewQuery)) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(medicineViewQuery);
 
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("Id");
                 String name = resultSet.getString("Name");
                 Integer quantity = resultSet.getInt("QuantityInMilligrams");
-                Integer stockLeft = resultSet.getInt("StockLeft");
+                Integer stock = resultSet.getInt("StockLeft");
 
-                medicineObservableList.add(new Medicine(id, name, quantity, stockLeft));
+                medicineObservableList.add(new Medicine(id, name, quantity, stock));
             }
-            // Set items to the TableView
+
+            idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
+            stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
+
             medicineTableView.setItems(medicineObservableList);
+
+            FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList);
+
+            //filter by id
+            inputIdTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(medicineSearchModel -> {
+                    String searchId = newValue.trim();
+                    String searchName = inputNameTextField.getText().trim().toLowerCase();
+                    String searchQuantity = inputQuantityTextField.getText().trim();
+                    boolean matchId = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
+                    boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchQuantity = searchQuantity.isEmpty() || medicineSearchModel.getQuantityInMilligrams().toString().contains(searchQuantity);
+                    return matchId && matchName && matchQuantity;
+                });
+            });
+
+            // Filter by name
+            inputNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(medicineSearchModel -> {
+                    String searchId = inputIdTextField.getText().trim();
+                    String searchName = newValue.trim().toLowerCase();
+                    String searchQuantity = inputQuantityTextField.getText().trim();
+                    boolean matchId = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
+                    boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchQuantity = searchQuantity.isEmpty() || medicineSearchModel.getQuantityInMilligrams().toString().contains(searchQuantity);
+                    return matchId && matchName && matchQuantity;
+                });
+            });
+
+            //Filter by quantity
+            inputQuantityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(medicineSearchModel -> {
+                    String searchId = inputIdTextField.getText().trim();
+                    String searchName = inputNameTextField.getText().trim().toLowerCase();
+                    String searchQuantity = newValue.trim();
+                    boolean matchId = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
+                    boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchQuantity = searchQuantity.isEmpty() || medicineSearchModel.getQuantityInMilligrams().toString().contains(searchQuantity);
+                    return matchId && matchName && matchQuantity;
+                });
+            });
+
+            SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(medicineTableView.comparatorProperty());
+            medicineTableView.setItems(sortedList);
+
+            // Listener for row selection
+            medicineTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    inputIdTextField.setText(newValue.getId().toString());
+                    inputNameTextField.setText(newValue.getName());
+                    inputQuantityTextField.setText(newValue.getQuantityInMilligrams().toString());
+                }
+            });
 
         } catch (Exception exc) {
             exc.printStackTrace();
