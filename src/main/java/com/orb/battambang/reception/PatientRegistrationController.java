@@ -117,12 +117,18 @@ public class PatientRegistrationController extends DatabaseConnection implements
         }
         Character inputSex = inputSexChoiceBox.getValue();
 
-        String insertFields = "INSERT INTO patientQueueTable(name, age, sex, phoneNumber) VALUES (?, ?, ?, ?)";
+        String insertFields = "INSERT INTO patientQueueTable(name, age, sex, phoneNumber, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(insertFields, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, inputName);
             statement.setInt(2, Integer.parseInt(inputAge));
             statement.setString(3, String.valueOf(inputSex));
             statement.setString(4, inputPhoneNumber);
+            statement.setString(5, "Incomplete");
+            statement.setString(6, "Incomplete");
+            statement.setString(7, "Incomplete");
+            statement.setString(8, "Incomplete");
+            statement.setString(9, "Incomplete");
+            statement.setString(10, "Incomplete");
 
             int affectedRows = statement.executeUpdate();
 

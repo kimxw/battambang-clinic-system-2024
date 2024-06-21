@@ -158,7 +158,7 @@ public class LoginPageController extends DatabaseConnection{
             stage.setTitle("Check-up Stations");
             // newUserStage.initStyle(StageStyle.UNDECORATED);
 
-            Scene scene = new Scene(root, 1080, 600);
+            Scene scene = new Scene(root, 1400, 800);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

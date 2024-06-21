@@ -9,16 +9,16 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HistoryController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HistoryController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1092.0" style="-fx-background-color: #2a2a2a;">
+      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1413.0" style="-fx-background-color: #2a2a2a;">
          <children>
             <Label layoutX="41.0" layoutY="27.0" text="Check - Up Stations" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Button fx:id="switchUserButton" layoutX="948.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
+            <Button fx:id="switchUserButton" layoutX="1296.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
          </children>
       </AnchorPane>
       <Button fx:id="heightAndWeightButton" layoutX="410.0" layoutY="124.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #ebebeb;" text="Height and Weight">

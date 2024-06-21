@@ -2,6 +2,7 @@ package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -133,10 +134,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
-        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
@@ -154,58 +151,32 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 ageLabel.setText(String.valueOf(age));
                 sexLabel.setText(sex);
                 phoneNumberLabel.setText(phoneNumber);
+
+                String bmiStatus = patientResultSet.getString("bmiStatus");
+                String snellensStatus = patientResultSet.getString("snellensStatus");
+                String hearingStatus = patientResultSet.getString("hearingStatus");
+                String liceStatus = patientResultSet.getString("liceStatus");
+                String dentalStatus = patientResultSet.getString("dentalStatus");
+                String historyStatus = patientResultSet.getString("historyStatus");
+
+
+                    Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
+                    Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
+                    Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
+                    Rectangles.updateStatusRectangle(status4Rectangle, status4Label, historyStatus);
+
             } else {
                 nameLabel.setText("");
                 ageLabel.setText("");
                 sexLabel.setText("");
                 phoneNumberLabel.setText("");
                 Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
-                status1Rectangle.setStyle("-fx-fill: #707070;");
-                status1Label.setText(" Not found");
-                status2Rectangle.setStyle("-fx-fill: #707070;");
-                status2Label.setText(" Not found");
-                status3Rectangle.setStyle("-fx-fill: #707070;");
-                status3Label.setText(" Not found");
-                status4Rectangle.setStyle("-fx-fill: #707070;");
-                status4Label.setText(" Not found");
+                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
+                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
+                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
+
                 return;
-            }
-
-            // update record labels
-            ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
-            if (bmiResultSet.next()) {
-                status1Rectangle.setStyle("-fx-fill: #9dd895;");
-                status1Label.setText(" Complete");
-            } else {
-                status1Rectangle.setStyle("-fx-fill: #fa8072;");
-                status1Label.setText("Incomplete");
-            }
-
-            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            if (snellensResultSet.next()) {
-                status2Rectangle.setStyle("-fx-fill: #9dd895;");
-                status2Label.setText(" Complete");
-            } else {
-                status2Rectangle.setStyle("-fx-fill: #fa8072;");
-                status2Label.setText("Incomplete");
-            }
-
-            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            if (hearingResultSet.next()) {
-                status3Rectangle.setStyle("-fx-fill: #9dd895;");
-                status3Label.setText(" Complete");
-            } else {
-                status3Rectangle.setStyle("-fx-fill: #fa8072;");
-                status3Label.setText("Incomplete");
-            }
-
-            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            if (historyResultSet.next()) {
-                status4Rectangle.setStyle("-fx-fill: #9dd895;");
-                status4Label.setText(" Complete");
-            } else {
-                status4Rectangle.setStyle("-fx-fill: #fa8072;");
-                status4Label.setText("Incomplete");
             }
 
             // Close the statement
@@ -231,7 +202,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         try {
             String heightStr = heightTextField.getText();
             String weightStr = weightTextField.getText();
-            String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
+            String notes = additionalNotesTextArea.getText();
 
             double height = Double.parseDouble(heightStr);
             double weight = Double.parseDouble(weightStr);
@@ -239,9 +210,10 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             double bmi = Double.parseDouble(bmiLabel.getText());
             String bmiCategory = categoryLabel.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertOrUpdateQuery = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
+
                 preparedStatement.setInt(1, queueNumber);
                 preparedStatement.setDouble(2, height);
                 preparedStatement.setDouble(3, weight);
@@ -250,15 +222,28 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 preparedStatement.setString(6, notes);
 
                 preparedStatement.executeUpdate();
+
+                String updateStatusQuery = "UPDATE patientQueueTable SET bmiStatus = 'Complete' WHERE queueNumber = ?";
+                try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                    updateStatusStatement.setInt(1, queueNumber);
+                    updateStatusStatement.executeUpdate();
+                }
+
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
-            } catch (SQLException e1) {
-                Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+
+            } catch (SQLException e) {
+                Labels.showMessageLabel(warningLabel, "Database error.", false);
+                e.printStackTrace();
             }
 
-        } catch (Exception e2) {
+        } catch (NumberFormatException e) {
+            Labels.showMessageLabel(warningLabel, "Invalid number format. Please check height and weight fields.", false);
+        } catch (Exception e) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+            e.printStackTrace();
         }
     }
+
 
 
     @FXML

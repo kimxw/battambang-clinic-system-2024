@@ -10,16 +10,16 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HeightAndWeightController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HeightAndWeightController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1092.0" style="-fx-background-color: #2a2a2a;">
+      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1413.0" style="-fx-background-color: #2a2a2a;">
          <children>
             <Label layoutX="41.0" layoutY="27.0" text="Check - Up Stations" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Button fx:id="switchUserButton" layoutX="948.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
+            <Button fx:id="switchUserButton" layoutX="1296.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
          </children>
       </AnchorPane>
       <Button fx:id="heightAndWeightButton" layoutX="410.0" layoutY="124.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #e8dff5;" text="Height and Weight">
@@ -83,7 +83,7 @@
       <Pane fx:id="particularsPane" layoutX="79.0" layoutY="173.0" prefHeight="328.0" prefWidth="222.0">
          <children>
             <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status1Label" layoutX="150.0" layoutY="214.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status1Label" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="214.0" prefHeight="17.0" prefWidth="59.0" text="Inomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="nameLabel" layoutX="87.0" layoutY="59.0" prefHeight="19.0" prefWidth="134.0">
                <font>
                   <Font size="13.0" />
@@ -105,11 +105,11 @@
                </font>
             </Label>
             <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="242.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status2Label" layoutX="150.0" layoutY="242.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status2Label" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="242.0" prefHeight="17.0" prefWidth="59.0" text="Inomplete" textAlignment="CENTER" textFill="WHITE" />
             <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="273.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status3Label" layoutX="150.0" layoutY="273.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status3Label" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="273.0" prefHeight="17.0" prefWidth="59.0" text="Inomplete" textAlignment="CENTER" textFill="WHITE" />
             <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="302.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status4Label" layoutX="150.0" layoutY="302.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status4Label" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="302.0" prefHeight="17.0" prefWidth="59.0" text="Inomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="queueNoLabel" layoutX="85.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0">
                <font>
                   <Font size="13.0" />

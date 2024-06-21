@@ -4,6 +4,7 @@ import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 
 import com.orb.battambang.connection.DatabaseConnection;
+import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -146,10 +147,6 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
-        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
@@ -167,59 +164,32 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 ageLabel.setText(String.valueOf(age));
                 sexLabel.setText(sex);
                 phoneNumberLabel.setText(phoneNumber);
+
+                String bmiStatus = patientResultSet.getString("bmiStatus");
+                String snellensStatus = patientResultSet.getString("snellensStatus");
+                String hearingStatus = patientResultSet.getString("hearingStatus");
+                String liceStatus = patientResultSet.getString("liceStatus");
+                String dentalStatus = patientResultSet.getString("dentalStatus");
+                String historyStatus = patientResultSet.getString("historyStatus");
+
+
+                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
+                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
+                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, historyStatus);
+
             } else {
-                queueNoLabel.setText("");
                 nameLabel.setText("");
                 ageLabel.setText("");
                 sexLabel.setText("");
                 phoneNumberLabel.setText("");
                 Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
-                status1Rectangle.setStyle("-fx-fill: #707070;");
-                status1Label.setText(" Not found");
-                status2Rectangle.setStyle("-fx-fill: #707070;");
-                status2Label.setText(" Not found");
-                status3Rectangle.setStyle("-fx-fill: #707070;");
-                status3Label.setText(" Not found");
-                status4Rectangle.setStyle("-fx-fill: #707070;");
-                status4Label.setText(" Not found");
+                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
+                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
+                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
+
                 return;
-            }
-
-            // update record labels
-            ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
-            if (bmiResultSet.next()) {
-                status1Rectangle.setStyle("-fx-fill: #9dd895;");
-                status1Label.setText(" Complete");
-            } else {
-                status1Rectangle.setStyle("-fx-fill: #fa8072;");
-                status1Label.setText("Incomplete");
-            }
-
-            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            if (snellensResultSet.next()) {
-                status2Rectangle.setStyle("-fx-fill: #9dd895;");
-                status2Label.setText(" Complete");
-            } else {
-                status2Rectangle.setStyle("-fx-fill: #fa8072;");
-                status2Label.setText("Incomplete");
-            }
-
-            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            if (hearingResultSet.next()) {
-                status3Rectangle.setStyle("-fx-fill: #9dd895;");
-                status3Label.setText(" Complete");
-            } else {
-                status3Rectangle.setStyle("-fx-fill: #fa8072;");
-                status3Label.setText("Incomplete");
-            }
-
-            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            if (historyResultSet.next()) {
-                status4Rectangle.setStyle("-fx-fill: #9dd895;");
-                status4Label.setText(" Complete");
-            } else {
-                status4Rectangle.setStyle("-fx-fill: #fa8072;");
-                status4Label.setText("Incomplete");
             }
 
             // Close the statement
