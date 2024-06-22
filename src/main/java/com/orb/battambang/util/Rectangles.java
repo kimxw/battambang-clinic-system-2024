@@ -13,7 +13,7 @@ public class Rectangles {
         } else if (message.equals("Incomplete")) {
             rectangle.setStyle("-fx-fill: #fa8072;");
         } else if (message.equals("Deferred")) {
-            rectangle.setStyle("-fx-fill: #707070;");
+            rectangle.setStyle("-fx-fill: #46a9ff;");
         } else {
             rectangle.setStyle("-fx-fill: #707070;"); //not found
         }

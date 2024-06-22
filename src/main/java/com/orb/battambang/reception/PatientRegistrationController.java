@@ -140,17 +140,26 @@ public class PatientRegistrationController extends DatabaseConnection implements
                     // Update TableView if insertion was successful
                     patientObservableList.add(new Patient(queueNo, inputName, Integer.parseInt(inputAge), inputSex, inputPhoneNumber));
                     patientTableView.setItems(patientObservableList);
+
+                    String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber) VALUES (?);";
+                    try (PreparedStatement queueUpdateStatement = connection.prepareStatement(updateWaitingQueue)) {
+                        queueUpdateStatement.setInt(1, queueNo);
+                        queueUpdateStatement.executeUpdate();
+                    }
                 }
             }
-            // Clear the input fields
-            inputnameTextField.setText("");
-            inputageTextField.setText("");
-            inputphonenumberTextField.setText("");
-            inputSexChoiceBox.getSelectionModel().clearSelection(); // Clear the selected value in the choice box
+            clearInputFields();
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
         }
 
+    }
+
+    private void clearInputFields() {
+        inputnameTextField.setText("");
+        inputageTextField.setText("");
+        inputphonenumberTextField.setText("");
+        inputSexChoiceBox.getSelectionModel().clearSelection();
     }
 
     @FXML

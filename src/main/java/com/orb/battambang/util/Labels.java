@@ -20,4 +20,14 @@ public class Labels {
         timeline.setCycleCount(1);
         timeline.play();
     }
+
+    public static void showMessageLabel(Label messageLabel, String message, String colour) {
+        messageLabel.setStyle("-fx-text-fill: " + colour + " ;");
+        messageLabel.setText(message);
+        messageLabel.setVisible(true);
+        // Schedule a task to hide the message label after 3 seconds
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> messageLabel.setVisible(false)));
+        timeline.setCycleCount(1);
+        timeline.play();
+    }
 }

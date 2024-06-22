@@ -3,6 +3,7 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.QueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
@@ -49,7 +47,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Label status3Label;
     @FXML
-    private Label status4Label;
+    private Label status6Label;
     @FXML
     private Rectangle status1Rectangle;
     @FXML
@@ -57,7 +55,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Rectangle status3Rectangle;
     @FXML
-    private Rectangle status4Rectangle;
+    private Rectangle status6Rectangle;
     @FXML
     private Button editButton;
     @FXML
@@ -82,10 +80,19 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private TextArea drugAllergiesTextArea;
 
+    @FXML
+    private ListView<Integer> waitingListView;
+    @FXML
+    private ListView<Integer> inProgressListView;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize any necessary data here
+        // for waiting list
+        // Initialize the waiting list
+        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
+        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -167,7 +174,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
-                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, historyStatus);
+                Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus);
 
             } else {
                 nameLabel.setText("");
@@ -178,7 +185,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
-                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
+                Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
                 return;
             }
@@ -288,5 +295,123 @@ public class HistoryController extends CheckupMenuController implements Initiali
         ageLabel.setText("");
         sexLabel.setText("");
         phoneNumberLabel.setText("");
+    }
+
+    @FXML
+    private void addButtonOnAction() {
+        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!waitingListView.getItems().isEmpty()) {
+                selectedPatient = waitingListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            movePatientToInProgress(selectedPatient);
+        }
+    }
+
+    private void movePatientToInProgress(Integer queueNumber) {
+
+        String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            waitingListView.getItems().remove(queueNumber);
+            inProgressListView.getItems().add(queueNumber);
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void sendButtonOnAction() {
+        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!inProgressListView.getItems().isEmpty()) {
+                selectedPatient = inProgressListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            movePatientToEducation(selectedPatient);
+        }
+    }
+
+    private void movePatientToEducation(Integer queueNumber) {
+
+        String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
+        String insertIntoNextListQuery = "INSERT INTO educationProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            inProgressListView.getItems().remove(queueNumber);
+
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
