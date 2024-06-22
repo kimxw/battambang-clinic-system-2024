@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.MedicineSearchController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.LowStockController">
     <children>
-        <TableView fx:id="medicineTableView" layoutX="59.0" layoutY="60.0" prefHeight="397.0" prefWidth="584.0">
+        <TableView fx:id="medicineTableView" layoutX="59.0" layoutY="93.0" prefHeight="364.0" prefWidth="584.0">
             <columns>
                 <TableColumn fx:id="idTableColumn" prefWidth="90.0" text="ID" />
                 <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="254.0" text="Name" />
@@ -17,7 +17,7 @@
                 <TableColumn fx:id="stockTableColumn" prefWidth="122.9998779296875" text="Stock (unit)" />
             </columns>
         </TableView>
-        <Label layoutX="64.0" layoutY="17.0" text="Find Medicine:">
+        <Label layoutX="59.0" layoutY="18.0" text="Find Medicine:">
             <font>
                 <Font size="16.0" />
             </font>
@@ -37,5 +37,6 @@
                 <Font size="26.0" />
             </font>
         </Label>
+      <Label layoutX="59.0" layoutY="68.0" text="Medications with less than 20 units stock:" />
     </children>
 </Pane>

@@ -28,6 +28,8 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     @FXML
     private Label messageLabel2;
     @FXML
+    private Label warningLabel;
+    @FXML
     private Button switchUserButton;
     @FXML
     private TextField inputIdTextField;
@@ -153,9 +155,9 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     }
 
     @FXML
-    public void searchButtonOnAction(ActionEvent e) {
+    public void lowStockButtonOnAction(ActionEvent e) {
         try {
-            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("medicine-search.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("low-stock.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -178,31 +180,80 @@ public class MedicineDispenseController extends DatabaseConnection implements In
                 int units = Integer.parseInt(unitsStr);
                 int quantity = name.isEmpty() ? 0 : Integer.parseInt(quantityStr);
 
-                String updateQuery = "UPDATE medicineTable SET stockLeft = stockLeft - ? WHERE id = ? OR (name = ? AND quantityInMilligrams = ?)";
-                try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-                    statement.setInt(1, units);
-                    statement.setString(2, id);
-                    statement.setString(3, name);
-                    statement.setInt(4, quantity);
-                    int rowsAffected = statement.executeUpdate();
+                // Query to check the current stock
+                String checkStockQuery = "SELECT stockLeft, name, quantityInMilligrams FROM medicineTable WHERE id = ? OR (name = ? AND quantityInMilligrams = ?)";
+                try (PreparedStatement checkStatement = connection.prepareStatement(checkStockQuery)) {
+                    checkStatement.setString(1, id);
+                    checkStatement.setString(2, name);
+                    checkStatement.setInt(3, quantity);
+                    ResultSet resultSet = checkStatement.executeQuery();
 
-                    if (rowsAffected > 0) {
-                        Labels.showMessageLabel(messageLabel2, "Medicine dispensed successfully.", true);
-                        // Update the TableView
-                        medicineObservableList.clear();
-                        initialize(null, null); // Refresh the TableView
+                    if (resultSet.next()) {
+                        int currentStock = resultSet.getInt("stockLeft");
+                        String medicineName = resultSet.getString("name");
+                        int medicineQuantity = resultSet.getInt("quantityInMilligrams");
+
+                        if (currentStock < units) {
+                            Labels.showMessageLabel(messageLabel2, "Not enough units to be dispensed.", false);
+                            warningLabel.setText(""); // Clear the warning label if there's an error
+                            return;
+                        }
+
+                        // Update query to dispense the medicine
+                        String updateQuery = "UPDATE medicineTable SET stockLeft = stockLeft - ? WHERE id = ? OR (name = ? AND quantityInMilligrams = ?)";
+                        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                            statement.setInt(1, units);
+                            statement.setString(2, id);
+                            statement.setString(3, medicineName); // Use medicineName from the result set
+                            statement.setInt(4, medicineQuantity); // Use medicineQuantity from the result set
+                            int rowsAffected = statement.executeUpdate();
+
+                            if (rowsAffected > 0) {
+                                // Check the stock again after dispensing
+                                resultSet = checkStatement.executeQuery();
+                                if (resultSet.next()) {
+                                    int newStock = resultSet.getInt("stockLeft");
+                                    Labels.showMessageLabel(messageLabel2, "Medicine dispensed successfully.", true);
+
+                                    if (newStock < 20) {
+                                        // Inside the if (newStock < 20) block
+                                        Labels.showMessageLabel(warningLabel, "Only " + newStock + " units of " + medicineName + " (" + medicineQuantity + "mg) left.", true);
+                                        warningLabel.setStyle("-fx-text-fill: orange;");
+                                    } else {
+                                        warningLabel.setText(""); // Clear the warning label if stock is sufficient
+                                        warningLabel.setStyle(""); // Reset the style
+                                    }
+                                }
+
+                                // Update the TableView
+                                medicineObservableList.clear();
+                                initialize(null, null); // Refresh the TableView
+                            } else {
+                                Labels.showMessageLabel(messageLabel2, "Medicine not found.", false);
+                                warningLabel.setText(""); // Clear the warning label if there's an error
+                                warningLabel.setStyle(""); // Reset the style
+                            }
+                        }
                     } else {
                         Labels.showMessageLabel(messageLabel2, "Medicine not found.", false);
+                        warningLabel.setText(""); // Clear the warning label if there's an error
+                        warningLabel.setStyle(""); // Reset the style
                     }
                 }
             } catch (NumberFormatException ex) {
                 Labels.showMessageLabel(messageLabel2, "Invalid quantity or units.", false);
+                warningLabel.setText(""); // Clear the warning label if there's an error
+                warningLabel.setStyle(""); // Reset the style
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Labels.showMessageLabel(messageLabel2, "Unexpected error.", false);
+                warningLabel.setText(""); // Clear the warning label if there's an error
+                warningLabel.setStyle(""); // Reset the style
             }
         } else {
             Labels.showMessageLabel(messageLabel2, "Please enter either ID or name and quantity.", false);
+            warningLabel.setText(""); // Clear the warning label if there's an error
+            warningLabel.setStyle(""); // Reset the style
         }
 
         // Clear the text fields
@@ -211,4 +262,5 @@ public class MedicineDispenseController extends DatabaseConnection implements In
         inputQuantityTextField.clear();
         inputUnitTextField.clear();
     }
+
 }

@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class MedicineSearchController extends DatabaseConnection implements Initializable {
+public class LowStockController extends DatabaseConnection implements Initializable {
 
     @FXML
     private TextField idSearchTextField;
@@ -59,9 +59,8 @@ public class MedicineSearchController extends DatabaseConnection implements Init
             quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
             stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
 
-            medicineTableView.setItems(medicineObservableList);
-
-            FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList);
+            // Create a filtered list and set the initial predicate to filter medicines with stock less than 20
+            FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList, medicine -> medicine.getStockLeft() < 20);
 
             //filter by id
             idSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -70,7 +69,8 @@ public class MedicineSearchController extends DatabaseConnection implements Init
                     String searchName = nameSearchTextField.getText().trim().toLowerCase();
                     boolean matchId = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
                     boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
-                    return matchId && matchName;
+                    boolean matchStock = medicineSearchModel.getStockLeft() < 20; // Add this line
+                    return matchId && matchName && matchStock;
                 });
             });
 
@@ -81,7 +81,8 @@ public class MedicineSearchController extends DatabaseConnection implements Init
                     String searchName = newValue.trim().toLowerCase();
                     boolean matchQueue = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
                     boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
-                    return matchQueue && matchName;
+                    boolean matchStock = medicineSearchModel.getStockLeft() < 20; // Add this line
+                    return matchQueue && matchName && matchStock;
                 });
             });
 
