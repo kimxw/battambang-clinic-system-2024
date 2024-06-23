@@ -112,8 +112,7 @@ public class PatientRegistrationController extends DatabaseConnection implements
             stage.close();
             newUserStage.show();
         } catch (Exception exc) {
-            exc.printStackTrace();
-            exc.getCause();
+            Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
     }
 
@@ -282,7 +281,7 @@ public class PatientRegistrationController extends DatabaseConnection implements
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception exc) {
-            exc.printStackTrace();
+            Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
     }
 
