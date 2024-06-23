@@ -1,9 +1,7 @@
 package com.orb.battambang.checkupstation;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class HearingTestController extends CheckupMenuController implements Initializable {
+public class DentalController extends CheckupMenuController implements Initializable {
 
 
     @FXML
@@ -58,10 +56,6 @@ public class HearingTestController extends CheckupMenuController implements Init
     @FXML
     private Pane particularsPane;
     @FXML
-    private RadioButton yesRadioButton;
-    @FXML
-    private RadioButton noRadioButton;
-    @FXML
     private TextArea additionalNotesTextArea;
     @FXML
     private Label warningLabel;
@@ -94,13 +88,6 @@ public class HearingTestController extends CheckupMenuController implements Init
 
         particularsPane.setVisible(false); // Initially hide the particularsPane
 
-        // Create a ToggleGroup
-        ToggleGroup group = new ToggleGroup();
-
-        // Add the radio buttons to the group
-        yesRadioButton.setToggleGroup(group);
-        noRadioButton.setToggleGroup(group);
-
     }
 
     @FXML
@@ -112,17 +99,11 @@ public class HearingTestController extends CheckupMenuController implements Init
             updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
             particularsPane.setVisible(true);
 
-            String patientQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+            String patientQuery = "SELECT * FROM dentalTable WHERE queueNumber = " + queueNumber;
             try (Statement statement = connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(patientQuery);
 
                 if (resultSet.next()) {
-                    boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
-                    if (hasHearingProblems) {
-                        yesRadioButton.setSelected(true);
-                    } else {
-                        noRadioButton.setSelected(true);
-                    }
                     additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
                 } else {
                     clearRecordFields();
@@ -135,8 +116,6 @@ public class HearingTestController extends CheckupMenuController implements Init
     }
 
     private void clearRecordFields() {
-        yesRadioButton.setSelected(false);
-        noRadioButton.setSelected(false);
         additionalNotesTextArea.setText("");
     }
 
@@ -146,27 +125,24 @@ public class HearingTestController extends CheckupMenuController implements Init
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
-            addHearingTest(queueNumber);
+            addDentalRecord(queueNumber);
             updateParticularsPane(queueNumber);
         }
     }
 
-    private void addHearingTest(int queueNumber) {
+    private void addDentalRecord(int queueNumber) {
         try {
+            String notes = additionalNotesTextArea.getText();
 
-            Boolean hearingProblems = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
-            String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
-
-            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?)";
+            String insertToCreate = "INSERT OR REPLACE INTO dentalTable (queueNumber, additionalNotes) VALUES (?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);
-                preparedStatement.setBoolean(2, hearingProblems);
-                preparedStatement.setString(3, notes);
+                preparedStatement.setString(2, notes);
 
                 preparedStatement.executeUpdate();
 
-                String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Complete' WHERE queueNumber = ?";
+                String updateStatusQuery = "UPDATE patientQueueTable SET dentalStatus = 'Complete' WHERE queueNumber = ?";
                 try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                     updateStatusStatement.setInt(1, queueNumber);
                     updateStatusStatement.executeUpdate();
@@ -198,7 +174,7 @@ public class HearingTestController extends CheckupMenuController implements Init
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
 
-            String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Deferred' WHERE queueNumber = ?";
+            String updateStatusQuery = "UPDATE patientQueueTable SET dentalStatus = 'Deferred' WHERE queueNumber = ?";
             try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                 updateStatusStatement.setInt(1, queueNumber);
                 updateStatusStatement.executeUpdate();

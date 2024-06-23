@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class HearingTestController extends CheckupMenuController implements Initializable {
+public class HeadLiceController extends CheckupMenuController implements Initializable {
 
 
     @FXML
@@ -112,13 +112,13 @@ public class HearingTestController extends CheckupMenuController implements Init
             updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
             particularsPane.setVisible(true);
 
-            String patientQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+            String patientQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
             try (Statement statement = connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(patientQuery);
 
                 if (resultSet.next()) {
-                    boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
-                    if (hasHearingProblems) {
+                    boolean hadHeadLice = resultSet.getBoolean("headLice");
+                    if (hadHeadLice) {
                         yesRadioButton.setSelected(true);
                     } else {
                         noRadioButton.setSelected(true);
@@ -146,27 +146,27 @@ public class HearingTestController extends CheckupMenuController implements Init
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
-            addHearingTest(queueNumber);
+            addHeadLice(queueNumber);
             updateParticularsPane(queueNumber);
         }
     }
 
-    private void addHearingTest(int queueNumber) {
+    private void addHeadLice(int queueNumber) {
         try {
 
-            Boolean hearingProblems = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
-            String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
+            Boolean headLice = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
+            String notes = additionalNotesTextArea.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?)";
+            String insertToCreate = "INSERT OR REPLACE INTO headLiceTable (queueNumber, headLice, additionalNotes) VALUES (?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);
-                preparedStatement.setBoolean(2, hearingProblems);
+                preparedStatement.setBoolean(2, headLice);
                 preparedStatement.setString(3, notes);
 
                 preparedStatement.executeUpdate();
 
-                String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Complete' WHERE queueNumber = ?";
+                String updateStatusQuery = "UPDATE patientQueueTable SET liceStatus = 'Complete' WHERE queueNumber = ?";
                 try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                     updateStatusStatement.setInt(1, queueNumber);
                     updateStatusStatement.executeUpdate();
@@ -198,7 +198,7 @@ public class HearingTestController extends CheckupMenuController implements Init
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
 
-            String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Deferred' WHERE queueNumber = ?";
+            String updateStatusQuery = "UPDATE patientQueueTable SET liceStatus = 'Deferred' WHERE queueNumber = ?";
             try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                 updateStatusStatement.setInt(1, queueNumber);
                 updateStatusStatement.executeUpdate();

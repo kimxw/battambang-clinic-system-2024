@@ -3,6 +3,8 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -12,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
@@ -48,7 +47,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Label status3Label;
     @FXML
-    private Label status4Label;
+    private Label status6Label;
     @FXML
     private Rectangle status1Rectangle;
     @FXML
@@ -56,7 +55,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Rectangle status3Rectangle;
     @FXML
-    private Rectangle status4Rectangle;
+    private Rectangle status6Rectangle;
     @FXML
     private Button editButton;
     @FXML
@@ -81,10 +80,19 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private TextArea drugAllergiesTextArea;
 
+    @FXML
+    private ListView<Integer> waitingListView;
+    @FXML
+    private ListView<Integer> inProgressListView;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize any necessary data here
+        // for waiting list
+        // Initialize the waiting list
+        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
+        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -135,90 +143,6 @@ public class HistoryController extends CheckupMenuController implements Initiali
         drugAllergiesTextArea.setText("");
     }
 
-    public void updateParticularsPane(int queueNumber) {
-        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
-        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
-
-        try {
-            Statement statement = DatabaseConnection.connection.createStatement();
-
-            // Fetch patient details
-            ResultSet patientResultSet = statement.executeQuery(patientQuery);
-            if (patientResultSet.next()) {
-                String name = patientResultSet.getString("name");
-                int age = patientResultSet.getInt("age");
-                String sex = patientResultSet.getString("sex");
-                String phoneNumber = patientResultSet.getString("phoneNumber");
-
-                queueNoLabel.setText(String.valueOf(queueNumber));
-                nameLabel.setText(name);
-                ageLabel.setText(String.valueOf(age));
-                sexLabel.setText(sex);
-                phoneNumberLabel.setText(phoneNumber);
-            } else {
-                queueNoLabel.setText("");
-                nameLabel.setText("");
-                ageLabel.setText("");
-                sexLabel.setText("");
-                phoneNumberLabel.setText("");
-                Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
-                status1Rectangle.setStyle("-fx-fill: #707070;");
-                status1Label.setText(" Not found");
-                status2Rectangle.setStyle("-fx-fill: #707070;");
-                status2Label.setText(" Not found");
-                status3Rectangle.setStyle("-fx-fill: #707070;");
-                status3Label.setText(" Not found");
-                status4Rectangle.setStyle("-fx-fill: #707070;");
-                status4Label.setText(" Not found");
-                return;
-            }
-
-            // update record labels
-            ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
-            if (bmiResultSet.next()) {
-                status1Rectangle.setStyle("-fx-fill: #9dd895;");
-                status1Label.setText(" Complete");
-            } else {
-                status1Rectangle.setStyle("-fx-fill: #fa8072;");
-                status1Label.setText("Incomplete");
-            }
-
-            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            if (snellensResultSet.next()) {
-                status2Rectangle.setStyle("-fx-fill: #9dd895;");
-                status2Label.setText(" Complete");
-            } else {
-                status2Rectangle.setStyle("-fx-fill: #fa8072;");
-                status2Label.setText("Incomplete");
-            }
-
-            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            if (hearingResultSet.next()) {
-                status3Rectangle.setStyle("-fx-fill: #9dd895;");
-                status3Label.setText(" Complete");
-            } else {
-                status3Rectangle.setStyle("-fx-fill: #fa8072;");
-                status3Label.setText("Incomplete");
-            }
-
-            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            if (historyResultSet.next()) {
-                status4Rectangle.setStyle("-fx-fill: #9dd895;");
-                status4Label.setText(" Complete");
-            } else {
-                status4Rectangle.setStyle("-fx-fill: #fa8072;");
-                status4Label.setText("Incomplete");
-            }
-
-            // Close the statement
-            statement.close();
-        } catch (SQLException exc) {
-            Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
-        }
-    }
 
     @FXML
     private void updateButtonOnAction(ActionEvent e) {
@@ -257,7 +181,6 @@ public class HistoryController extends CheckupMenuController implements Initiali
                         updateStatement.setInt(5, queueNumber);
 
                         updateStatement.executeUpdate();
-                        Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
                     }
                 } else {
                     // If row doesn't exist, insert a new row
@@ -270,9 +193,15 @@ public class HistoryController extends CheckupMenuController implements Initiali
                         insertStatement.setString(5, allergies);
 
                         insertStatement.executeUpdate();
-                        Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
                     }
                 }
+
+                String updateStatusQuery = "UPDATE patientQueueTable SET bmiStatus = 'Complete' WHERE queueNumber = ?";
+                try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                    updateStatusStatement.setInt(1, queueNumber);
+                    updateStatusStatement.executeUpdate();
+                }
+                Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
             }
         } catch (Exception exc2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
@@ -312,5 +241,123 @@ public class HistoryController extends CheckupMenuController implements Initiali
         ageLabel.setText("");
         sexLabel.setText("");
         phoneNumberLabel.setText("");
+    }
+
+    @FXML
+    private void addButtonOnAction() {
+        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!waitingListView.getItems().isEmpty()) {
+                selectedPatient = waitingListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            movePatientToInProgress(selectedPatient);
+        }
+    }
+
+    private void movePatientToInProgress(Integer queueNumber) {
+
+        String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            waitingListView.getItems().remove(queueNumber);
+            inProgressListView.getItems().add(queueNumber);
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void sendButtonOnAction() {
+        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!inProgressListView.getItems().isEmpty()) {
+                selectedPatient = inProgressListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            movePatientToEducation(selectedPatient);
+        }
+    }
+
+    private void movePatientToEducation(Integer queueNumber) {
+
+        String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
+        String insertIntoNextListQuery = "INSERT INTO educationProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            inProgressListView.getItems().remove(queueNumber);
+
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
