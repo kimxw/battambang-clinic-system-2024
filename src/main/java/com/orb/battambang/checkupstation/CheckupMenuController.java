@@ -53,6 +53,10 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
     @FXML
     private Label status3Label;
     @FXML
+    private Label status4Label;
+    @FXML
+    private Label status5Label;
+    @FXML
     private Label status6Label;
     @FXML
     private Rectangle status1Rectangle;
@@ -60,6 +64,10 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
     private Rectangle status2Rectangle;
     @FXML
     private Rectangle status3Rectangle;
+    @FXML
+    private Rectangle status4Rectangle;
+    @FXML
+    private Rectangle status5Rectangle;
     @FXML
     private Rectangle status6Rectangle;
     @FXML
@@ -123,7 +131,20 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
 
     @FXML
     public void switchUserButtonOnAction(ActionEvent e) {
-        loadFXML("login-page.fxml", e);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+
+            newUserStage.setTitle("Login");
+            newUserStage.setScene(scene);
+            Stage stage = (Stage) switchUserButton.getScene().getWindow();
+            stage.close();
+            newUserStage.show();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            exc.getCause();
+        }
     }
 
     @FXML
@@ -139,6 +160,16 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
     @FXML
     public void hearingTestButtonOnAction(ActionEvent e) {
         loadFXML("hearing-test.fxml", e);
+    }
+
+    @FXML
+    public void headLiceButtonOnAction(ActionEvent e) {
+        loadFXML("head-lice.fxml", e);
+    }
+
+    @FXML
+    public void dentalButtonOnAction(ActionEvent e) {
+        loadFXML("dental.fxml", e);
     }
 
     @FXML
@@ -187,6 +218,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
+                Rectangles.updateStatusRectangle(status4Rectangle, status6Label, liceStatus);
+                Rectangles.updateStatusRectangle(status5Rectangle, status6Label, dentalStatus);
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus);
 
             } else {
@@ -198,6 +231,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
+                Rectangles.updateStatusRectangle(status3Rectangle, status4Label, "Not found");
+                Rectangles.updateStatusRectangle(status3Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
                 return;

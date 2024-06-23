@@ -6,14 +6,16 @@ public class Patient {
     private Integer age;
     private Character sex;
     private String phoneNumber;
+    private String address;
 
     // Constructor
-    public Patient(Integer queueNo, String name, Integer age, Character sex, String phoneNumber) {
+    public Patient(Integer queueNo, String name, Integer age, Character sex, String phoneNumber, String address) {
         this.queueNo = queueNo;
         this.name = name;
         this.age = age;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 
     // Getters
@@ -34,7 +36,10 @@ public class Patient {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.phoneNumber == null ? "" : this.phoneNumber;
+    }
+    public String getAddress() {
+        return this.address == null ? "" : this.address;
     }
 
     // Setters (if needed, not mandatory for TableView)
@@ -56,6 +61,10 @@ public class Patient {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
 

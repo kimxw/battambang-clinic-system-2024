@@ -145,60 +145,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         categoryRectangle.setStyle("-fx-fill: #dddddd;");
     }
 
-    public void updateParticularsPane(int queueNumber) {
-        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-
-        try {
-            Statement statement = DatabaseConnection.connection.createStatement();
-
-            // Fetch patient details
-            ResultSet patientResultSet = statement.executeQuery(patientQuery);
-            if (patientResultSet.next()) {
-                String name = patientResultSet.getString("name");
-                int age = patientResultSet.getInt("age");
-                String sex = patientResultSet.getString("sex");
-                String phoneNumber = patientResultSet.getString("phoneNumber");
-
-                queueNoLabel.setText(String.valueOf(queueNumber));
-                nameLabel.setText(name);
-                ageLabel.setText(String.valueOf(age));
-                sexLabel.setText(sex);
-                phoneNumberLabel.setText(phoneNumber);
-
-                String bmiStatus = patientResultSet.getString("bmiStatus");
-                String snellensStatus = patientResultSet.getString("snellensStatus");
-                String hearingStatus = patientResultSet.getString("hearingStatus");
-                String liceStatus = patientResultSet.getString("liceStatus");
-                String dentalStatus = patientResultSet.getString("dentalStatus");
-                String historyStatus = patientResultSet.getString("historyStatus");
-
-
-                    Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
-                    Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
-                    Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
-                    Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus);
-
-            } else {
-                nameLabel.setText("");
-                ageLabel.setText("");
-                sexLabel.setText("");
-                phoneNumberLabel.setText("");
-                Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
-                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
-                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
-                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
-                Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
-
-                return;
-            }
-
-            // Close the statement
-            statement.close();
-        } catch (SQLException exc) {
-            exc.printStackTrace();
-            Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
-        }
-    }
 
     @FXML
     public void updateButtonOnAction(ActionEvent e) {

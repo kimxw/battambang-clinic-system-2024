@@ -12,14 +12,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HistoryController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1413.0" style="-fx-background-color: #2a2a2a;">
+      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1413.0" style="-fx-background-color: #192841;">
          <children>
-            <Label layoutX="48.0" layoutY="27.0" prefHeight="31.0" prefWidth="280.0" text="CHECK-UP STATIONS" textFill="WHITE">
+            <Label layoutX="48.0" layoutY="27.0" prefHeight="31.0" prefWidth="316.0" text="CHECK-UP STATIONS" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Button fx:id="switchUserButton" layoutX="1296.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" style="-fx-background-color: #545454;" text="Switch User" textFill="WHITE" />
+            <Button fx:id="switchUserButton" layoutX="1315.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
          </children>
       </AnchorPane>
       <Button fx:id="heightAndWeightButton" layoutX="410.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Height and Weight">
@@ -44,13 +44,13 @@
             <Font size="11.0" />
          </font>
       </Button>
-      <Button fx:id="historyButton" layoutX="990.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #daeaf6;" text="History">
+      <Button fx:id="historyButton" layoutX="990.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #B0C4DE;" text="History">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
       <Button fx:id="searchButton" layoutX="299.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane layoutX="410.0" layoutY="149.0" prefHeight="469.0" prefWidth="696.0" style="-fx-background-color: #daeaf6;">
+      <Pane layoutX="410.0" layoutY="149.0" prefHeight="469.0" prefWidth="696.0" style="-fx-background-color: #B0C4DE;">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="13.0" layoutY="10.0" stroke="#eeeeee" strokeType="INSIDE" width="670.0" />
             <Label layoutX="43.0" layoutY="78.0" text="System :" />
@@ -185,32 +185,32 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="874.0" layoutY="118.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Dental">
+      <Button layoutX="874.0" layoutY="117.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Dental">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button layoutX="758.0" layoutY="118.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
+      <Button layoutX="758.0" layoutY="117.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
       <Pane fx:id="queuePane" layoutX="1144.0" layoutY="121.0" prefHeight="500.0" prefWidth="247.0">
          <children>
-            <ListView fx:id="inProgressListView" layoutX="16.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@styles.css" />
+            <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@styles.css" />
             <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
             <Label alignment="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Triage)">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="96.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@styles.css" />
+            <ListView fx:id="waitingListView" layoutX="111.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@styles.css" />
             <Label alignment="CENTER" layoutX="85.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
-            <Button layoutX="173.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
+            <Button layoutX="169.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
                <font>
                   <Font size="11.0" />
                </font></Button>
-            <Button layoutX="173.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
+            <Button layoutX="169.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
                <font>
                   <Font size="11.0" />
                </font></Button>

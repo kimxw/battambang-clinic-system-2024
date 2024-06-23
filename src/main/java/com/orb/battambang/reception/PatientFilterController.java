@@ -1,34 +1,45 @@
 package com.orb.battambang.reception;
 
+import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
+import com.orb.battambang.util.Labels;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class PatientSearchController extends DatabaseConnection implements Initializable{
+public class PatientFilterController extends DatabaseConnection implements Initializable{
 
+    @FXML
+    private Label messageLabel2;
+    @FXML
+    private Button switchUserButton;
     @FXML
     private TextField queueSearchTextField;
     @FXML
     private TextField nameSearchTextField;
     @FXML
     private TextField phoneNumberSearchTextField;
+
     @FXML
     private TableView<Patient> patientTableView;
     @FXML
-    private TableColumn<Patient, Integer> queuenoTableColumn;
+    private TableColumn<Patient, Integer> queueNoTableColumn;
     @FXML
     private TableColumn<Patient, String> nameTableColumn;
     @FXML
@@ -36,7 +47,9 @@ public class PatientSearchController extends DatabaseConnection implements Initi
     @FXML
     private TableColumn<Patient, Character> sexTableColumn;
     @FXML
-    private TableColumn<Patient, Integer> phoneNumberTableColumn;
+    private TableColumn<Patient, String> phoneNumberTableColumn;
+    @FXML
+    private TableColumn<Patient, String> addressTableColumn;
 
     ObservableList<Patient> patientSearchModelObservableList = FXCollections.observableArrayList();
 
@@ -44,7 +57,7 @@ public class PatientSearchController extends DatabaseConnection implements Initi
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        String patientViewQuery = "SELECT QueueNumber, Name, Age, Sex, PhoneNumber FROM patientQueueTable";
+        String patientViewQuery = "SELECT QueueNumber, Name, Age, Sex, PhoneNumber, Address FROM patientQueueTable";
 
         try {
             Statement statement = connection.createStatement();
@@ -62,11 +75,12 @@ public class PatientSearchController extends DatabaseConnection implements Initi
                 patientSearchModelObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
             }
 
-            queuenoTableColumn.setCellValueFactory(new PropertyValueFactory<>("queueNo"));
+            queueNoTableColumn.setCellValueFactory(new PropertyValueFactory<>("queueNo"));
             nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             ageTableColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
             sexTableColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
             phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+            addressTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
             patientTableView.setItems(patientSearchModelObservableList);
 
@@ -116,7 +130,42 @@ public class PatientSearchController extends DatabaseConnection implements Initi
             patientTableView.setItems(sortedList);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
+        }
+    }
+
+    @FXML
+    public void switchUserButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+
+            newUserStage.setTitle("Login");
+            newUserStage.setScene(scene);
+            Stage stage = (Stage) switchUserButton.getScene().getWindow();
+            stage.close();
+            newUserStage.show();
+        } catch (Exception exc) {
+            System.out.println(e);
+            exc.getCause();
+        }
+    }
+
+    @FXML
+    public void newPatientButtonOnAction(ActionEvent e) {
+        loadFXML("patient-registration.fxml", e);
+    }
+
+    void loadFXML(String fxmlFile, ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxmlFile));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            System.out.println(e);
         }
     }
 }
