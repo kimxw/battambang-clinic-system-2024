@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.RecordsViewController">
+    <children>
+        <TextArea fx:id="textView" layoutX="20.0" prefHeight="682.0" prefWidth="560.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor elit non ipsum dapibus, et lobortis sem tincidunt. Duis iaculis sollicitudin diam et varius. Donec auctor auctor eros a mattis. Morbi eu justo quis neque vehicula auctor. Nam consequat tincidunt ligula, eu iaculis eros pulvinar non. Sed condimentum hendrerit ex, at consectetur urna tristique nec. Nullam eu sem justo. Nulla congue fringilla molestie. Nam consequat, nulla a bibendum sodales, odio felis tristique mi, eget venenatis ligula velit id nisi. Proin eu condimentum elit. Praesent et urna nec lorem maximus malesuada. Proin fringilla orci vitae mi maximus fermentum. Donec et dignissim tortor. Donec non ultrices risus. Curabitur vitae ipsum non tellus feugiat elementum. Duis ac massa eu arcu ullamcorper venenatis. Vestibulum vitae bibendum sem. Maecenas bibendum libero non odio auctor, eget tincidunt risus tempus. Nam tincidunt, nisi sed finibus bibendum, nulla enim pretium lorem, ut consectetur nulla ex vel turpis. Aenean fermentum metus non ligula luctus, sit amet rutrum justo pulvinar. Quisque pretium nisl nec venenatis hendrerit. Mauris feugiat ligula vel tincidunt vehicula. Nulla vitae tellus id nulla placerat sollicitudin. Suspendisse potenti. Donec non purus vitae lectus vestibulum pharetra sed ut metus. Pellentesque convallis tortor eu neque consequat, et tincidunt urna rutrum. Integer ultricies euismod lectus, vitae bibendum odio accumsan in. Sed in metus a nisl tincidunt varius sit amet vitae ex. Mauris pharetra justo id gravida egestas. Quisque varius, leo id congue mattis, risus nulla tempus est, et convallis lorem enim sit amet dui. Fusce ac mauris tortor. Aliquam varius velit at massa accumsan, eget pharetra leo suscipit. Nullam in lectus ut leo volutpat egestas. Proin consequat ultrices tortor non dignissim. Nulla facilisi. Nulla commodo eget mi nec facilisis. Ut at odio sem. Pellentesque a diam elementum, efficitur lectus nec, mattis lorem. Morbi eget odio volutpat, malesuada libero et, accumsan eros. Proin vitae urna ut lectus commodo congue. Ut iaculis tempus ante, sed euismod consectetur lacus rutrum et. Nulla facilisi. Sed at augue at nulla mollis malesuada. Phasellus mollis malesuada libero, at convallis neque aliquet non. Ut pretium metus eget aliquam congue. Proin scelerisque sollicitudin diam, vel fermentum nisi feugiat sed." wrapText="true">
+         <font>
+            <Font name="Courier New Bold" size="12.0" />
+         </font></TextArea>
+    </children>
+</AnchorPane>

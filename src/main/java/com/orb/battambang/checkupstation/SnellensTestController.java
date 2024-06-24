@@ -106,26 +106,30 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displaySnellensRecords(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displaySnellensRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
 
-                if (resultSet.next()) {
-                    wpRightTextField.setText(resultSet.getString("wpRight"));
-                    wpLeftTextField.setText(resultSet.getString("wpLeft"));
-                    npRightTextField.setText(resultSet.getString("npRight"));
-                    npLeftTextField.setText(resultSet.getString("npLeft"));
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
-                } else {
-                    clearFields();
-                }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+            if (resultSet.next()) {
+                wpRightTextField.setText(resultSet.getString("wpRight"));
+                wpLeftTextField.setText(resultSet.getString("wpLeft"));
+                npRightTextField.setText(resultSet.getString("npRight"));
+                npLeftTextField.setText(resultSet.getString("npLeft"));
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
                 clearFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearFields();
         }
     }
 
@@ -190,123 +194,5 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         ageLabel.setText("");
         sexLabel.setText("");
         phoneNumberLabel.setText("");
-    }
-
-    @FXML
-    private void addButtonOnAction() {
-        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
-        if (selectedPatient == null) {
-            if (!waitingListView.getItems().isEmpty()) {
-                selectedPatient = waitingListView.getItems().get(0);
-            }
-        }
-
-        if (selectedPatient != null) {
-            movePatientToInProgress(selectedPatient);
-        }
-    }
-
-    private void movePatientToInProgress(Integer queueNumber) {
-
-        String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
-
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
-             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
-
-            // Start a transaction
-            connection.setAutoCommit(false);
-
-            // Delete from waiting list
-            deleteStatement.setInt(1, queueNumber);
-            deleteStatement.executeUpdate();
-
-            // Insert into progress list
-            insertStatement.setInt(1, queueNumber);
-            insertStatement.executeUpdate();
-
-            // Commit the transaction
-            connection.commit();
-
-            // Update the ListViews
-            waitingListView.getItems().remove(queueNumber);
-            inProgressListView.getItems().add(queueNumber);
-        } catch (SQLException e) {
-            try {
-                if (connection != null) {
-                    connection.rollback(); // Roll back transaction if any error occurs
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true); // Restore auto-commit mode
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    @FXML
-    private void sendButtonOnAction() {
-        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
-        if (selectedPatient == null) {
-            if (!inProgressListView.getItems().isEmpty()) {
-                selectedPatient = inProgressListView.getItems().get(0);
-            }
-        }
-
-        if (selectedPatient != null) {
-            movePatientToEducation(selectedPatient);
-        }
-    }
-
-    private void movePatientToEducation(Integer queueNumber) {
-
-        String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
-        String insertIntoNextListQuery = "INSERT INTO educationProgressTable (queueNumber) VALUES (?)";
-
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
-             PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
-
-            // Start a transaction
-            connection.setAutoCommit(false);
-
-            // Delete from waiting list
-            deleteStatement.setInt(1, queueNumber);
-            deleteStatement.executeUpdate();
-
-            // Insert into progress list
-            insertStatement.setInt(1, queueNumber);
-            insertStatement.executeUpdate();
-
-            // Commit the transaction
-            connection.commit();
-
-            // Update the ListViews
-            inProgressListView.getItems().remove(queueNumber);
-
-        } catch (SQLException e) {
-            try {
-                if (connection != null) {
-                    connection.rollback(); // Roll back transaction if any error occurs
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true); // Restore auto-commit mode
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 }

@@ -27,4 +27,5 @@ module com.orb.battambang {
 
     opens com.orb.battambang.pharmacy to javafx.fxml, javafx.base;
     exports com.orb.battambang.pharmacy;
+    opens com.orb.battambang.education to javafx.fxml;
 }

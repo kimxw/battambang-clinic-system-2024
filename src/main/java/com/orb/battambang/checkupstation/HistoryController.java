@@ -70,6 +70,8 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Label editWarningLabel;
     @FXML
+    private Label deferLabel;
+    @FXML
     private Label queueNoLabel;
     @FXML
     private TextField systemTextField;
@@ -194,9 +196,10 @@ public class HistoryController extends CheckupMenuController implements Initiali
 
                         insertStatement.executeUpdate();
                     }
+
                 }
 
-                String updateStatusQuery = "UPDATE patientQueueTable SET bmiStatus = 'Complete' WHERE queueNumber = ?";
+                String updateStatusQuery = "UPDATE patientQueueTable SET historyStatus = 'Complete' WHERE queueNumber = ?";
                 try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                     updateStatusStatement.setInt(1, queueNumber);
                     updateStatusStatement.executeUpdate();
@@ -205,6 +208,26 @@ public class HistoryController extends CheckupMenuController implements Initiali
             }
         } catch (Exception exc2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+        }
+    }
+
+    @FXML
+    private void deferButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
+
+        } else {
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
+
+            String updateStatusQuery = "UPDATE patientQueueTable SET historyStatus = 'Deferred' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+                Labels.showMessageLabel(deferLabel, "Defered Q" + queueNumber + " successfully", "blue");
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(deferLabel, "Unable to defer Q" + queueNumber, false);
+            }
+            updateParticularsPane(queueNumber);
         }
     }
 
@@ -243,121 +266,4 @@ public class HistoryController extends CheckupMenuController implements Initiali
         phoneNumberLabel.setText("");
     }
 
-    @FXML
-    private void addButtonOnAction() {
-        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
-        if (selectedPatient == null) {
-            if (!waitingListView.getItems().isEmpty()) {
-                selectedPatient = waitingListView.getItems().get(0);
-            }
-        }
-
-        if (selectedPatient != null) {
-            movePatientToInProgress(selectedPatient);
-        }
-    }
-
-    private void movePatientToInProgress(Integer queueNumber) {
-
-        String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
-
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
-             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
-
-            // Start a transaction
-            connection.setAutoCommit(false);
-
-            // Delete from waiting list
-            deleteStatement.setInt(1, queueNumber);
-            deleteStatement.executeUpdate();
-
-            // Insert into progress list
-            insertStatement.setInt(1, queueNumber);
-            insertStatement.executeUpdate();
-
-            // Commit the transaction
-            connection.commit();
-
-            // Update the ListViews
-            waitingListView.getItems().remove(queueNumber);
-            inProgressListView.getItems().add(queueNumber);
-        } catch (SQLException e) {
-            try {
-                if (connection != null) {
-                    connection.rollback(); // Roll back transaction if any error occurs
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true); // Restore auto-commit mode
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    @FXML
-    private void sendButtonOnAction() {
-        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
-        if (selectedPatient == null) {
-            if (!inProgressListView.getItems().isEmpty()) {
-                selectedPatient = inProgressListView.getItems().get(0);
-            }
-        }
-
-        if (selectedPatient != null) {
-            movePatientToEducation(selectedPatient);
-        }
-    }
-
-    private void movePatientToEducation(Integer queueNumber) {
-
-        String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
-        String insertIntoNextListQuery = "INSERT INTO educationProgressTable (queueNumber) VALUES (?)";
-
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
-             PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
-
-            // Start a transaction
-            connection.setAutoCommit(false);
-
-            // Delete from waiting list
-            deleteStatement.setInt(1, queueNumber);
-            deleteStatement.executeUpdate();
-
-            // Insert into progress list
-            insertStatement.setInt(1, queueNumber);
-            insertStatement.executeUpdate();
-
-            // Commit the transaction
-            connection.commit();
-
-            // Update the ListViews
-            inProgressListView.getItems().remove(queueNumber);
-
-        } catch (SQLException e) {
-            try {
-                if (connection != null) {
-                    connection.rollback(); // Roll back transaction if any error occurs
-                }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.setAutoCommit(true); // Restore auto-commit mode
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
 }

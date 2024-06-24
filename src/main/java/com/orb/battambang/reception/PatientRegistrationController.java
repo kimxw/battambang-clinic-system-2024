@@ -173,6 +173,7 @@ public class PatientRegistrationController extends DatabaseConnection implements
                 statement.setString(9, "Incomplete");
                 statement.setString(10, "Incomplete");
                 statement.setString(11, "Incomplete");
+                //educationStatus is by default incomplete so no need to add here
 
                 int affectedRows = statement.executeUpdate();
 

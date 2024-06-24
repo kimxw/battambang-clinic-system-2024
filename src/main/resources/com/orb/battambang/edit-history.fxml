@@ -14,17 +14,17 @@
          </font>
       </Label>
       <Label layoutX="34.0" layoutY="51.0" text="History of Presenting Illness (HPI) :" />
-      <TextArea fx:id="HPITextArea" layoutX="30.0" layoutY="75.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="HPITextArea" layoutX="30.0" layoutY="75.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Label layoutX="34.0" layoutY="216.0" prefHeight="17.0" prefWidth="227.0" text="Past History (PH) :" />
-      <TextArea fx:id="PHTextArea" layoutX="30.0" layoutY="240.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="PHTextArea" layoutX="30.0" layoutY="240.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Label layoutX="482.0" layoutY="51.0" prefHeight="17.0" prefWidth="227.0" text="Drug and Treatment History (DH) :" />
-      <TextArea fx:id="DHTextArea" layoutX="478.0" layoutY="78.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="DHTextArea" layoutX="478.0" layoutY="78.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Label layoutX="482.0" layoutY="215.0" prefHeight="17.0" prefWidth="227.0" text="Social History (SH) :" />
-      <TextArea fx:id="SHTextArea" layoutX="478.0" layoutY="239.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="SHTextArea" layoutX="478.0" layoutY="239.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Label layoutX="34.0" layoutY="381.0" prefHeight="17.0" prefWidth="227.0" text="Family History (FH) :" />
-      <TextArea fx:id="FHTextArea" layoutX="30.0" layoutY="405.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="FHTextArea" layoutX="30.0" layoutY="405.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Label layoutX="482.0" layoutY="381.0" prefHeight="17.0" prefWidth="227.0" text="Systems Review (SR) :" />
-      <TextArea fx:id="SRTextArea" layoutX="478.0" layoutY="405.0" prefHeight="130.0" prefWidth="385.0" />
+      <TextArea fx:id="SRTextArea" layoutX="478.0" layoutY="405.0" prefHeight="130.0" prefWidth="385.0" wrapText="true" />
       <Button fx:id="cancelButton" layoutX="808.0" layoutY="11.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="Cancel" />
       <Button fx:id="saveAndExitButton" layoutX="706.0" layoutY="11.0" mnemonicParsing="false" onAction="#saveAndExitButtonOnAction" text="Save and Exit" />
       <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="339.0" layoutY="14.0" prefHeight="20.0" prefWidth="353.0">
