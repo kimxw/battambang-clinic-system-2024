@@ -9,6 +9,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
@@ -27,7 +29,7 @@
             <Button fx:id="switchUserButton" layoutX="1315.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
          </children>
       </AnchorPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="693.0" layoutX="14.0" layoutY="94.0" stroke="#ebebeb00" strokeType="INSIDE" width="640.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="699.0" layoutX="14.0" layoutY="94.0" stroke="#ebebeb00" strokeType="INSIDE" width="640.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="642.0" layoutX="27.0" layoutY="135.0" stroke="#eeeeee" strokeType="INSIDE" width="610.0" />
       <Label layoutX="32.0" layoutY="106.0" text="Select Patient :">
          <font>
@@ -84,10 +86,14 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextArea fx:id="heightAndWeightTextArea" layoutX="20.0" layoutY="120.0" prefHeight="67.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true" />
+            <TextArea fx:id="heightAndWeightTextArea" layoutX="20.0" layoutY="120.0" prefHeight="67.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
          </children>
       </Pane>
-      <Label fx:id="queueSelectLabel" layoutX="388.0" layoutY="106.0" prefHeight="17.0" prefWidth="140.0" />
+      <Label fx:id="queueSelectLabel" layoutX="303.0" layoutY="106.0" prefHeight="17.0" prefWidth="163.0" />
       <Pane fx:id="fixedPane" layoutX="41.0" layoutY="154.0" prefHeight="162.0" prefWidth="209.0">
          <children>
             <Label layoutX="1.0" layoutY="51.0" text="Name :">
@@ -228,7 +234,11 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="snellensTextArea" layoutX="-15.0" layoutY="121.0" prefHeight="67.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true" />
+            <TextArea fx:id="snellensTextArea" layoutX="-15.0" layoutY="121.0" prefHeight="67.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
             <Label alignment="CENTER" layoutX="169.0" layoutY="32.0" prefHeight="19.0" prefWidth="77.0" text="Left (OS)">
                <font>
                   <Font size="13.0" />
@@ -264,7 +274,11 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="hearingTextArea" layoutX="-14.0" layoutY="64.0" prefHeight="84.0" prefWidth="283.0" promptText="- no additional notes -" wrapText="true" />
+            <TextArea fx:id="hearingTextArea" layoutX="-14.0" layoutY="64.0" prefHeight="84.0" prefWidth="283.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
          </children>
       </Pane>
       <Pane fx:id="dentalPane" layoutX="359.0" layoutY="536.0" prefHeight="137.0" prefWidth="278.0">
@@ -276,13 +290,17 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="34.0" prefHeight="114.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true" />
+            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="34.0" prefHeight="114.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
          </children>
       </Pane>
       <Pane fx:id="headLicePane" layoutX="22.0" layoutY="538.0" prefHeight="143.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="174.0" layoutY="7.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status4Label" alignment="CENTER" layoutX="177.0" layoutY="7.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="200.0" layoutY="7.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status4Label" alignment="CENTER" layoutX="203.0" layoutY="7.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label layoutX="19.0" layoutY="5.0" text="Head Lice">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -298,7 +316,11 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="headLiceTextArea" layoutX="20.0" layoutY="61.0" prefHeight="84.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true" />
+            <TextArea fx:id="headLiceTextArea" layoutX="20.0" layoutY="61.0" prefHeight="84.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
          </children>
       </Pane>
       <Pane fx:id="dentalPane1" layoutX="360.0" layoutY="664.0" prefHeight="137.0" prefWidth="278.0">
@@ -310,8 +332,14 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button layoutX="-20.0" layoutY="61.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Open history records" />
+            <Button layoutX="-20.0" layoutY="61.0" mnemonicParsing="false" onAction="#historyRecordsButtonOnAction" prefHeight="25.0" prefWidth="140.0" text="Open history records" />
          </children>
       </Pane>
+      <ImageView fx:id="TXTImageView" fitHeight="35.0" fitWidth="33.0" layoutX="604.0" layoutY="98.0" onMousePressed="#TXTButtonOnAction" onMouseReleased="#TXTButtonOnRelease" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/txt-button-unpressed.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="471.0" layoutY="107.0" text="View records as text file" textFill="#606060" />
    </children>
 </Pane>

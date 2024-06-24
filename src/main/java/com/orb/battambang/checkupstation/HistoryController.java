@@ -70,6 +70,8 @@ public class HistoryController extends CheckupMenuController implements Initiali
     @FXML
     private Label editWarningLabel;
     @FXML
+    private Label deferLabel;
+    @FXML
     private Label queueNoLabel;
     @FXML
     private TextField systemTextField;
@@ -205,6 +207,26 @@ public class HistoryController extends CheckupMenuController implements Initiali
             }
         } catch (Exception exc2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+        }
+    }
+
+    @FXML
+    private void deferButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
+
+        } else {
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
+
+            String updateStatusQuery = "UPDATE patientQueueTable SET historyStatus = 'Deferred' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+                Labels.showMessageLabel(deferLabel, "Defered Q" + queueNumber + " successfully", "blue");
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(deferLabel, "Unable to defer Q" + queueNumber, false);
+            }
+            updateParticularsPane(queueNumber);
         }
     }
 

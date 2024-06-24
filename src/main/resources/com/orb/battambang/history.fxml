@@ -71,7 +71,8 @@
             </Label>
             <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="51.0" layoutY="359.0" prefHeight="17.0" prefWidth="306.0" />
             <Label fx:id="editWarningLabel" layoutX="330.0" layoutY="221.0" prefHeight="17.0" prefWidth="170.0" />
-            <Button layoutX="41.0" layoutY="33.0" mnemonicParsing="false" text="Defer patient" />
+            <Button layoutX="41.0" layoutY="33.0" mnemonicParsing="false" onAction="#deferButtonOnAction" text="Defer patient" />
+            <Label fx:id="deferLabel" layoutX="142.0" layoutY="37.0" prefHeight="17.0" prefWidth="297.0" textFill="#46a9ff" />
          </children>
       </Pane>
       <Pane fx:id="particularsPane" layoutX="80.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">

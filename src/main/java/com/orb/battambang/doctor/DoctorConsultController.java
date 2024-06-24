@@ -11,11 +11,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -100,6 +105,8 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
     private Label status6Label;
     @FXML
     private Rectangle status6Rectangle;
+    @FXML
+    private ImageView TXTImageView;
 
 
     @Override
@@ -134,7 +141,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
-            Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
 
@@ -367,6 +374,67 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
 
     private void clearHistoryFields() {
         Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
+    }
+
+
+    @FXML
+    public void historyRecordsButtonOnAction(ActionEvent e) {
+        if (queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+        } else {
+            HistoryRecordsController.queueNumber = Integer.parseInt(queueNoLabel.getText());
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("history-records.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Patient History");
+                stage.setScene(new Scene(root));
+
+                // Set the new window's owner to the primary stage
+                Stage primaryStage = (Stage) queueNumberTextField.getScene().getWindow(); // Assuming you have a reference to a node in the primary stage
+                stage.initOwner(primaryStage);
+
+                // Show the new window
+                stage.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    public void TXTButtonOnAction() {
+        Image pressed = new Image(MainApp.class.getResource("/icons/txt-button-pressed.png").toExternalForm());
+        TXTImageView.setImage(pressed);
+    }
+
+    @FXML
+    public void TXTButtonOnRelease() {
+        Image unpressed = new Image(MainApp.class.getResource("/icons/txt-button-unpressed.png").toExternalForm());
+        TXTImageView.setImage(unpressed);
+
+        if (queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+        } else {
+            RecordsViewController.queueNumber = Integer.parseInt(queueNoLabel.getText());
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("records-view.fxml"));
+                Parent root = fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Records.txt");
+                stage.setScene(new Scene(root));
+
+                // Set the new window's owner to the primary stage
+                Stage primaryStage = (Stage) queueNumberTextField.getScene().getWindow(); // Assuming you have a reference to a node in the primary stage
+                stage.initOwner(primaryStage);
+
+                // Show the new window
+                stage.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
     @FXML
