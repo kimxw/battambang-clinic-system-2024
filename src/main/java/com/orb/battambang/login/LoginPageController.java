@@ -172,7 +172,7 @@ public class LoginPageController extends DatabaseConnection{
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("doctor-consult.fxml"));
             Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 1400 , 900);
+            Scene scene = new Scene(fxmlLoader.load(), 1400 , 800);
             newUserStage.setTitle("Doctor Consult");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);

@@ -96,22 +96,25 @@ public class DentalController extends CheckupMenuController implements Initializ
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displayDentalRecords(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM dentalTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displayDentalRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM dentalTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
 
-                if (resultSet.next()) {
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
-                } else {
-                    clearRecordFields();
-                }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+            if (resultSet.next()) {
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
                 clearRecordFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearRecordFields();
         }
     }
 

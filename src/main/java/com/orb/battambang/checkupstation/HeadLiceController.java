@@ -109,28 +109,31 @@ public class HeadLiceController extends CheckupMenuController implements Initial
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displayHeadLiceRecords(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displayHeadLiceRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
 
-                if (resultSet.next()) {
-                    boolean hadHeadLice = resultSet.getBoolean("headLice");
-                    if (hadHeadLice) {
-                        yesRadioButton.setSelected(true);
-                    } else {
-                        noRadioButton.setSelected(true);
-                    }
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            if (resultSet.next()) {
+                boolean hadHeadLice = resultSet.getBoolean("headLice");
+                if (hadHeadLice) {
+                    yesRadioButton.setSelected(true);
                 } else {
-                    clearRecordFields();
+                    noRadioButton.setSelected(true);
                 }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
                 clearRecordFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearRecordFields();
         }
     }
 

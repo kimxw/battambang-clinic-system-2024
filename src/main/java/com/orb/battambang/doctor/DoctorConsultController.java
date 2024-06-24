@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class DoctorConsultController implements Initializable {
+public class DoctorConsultController extends DatabaseConnection implements Initializable {
     @FXML
     private Button switchUserButton;
     @FXML
@@ -48,6 +48,10 @@ public class DoctorConsultController implements Initializable {
     @FXML
     private Label bmiLabel;
     @FXML
+    private Label bmiCategoryLabel;
+    @FXML
+    private Rectangle bmiCategoryRectangle;
+    @FXML
     private TextArea heightAndWeightTextArea;
     @FXML
     private Label headLiceLabel;
@@ -58,13 +62,13 @@ public class DoctorConsultController implements Initializable {
     @FXML
     private TextArea hearingTextArea;
     @FXML
-    private Label wprLabel;
+    private Label wpRightLabel;
     @FXML
-    private Label wplLabel;
+    private Label wpLeftLabel;
     @FXML
-    private Label nprLabel;
+    private Label npRightLabel;
     @FXML
-    private Label nplLabel;
+    private Label npLeftLabel;
     @FXML
     private TextArea snellensTextArea;
     @FXML
@@ -100,6 +104,13 @@ public class DoctorConsultController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        clearParticularsFields();
+        clearBMIFields();
+        clearHeadLiceFields();
+        clearHearingFields();
+        clearSnellensFields();
+        clearDentalFields();
+
         QueueManager waitingQueueManager = new QueueManager(waitingListView, "doctorWaitingTable");
         QueueManager progressQueueManager = new QueueManager(inProgressListView, "doctorProgressTable");
 
@@ -107,8 +118,14 @@ public class DoctorConsultController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 // Hide particularsPane when typing starts
-                if (newValue != null && !newValue.isEmpty()) {
+                if (newValue != null || !newValue.isEmpty()) {
                     clearParticularsFields();
+                    clearBMIFields();
+                    clearHeadLiceFields();
+                    clearHearingFields();
+                    clearSnellensFields();
+                    clearDentalFields();
+                    clearHistoryFields();
                 }
             }
         });
@@ -119,7 +136,15 @@ public class DoctorConsultController implements Initializable {
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+
+            displayHeightAndWeight(queueNumber);
+            displayHeadLiceRecords(queueNumber);
+            displayHearingRecords(queueNumber);
+            displaySnellensRecords(queueNumber);
+            displayDentalRecords(queueNumber);
+            updateParticularsPane(queueNumber);   // must update after loading all others!
+
         }
     }
 
@@ -154,8 +179,8 @@ public class DoctorConsultController implements Initializable {
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus, true);
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus, true);
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus, true);
-                Rectangles.updateStatusRectangle(status4Rectangle, status6Label, liceStatus, true);
-                Rectangles.updateStatusRectangle(status5Rectangle, status6Label, dentalStatus, true);
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, liceStatus, true);
+                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, dentalStatus, true);
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus, true);
 
             } else {
@@ -167,8 +192,8 @@ public class DoctorConsultController implements Initializable {
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
-                Rectangles.updateStatusRectangle(status3Rectangle, status4Label, "Not found");
-                Rectangles.updateStatusRectangle(status3Rectangle, status5Label, "Not found");
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
+                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
                 return;
@@ -182,12 +207,166 @@ public class DoctorConsultController implements Initializable {
         }
     }
 
+    private void displayHeightAndWeight(int queueNumber) {
+        String patientQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                weightLabel.setText(resultSet.getString("weight"));
+                heightLabel.setText(resultSet.getString("height"));
+                heightAndWeightTextArea.setText(resultSet.getString("additionalNotes"));
+                bmiLabel.setText(String.valueOf(resultSet.getDouble("bmi")));
+
+                String bmiCategory = resultSet.getString("bmiCategory");
+                bmiCategoryLabel.setText(bmiCategory);
+
+                if (bmiCategory.equals("Underweight")) {
+                    bmiCategoryRectangle.setStyle("-fx-fill: #429ebd;");
+                } else if (bmiCategory.equals("Healthy Weight")) {
+                    bmiCategoryRectangle.setStyle("-fx-fill: #94b447;");
+                } else if (bmiCategory.equals("Overweight")) {
+                    bmiCategoryRectangle.setStyle("-fx-fill: #cf6024;");
+                } else if (bmiCategory.equals("Obese")) {
+                    bmiCategoryRectangle.setStyle("-fx-fill: #c4281c;");
+                } else {
+                    bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");
+                }
+
+            } else {
+                clearBMIFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearBMIFields();
+        }
+    }
+
+    private void displayHeadLiceRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                boolean hadHeadLice = resultSet.getBoolean("headLice");
+                if (hadHeadLice) {
+                    headLiceLabel.setText("Yes");
+                } else {
+                    headLiceLabel.setText("No");
+                }
+                headLiceTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
+                clearHeadLiceFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearHeadLiceFields();
+        }
+    }
+
+    private void displayHearingRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
+                if (hasHearingProblems) {
+                    hearingProblemsLabel.setText("Yes");
+                } else {
+                    hearingProblemsLabel.setText("No");
+                }
+                hearingTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
+                clearHearingFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearHearingFields();
+        }
+    }
+
+    private void displaySnellensRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                wpRightLabel.setText(resultSet.getString("wpRight"));
+                wpLeftLabel.setText(resultSet.getString("wpLeft"));
+                npRightLabel.setText(resultSet.getString("npRight"));
+                npLeftLabel.setText(resultSet.getString("npLeft"));
+                snellensTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
+                clearSnellensFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearSnellensFields();
+        }
+    }
+
+    private void displayDentalRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM dentalTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                dentalTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
+                clearDentalFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearDentalFields();
+        }
+    }
+
     private void clearParticularsFields() {
         queueNoLabel.setText("");
         nameLabel.setText("");
         ageLabel.setText("");
         sexLabel.setText("");
         phoneNumberLabel.setText("");
+    }
+
+    private void clearBMIFields() {
+        heightLabel.setText("");
+        weightLabel.setText("");
+        bmiLabel.setText("");
+        bmiCategoryLabel.setText("");
+        bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");
+        Rectangles.clearStatusRectangle(status1Rectangle, status1Label);
+    }
+
+    private void clearHeadLiceFields() {
+        headLiceLabel.setText("");
+        headLiceTextArea.setText("");
+        Rectangles.clearStatusRectangle(status4Rectangle, status4Label);
+    }
+
+    private void clearHearingFields() {
+        hearingProblemsLabel.setText("");
+        hearingTextArea.setText("");
+        Rectangles.clearStatusRectangle(status3Rectangle, status3Label);
+    }
+
+    private void clearSnellensFields() {
+        wpRightLabel.setText("");
+        wpLeftLabel.setText("");
+        npRightLabel.setText("");
+        npLeftLabel.setText("");
+        snellensTextArea.setText("");
+        Rectangles.clearStatusRectangle(status2Rectangle, status2Label);
+    }
+
+    private void clearDentalFields() {
+        dentalTextArea.setText("");
+        Rectangles.clearStatusRectangle(status5Rectangle, status5Label);
+    }
+
+    private void clearHistoryFields() {
+        Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
     }
 
     @FXML

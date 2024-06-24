@@ -27,8 +27,8 @@
             <Button fx:id="switchUserButton" layoutX="1315.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
          </children>
       </AnchorPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="693.0" layoutX="14.0" layoutY="94.0" stroke="#ebebeb00" strokeType="INSIDE" width="556.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="642.0" layoutX="27.0" layoutY="135.0" stroke="#eeeeee" strokeType="INSIDE" width="529.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="693.0" layoutX="14.0" layoutY="94.0" stroke="#ebebeb00" strokeType="INSIDE" width="640.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="642.0" layoutX="27.0" layoutY="135.0" stroke="#eeeeee" strokeType="INSIDE" width="610.0" />
       <Label layoutX="32.0" layoutY="106.0" text="Select Patient :">
          <font>
             <Font size="13.0" />
@@ -36,10 +36,10 @@
       </Label>
       <TextField fx:id="queueNumberTextField" layoutX="124.0" layoutY="103.0" prefHeight="25.0" prefWidth="100.0" promptText="Queue Number" />
       <Button fx:id="searchButton" layoutX="232.0" layoutY="103.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane fx:id="heightAndWeightPane" layoutX="22.0" layoutY="334.0" prefHeight="216.0" prefWidth="278.0">
+      <Pane fx:id="heightAndWeightPane" layoutX="22.0" layoutY="328.0" prefHeight="216.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status1Label" alignment="CENTER" layoutX="151.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="175.0" layoutY="6.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status1Label" alignment="CENTER" layoutX="178.0" layoutY="6.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label layoutX="19.0" layoutY="5.0" text="Height and Weight">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -60,41 +60,31 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="heightLabel" alignment="CENTER" layoutX="83.0" layoutY="33.0" prefHeight="19.0" prefWidth="37.0" text="138">
+            <Label fx:id="heightLabel" layoutX="108.0" layoutY="33.0" prefHeight="19.0" prefWidth="37.0" text="138">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="116.0" layoutY="34.0" text="cm" />
-            <Label layoutX="117.0" layoutY="60.0" text="kg" />
-            <Label fx:id="weightLabel" alignment="CENTER" layoutX="83.0" layoutY="59.0" prefHeight="19.0" prefWidth="37.0" text="45">
+            <Label layoutX="150.0" layoutY="34.0" text="cm" />
+            <Label layoutX="151.0" layoutY="60.0" text="kg" />
+            <Label fx:id="weightLabel" layoutX="110.0" layoutY="59.0" prefHeight="19.0" prefWidth="37.0" text="45">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="bmiLabel" alignment="CENTER" layoutX="83.0" layoutY="86.0" prefHeight="19.0" prefWidth="37.0" text="22.3">
+            <Label fx:id="bmiLabel" layoutX="110.0" layoutY="86.0" prefHeight="19.0" prefWidth="37.0" text="22.3">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="116.0" layoutY="87.0" text="kg/m2" />
-            <Rectangle fx:id="bmiCategoryRectangle" fill="#a5db67" height="19.0" layoutX="86.0" layoutY="114.0" stroke="#19b91e" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="bmiCategoryLabel" alignment="CENTER" layoutX="90.0" layoutY="115.0" prefHeight="17.0" prefWidth="77.0" text="Healthy Weight" textAlignment="CENTER">
+            <Label layoutX="150.0" layoutY="87.0" text="kg/m2" />
+            <Rectangle fx:id="bmiCategoryRectangle" fill="#a5db67" height="19.0" layoutX="194.0" layoutY="87.0" stroke="#19b91e" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="bmiCategoryLabel" alignment="CENTER" layoutX="198.0" layoutY="88.0" prefHeight="17.0" prefWidth="77.0" text="Healthy Weight" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="143.0" text="Notes :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="heightAndWeightTextArea" layoutX="75.0" layoutY="146.0" prefHeight="57.0" prefWidth="157.0" />
-            <Label layoutX="20.0" layoutY="112.0" text="Category :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
+            <TextArea fx:id="heightAndWeightTextArea" layoutX="20.0" layoutY="120.0" prefHeight="67.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true" />
          </children>
       </Pane>
       <Label fx:id="queueSelectLabel" layoutX="388.0" layoutY="106.0" prefHeight="17.0" prefWidth="140.0" />
@@ -130,27 +120,27 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="queueNoLabel" layoutX="93.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0" text="89">
+            <Label fx:id="queueNoLabel" layoutX="91.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0" text="89">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="ageLabel" layoutX="93.0" layoutY="77.0" prefHeight="19.0" prefWidth="41.0" text="20">
+            <Label fx:id="ageLabel" layoutX="91.0" layoutY="77.0" prefHeight="19.0" prefWidth="41.0" text="20">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="sexLabel" layoutX="93.0" layoutY="104.0" prefHeight="19.0" prefWidth="26.0" text="F">
+            <Label fx:id="sexLabel" layoutX="91.0" layoutY="104.0" prefHeight="19.0" prefWidth="26.0" text="F">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="nameLabel" layoutX="93.0" layoutY="51.0" prefHeight="19.0" prefWidth="134.0" text="Sreelakshmi">
+            <Label fx:id="nameLabel" layoutX="91.0" layoutY="51.0" prefHeight="19.0" prefWidth="134.0" text="Sreelakshmi">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="phoneNumberLabel" layoutX="91.0" layoutY="132.0" prefHeight="19.0" prefWidth="134.0" text="123-123-1234">
+            <Label fx:id="phoneNumberLabel" layoutX="89.0" layoutY="132.0" prefHeight="19.0" prefWidth="134.0" text="123-123-1234">
                <font>
                   <Font size="13.0" />
                </font>
@@ -178,18 +168,18 @@
                </font></Button>
          </children>
       </Pane>
-      <TextArea layoutX="609.0" layoutY="152.0" prefHeight="118.0" prefWidth="451.0" />
-      <Label layoutX="609.0" layoutY="125.0" text="Consult notes">
+      <TextArea layoutX="672.0" layoutY="152.0" prefHeight="118.0" prefWidth="451.0" />
+      <Label layoutX="672.0" layoutY="125.0" text="Consult notes">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="609.0" layoutY="282.0" text="Prescription">
+      <Label layoutX="673.0" layoutY="282.0" text="Prescription">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TableView layoutX="609.0" layoutY="314.0" prefHeight="200.0" prefWidth="451.0">
+      <TableView layoutX="673.0" layoutY="314.0" prefHeight="200.0" prefWidth="451.0">
         <columns>
           <TableColumn prefWidth="47.0" text="ID" />
           <TableColumn prefWidth="103.0" text="Medication" />
@@ -198,78 +188,73 @@
             <TableColumn prefWidth="152.5" text="Dosage Instructions" />
         </columns>
       </TableView>
-      <Button layoutX="960.0" layoutY="526.0" mnemonicParsing="false" text="Add medication" />
-      <CheckBox layoutX="613.0" layoutY="744.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="435.0" text="The patient has successfully completed their doctor consult">
+      <Button layoutX="1023.0" layoutY="526.0" mnemonicParsing="false" text="Add medication" />
+      <CheckBox layoutX="675.0" layoutY="744.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="435.0" text="The patient has successfully completed their doctor consult">
          <font>
             <Font size="13.0" />
          </font>
       </CheckBox>
-      <Label layoutX="610.0" layoutY="548.0" text="Referral needed">
+      <Label layoutX="674.0" layoutY="548.0" text="Referral needed">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <RadioButton layoutX="738.0" layoutY="550.0" mnemonicParsing="false" text="Yes" />
-      <RadioButton layoutX="796.0" layoutY="550.0" mnemonicParsing="false" text="No" />
-      <Button layoutX="951.0" layoutY="693.0" mnemonicParsing="false" text="Generate Referral" />
-      <TextArea layoutX="609.0" layoutY="576.0" prefHeight="106.0" prefWidth="451.0" />
-      <Line endX="-100.0" endY="600.0" layoutX="396.0" layoutY="158.0" startX="-100.0" stroke="#00000038" />
-      <Pane fx:id="snellensPane" layoutX="297.0" layoutY="333.0" prefHeight="216.0" prefWidth="269.0">
+      <RadioButton layoutX="802.0" layoutY="550.0" mnemonicParsing="false" text="Yes" />
+      <RadioButton layoutX="860.0" layoutY="550.0" mnemonicParsing="false" text="No" />
+      <Button layoutX="1014.0" layoutY="693.0" mnemonicParsing="false" text="Generate Referral" />
+      <TextArea layoutX="673.0" layoutY="576.0" prefHeight="106.0" prefWidth="451.0" />
+      <Line endX="-100.0" endY="600.0" layoutX="423.0" layoutY="158.0" startX="-100.0" stroke="#00000038" />
+      <Pane fx:id="snellensPane" layoutX="353.0" layoutY="327.0" prefHeight="216.0" prefWidth="269.0">
          <children>
-            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status2Label" alignment="CENTER" layoutX="151.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="19.0" layoutY="5.0" text="Snellen's Test">
+            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="184.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status2Label" alignment="CENTER" layoutX="187.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="-13.0" layoutY="5.0" text="Snellen's Test">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="19.0" layoutY="70.0" text="With pinhole :">
+            <Label layoutX="-13.0" layoutY="59.0" text="With pinhole :">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="19.0" layoutY="98.0" text="No pinhole :">
+            <Label layoutX="-13.0" layoutY="87.0" text="No pinhole :">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="99.0" layoutY="43.0" prefHeight="19.0" prefWidth="77.0" text="Right (OD)">
+            <Label alignment="CENTER" layoutX="87.0" layoutY="32.0" prefHeight="19.0" prefWidth="77.0" text="Right (OD)">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="19.0" layoutY="142.0" text="Notes :">
+            <TextArea fx:id="snellensTextArea" layoutX="-15.0" layoutY="121.0" prefHeight="67.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true" />
+            <Label alignment="CENTER" layoutX="169.0" layoutY="32.0" prefHeight="19.0" prefWidth="77.0" text="Left (OS)">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="snellensTextArea" layoutX="74.0" layoutY="147.0" prefHeight="57.0" prefWidth="157.0" />
-            <Label alignment="CENTER" layoutX="169.0" layoutY="43.0" prefHeight="19.0" prefWidth="77.0" text="Left (OS)">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="wprLabel" layoutX="121.0" layoutY="71.0" text="20/20" />
-            <Label fx:id="wplLabel" layoutX="192.0" layoutY="71.0" text="20/20" />
-            <Label fx:id="nprLabel" layoutX="121.0" layoutY="100.0" text="20/20" />
-            <Label fx:id="nplLabel" layoutX="192.0" layoutY="99.0" text="20/20" />
-            <Label alignment="CENTER" layoutX="17.0" layoutY="43.0" prefHeight="19.0" prefWidth="77.0" text="Visual Acuity">
+            <Label fx:id="wpRightLabel" layoutX="109.0" layoutY="60.0" text="20/20" />
+            <Label fx:id="wpLeftLabel" layoutX="192.0" layoutY="60.0" text="20/20" />
+            <Label fx:id="npRightLabel" layoutX="109.0" layoutY="89.0" text="20/20" />
+            <Label fx:id="npLeftLabel" layoutX="192.0" layoutY="88.0" text="20/20" />
+            <Label alignment="CENTER" layoutX="-15.0" layoutY="32.0" prefHeight="19.0" prefWidth="77.0" text="Visual Acuity">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="hearingTestPane" layoutX="296.0" layoutY="151.0" prefHeight="137.0" prefWidth="278.0">
+      <Pane fx:id="hearingTestPane" layoutX="352.0" layoutY="151.0" prefHeight="137.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status3Label" alignment="CENTER" layoutX="151.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="19.0" layoutY="5.0" text="Hearing Test">
+            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="184.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status3Label" alignment="CENTER" layoutX="187.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="-14.0" layoutY="5.0" text="Hearing Test">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="19.0" layoutY="33.0" text="Hearing problems :">
+            <Label layoutX="-14.0" layoutY="33.0" text="Hearing problems :">
                <font>
                   <Font size="13.0" />
                </font>
@@ -279,35 +264,25 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="66.0" text="Notes :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="hearingTextArea" layoutX="75.0" layoutY="69.0" prefHeight="57.0" prefWidth="157.0" />
+            <TextArea fx:id="hearingTextArea" layoutX="-14.0" layoutY="64.0" prefHeight="84.0" prefWidth="283.0" promptText="- no additional notes -" wrapText="true" />
          </children>
       </Pane>
-      <Pane fx:id="dentalPane" layoutX="303.0" layoutY="570.0" prefHeight="137.0" prefWidth="278.0">
+      <Pane fx:id="dentalPane" layoutX="359.0" layoutY="536.0" prefHeight="137.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status5Label" alignment="CENTER" layoutX="151.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="19.0" layoutY="5.0" text="Dental">
+            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="177.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status5Label" alignment="CENTER" layoutX="180.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="-20.0" layoutY="5.0" prefHeight="19.0" prefWidth="82.0" text="Dental">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="37.0" text="Notes :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="dentalTextArea" layoutX="75.0" layoutY="40.0" prefHeight="57.0" prefWidth="157.0" />
+            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="34.0" prefHeight="114.0" prefWidth="284.0" promptText="- no additional notes -" wrapText="true" />
          </children>
       </Pane>
-      <Pane fx:id="headLicePane" layoutX="22.0" layoutY="570.0" prefHeight="143.0" prefWidth="278.0">
+      <Pane fx:id="headLicePane" layoutX="22.0" layoutY="538.0" prefHeight="143.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status4Label" alignment="CENTER" layoutX="151.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="174.0" layoutY="7.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status4Label" alignment="CENTER" layoutX="177.0" layoutY="7.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label layoutX="19.0" layoutY="5.0" text="Head Lice">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -323,24 +298,19 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="66.0" text="Notes :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="headLiceTextArea" layoutX="75.0" layoutY="69.0" prefHeight="57.0" prefWidth="157.0" />
+            <TextArea fx:id="headLiceTextArea" layoutX="20.0" layoutY="61.0" prefHeight="84.0" prefWidth="266.0" promptText="- no additional notes -" wrapText="true" />
          </children>
       </Pane>
-      <Pane fx:id="dentalPane1" layoutX="304.0" layoutY="668.0" prefHeight="137.0" prefWidth="278.0">
+      <Pane fx:id="dentalPane1" layoutX="360.0" layoutY="664.0" prefHeight="137.0" prefWidth="278.0">
          <children>
-            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="148.0" layoutY="28.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status6Label" alignment="CENTER" layoutX="151.0" layoutY="28.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="19.0" layoutY="28.0" text="History">
+            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="177.0" layoutY="34.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status6Label" alignment="CENTER" layoutX="180.0" layoutY="34.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="-20.0" layoutY="32.0" text="History">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button layoutX="19.0" layoutY="61.0" mnemonicParsing="false" text="Open history records" />
+            <Button layoutX="-20.0" layoutY="61.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" text="Open history records" />
          </children>
       </Pane>
    </children>

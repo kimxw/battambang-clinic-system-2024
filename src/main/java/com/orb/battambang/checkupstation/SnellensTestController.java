@@ -106,26 +106,30 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displaySnellensRecords(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displaySnellensRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
 
-                if (resultSet.next()) {
-                    wpRightTextField.setText(resultSet.getString("wpRight"));
-                    wpLeftTextField.setText(resultSet.getString("wpLeft"));
-                    npRightTextField.setText(resultSet.getString("npRight"));
-                    npLeftTextField.setText(resultSet.getString("npLeft"));
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
-                } else {
-                    clearFields();
-                }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+            if (resultSet.next()) {
+                wpRightTextField.setText(resultSet.getString("wpRight"));
+                wpLeftTextField.setText(resultSet.getString("wpLeft"));
+                npRightTextField.setText(resultSet.getString("npRight"));
+                npLeftTextField.setText(resultSet.getString("npLeft"));
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
                 clearFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearFields();
         }
     }
 

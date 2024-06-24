@@ -218,8 +218,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
-                Rectangles.updateStatusRectangle(status4Rectangle, status6Label, liceStatus);
-                Rectangles.updateStatusRectangle(status5Rectangle, status6Label, dentalStatus);
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, liceStatus);
+                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, dentalStatus);
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus);
 
             } else {
@@ -231,8 +231,8 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
                 Rectangles.updateStatusRectangle(status2Rectangle, status2Label, "Not found");
                 Rectangles.updateStatusRectangle(status3Rectangle, status3Label, "Not found");
-                Rectangles.updateStatusRectangle(status3Rectangle, status4Label, "Not found");
-                Rectangles.updateStatusRectangle(status3Rectangle, status5Label, "Not found");
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
+                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
                 return;

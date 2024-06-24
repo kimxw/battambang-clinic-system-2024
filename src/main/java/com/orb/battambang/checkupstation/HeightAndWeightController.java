@@ -116,23 +116,27 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displayHeightAndWeight(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displayHeightAndWeight(int queueNumber) {
 
-                if (resultSet.next()) {
-                    weightTextField.setText(resultSet.getString("weight"));
-                    heightTextField.setText(resultSet.getString("height"));
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
-                    bmiButtonOnAction(new ActionEvent());
-                } else {
-                    clearFields();
-                }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+        String patientQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                weightTextField.setText(resultSet.getString("weight"));
+                heightTextField.setText(resultSet.getString("height"));
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+                bmiButtonOnAction(new ActionEvent());
+            } else {
                 clearFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearFields();
         }
     }
 
