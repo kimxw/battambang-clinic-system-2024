@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -111,6 +112,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         clearParticularsFields();
         clearBMIFields();
         clearHeadLiceFields();
@@ -456,12 +458,120 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
     }
 
     @FXML
-    private void addButtonOnAction(ActionEvent e) {
+    private void addButtonOnAction() {
+        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!waitingListView.getItems().isEmpty()) {
+                selectedPatient = waitingListView.getItems().get(0);
+            }
+        }
 
+        if (selectedPatient != null) {
+            movePatientToInProgress(selectedPatient);
+        }
+    }
+
+    private void movePatientToInProgress(Integer queueNumber) {
+
+        String deleteFromWaitingListQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO doctorProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            waitingListView.getItems().remove(queueNumber);
+            inProgressListView.getItems().add(queueNumber);
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @FXML
-    private void sendButtonOnAction(ActionEvent e) {
+    private void sendButtonOnAction() {
+        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!inProgressListView.getItems().isEmpty()) {
+                selectedPatient = inProgressListView.getItems().get(0);
+            }
+        }
 
+        if (selectedPatient != null) {
+            movePatientToDoctorConsult(selectedPatient);
+        }
+    }
+
+    private void movePatientToDoctorConsult(Integer queueNumber) {
+
+        String deleteFromProgressListQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = ?";
+        String insertIntoNextListQuery = "INSERT INTO pharmacyWaitingTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            inProgressListView.getItems().remove(queueNumber);
+
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

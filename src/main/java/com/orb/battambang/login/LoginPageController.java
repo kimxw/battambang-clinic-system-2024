@@ -79,6 +79,10 @@ public class LoginPageController extends DatabaseConnection{
                             stage.close();
                             openCheckupMenu();
                         }
+                        case "Education" -> {
+                            stage.close();
+                            openEducation();
+                        }
                         case "Doctor" -> {
                             stage.close();
                             openDoctorConsult();
@@ -161,6 +165,21 @@ public class LoginPageController extends DatabaseConnection{
             Scene scene = new Scene(root, 1400, 800);
             stage.setScene(scene);
             stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void openEducation() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("education-station.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1400 , 800);
+            newUserStage.setTitle("Doctor Consult");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

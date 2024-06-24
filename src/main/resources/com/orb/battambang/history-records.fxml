@@ -34,12 +34,12 @@
       <Label layoutX="31.0" layoutY="572.0" text="Systems Review (SR)" />
       <Text fx:id="srText" layoutX="191.0" layoutY="585.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient complains of chest pain for the past week" wrappingWidth="379.13671875" />
       <Line endX="425.5" layoutX="129.0" layoutY="176.0" startX="-100.0" stroke="#00000035" strokeWidth="2.0" />
-      <Line endX="425.5" layoutX="129.0" layoutY="656.0" startX="-100.0" stroke="#00000035" strokeWidth="2.0" />
-      <Label layoutX="33.0" layoutY="672.0" text="Drug Allergies" textFill="#eb1f1f">
+      <Line endX="425.5" layoutX="129.0" layoutY="690.0" startX="-100.0" stroke="#00000035" strokeWidth="2.0" />
+      <Label layoutX="33.0" layoutY="704.0" text="Drug Allergies" textFill="#eb1f1f">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Text fx:id="allergiesText" layoutX="191.0" layoutY="685.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient complains of chest pain for the past week" wrappingWidth="379.13671875" />
+      <Text fx:id="allergiesText" layoutX="191.0" layoutY="717.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient complains of chest pain for the past week" wrappingWidth="379.13671875" />
    </children>
 </AnchorPane>
