@@ -150,11 +150,13 @@ public class RecordsViewController {
                         "  Weight : %.1f kg%n" +
                         "  BMI : %.1f kg/m2%n" +
                         "  BMI Category : %s%n%n" +
+                        "  Notes : %s%n%n" +
 
                         "- Snellen's Test -%n" +
                         "  Visual Acuity    Right Eye (OD)    Left Eye (OS)%n" +
                         "  With pinhole          %s            %s%n" +
                         "  Without pinhole       %s            %s%n%n" +
+                        "  Notes: %s%n%n" +
 
                         "- Hearing Test -%n" +
                         "  Hearing problems reported : %s%n" +
@@ -179,8 +181,8 @@ public class RecordsViewController {
                         "  Systems Review (SR) : %s%n" +
                         "  Drug Allergies : %s%n",
                 id, name, age, sex, phoneNumber,
-                height, weight, bmi, bmiCategory,
-                wpRight, wpLeft, npRight, npLeft,
+                height, weight, bmi, bmiCategory, bmiNotes,
+                wpRight, wpLeft, npRight, npLeft, snellensNotes,
                 hearingProblem ? "Yes" : "No", hearingNotes,
                 liceProblem ? "Yes" : "No", liceNotes,
                 dentalNotes,

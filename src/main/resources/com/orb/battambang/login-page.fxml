@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.login.LoginPageController">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="228.0" style="-fx-background-color: #2a2a2a;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="400.0" prefWidth="228.0" style="-fx-background-color: #192841;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="85.0" layoutY="132.0" text="PROJECT" textFill="#e1e1e1" />
             <Label layoutX="55.0" layoutY="150.0" text="Battambang" textFill="WHITE">
@@ -32,15 +32,15 @@
          <children>
             <TextField fx:id="usernameTextField" layoutX="31.0" layoutY="138.0" promptText="Username" />
             <PasswordField fx:id="passwordPasswordField" layoutX="31.0" layoutY="174.0" promptText="Password" />
-            <Button fx:id="loginButton" layoutX="31.0" layoutY="224.0" minWidth="47.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="31.0" prefWidth="66.0" style="-fx-background-color: #545454;" text="Login" textFill="WHITE" />
-            <Button fx:id="cancelButton" layoutX="107.0" layoutY="224.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="31.0" prefWidth="61.0" style="-fx-background-color: #545454;" text="Cancel" textFill="WHITE" />
             <Label fx:id="loginMessageLabel" layoutX="31.0" layoutY="116.0" prefHeight="18.0" prefWidth="205.0" textFill="#e12020" />
             <Label layoutX="33.0" layoutY="96.0" prefHeight="18.0" prefWidth="91.0" text="Secure Login" textFill="#2a2a2a">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="newuserButton" layoutX="31.0" layoutY="270.0" mnemonicParsing="false" onAction="#createAccountForm" prefHeight="31.0" prefWidth="137.0" style="-fx-background-color: #b2b2b2;" text="Create New User" textFill="WHITE" />
+            <Button fx:id="newuserButton" layoutX="31.0" layoutY="265.0" mnemonicParsing="false" onAction="#createAccountForm" prefHeight="25.0" prefWidth="109.0" text="Create New User" />
+            <Button fx:id="loginButton" layoutX="33.0" layoutY="227.0" mnemonicParsing="false" onAction="#loginButtonOnAction" text="Login" />
+            <Button fx:id="cancelButton" layoutX="87.0" layoutY="227.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" text="Cancel" />
          </children>
       </AnchorPane>
    </center>

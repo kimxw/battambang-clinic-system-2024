@@ -10,49 +10,49 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.SnellensTestController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.SnellensTestController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1413.0" style="-fx-background-color: #192841;">
+      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1244.0" style="-fx-background-color: #192841;">
          <children>
             <Label layoutX="48.0" layoutY="27.0" prefHeight="31.0" prefWidth="316.0" text="CHECK-UP STATIONS" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Button fx:id="switchUserButton" layoutX="1315.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
+            <Button fx:id="switchUserButton" layoutX="1141.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
          </children>
       </AnchorPane>
-      <Button fx:id="heightAndWeightButton" layoutX="410.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Height and Weight">
+      <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
          <font>
             <Font size="11.0" />
          </font></Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="500.0" layoutX="34.0" layoutY="118.0" stroke="#ebebeb" strokeType="INSIDE" width="340.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="48.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
-      <Label layoutX="53.0" layoutY="131.0" text="Select Patient :">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="500.0" layoutX="18.0" layoutY="118.0" stroke="#ebebeb" strokeType="INSIDE" width="340.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="32.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
+      <Label layoutX="37.0" layoutY="131.0" text="Select Patient :">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="queueNumberTextField" layoutX="146.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
-      <Button fx:id="snellensTestButton" layoutX="526.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #B0C4DE;" text="Snellen's Test">
+      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
+      <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #B0C4DE;" text="Snellen's Test">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button fx:id="hearingTestButton" layoutX="642.0" layoutY="118.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
+      <Button fx:id="hearingTestButton" layoutX="570.0" layoutY="118.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button layoutX="758.0" layoutY="118.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
+      <Button layoutX="668.0" layoutY="118.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button fx:id="searchButton" layoutX="299.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane layoutX="410.0" layoutY="149.0" prefHeight="469.0" prefWidth="696.0" style="-fx-background-color: #B0C4DE;">
+      <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
+      <Pane layoutX="374.0" layoutY="149.0" prefHeight="469.0" prefWidth="588.0" style="-fx-background-color: #B0C4DE;">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="13.0" layoutY="10.0" stroke="#eeeeee" strokeType="INSIDE" width="670.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="13.0" layoutY="10.0" stroke="#eeeeee" strokeType="INSIDE" width="562.0" />
             <Label layoutX="143.0" layoutY="82.0" text="Right Eye (OD)" />
             <Label layoutX="256.0" layoutY="82.0" text="Left Eye (OS)" />
             <TextArea fx:id="additionalNotesTextArea" layoutX="46.0" layoutY="241.0" prefHeight="114.0" prefWidth="406.0" />
@@ -69,7 +69,7 @@
             <Label layoutX="46.0" layoutY="81.0" prefHeight="17.0" prefWidth="77.0" text="Visual acuity" />
          </children>
       </Pane>
-      <Pane fx:id="particularsPane" layoutX="80.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">
+      <Pane fx:id="particularsPane" layoutX="64.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">
          <children>
             <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
@@ -111,7 +111,7 @@
          </children>
       </Pane>
       <Label fx:id="queueSelectLabel" layoutX="146.0" layoutY="101.0" prefHeight="17.0" prefWidth="140.0" />
-      <Pane fx:id="fixedPane" layoutX="79.0" layoutY="183.0" prefHeight="412.0" prefWidth="120.0">
+      <Pane fx:id="fixedPane" layoutX="63.0" layoutY="183.0" prefHeight="412.0" prefWidth="120.0">
          <children>
             <Label layoutX="1.0" layoutY="56.0" text="Name :">
                <font>
@@ -180,17 +180,17 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="874.0" layoutY="118.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="Dental">
+      <Button layoutX="766.0" layoutY="118.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Dental">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Button fx:id="triageButton" layoutX="990.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="30.0" prefWidth="116.0" style="-fx-background-color: #ebebeb;" text="History">
+      <Button fx:id="triageButton" layoutX="864.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="History">
          <font>
             <Font size="11.0" />
          </font>
       </Button>
-      <Pane fx:id="queuePane" layoutX="1144.0" layoutY="121.0" prefHeight="500.0" prefWidth="247.0">
+      <Pane fx:id="queuePane" layoutX="971.0" layoutY="118.0" prefHeight="500.0" prefWidth="247.0">
          <children>
             <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@styles.css" />
             <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />

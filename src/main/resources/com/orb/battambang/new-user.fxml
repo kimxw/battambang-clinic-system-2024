@@ -10,11 +10,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.login.NewUserController">
    <children>
-      <AnchorPane prefHeight="60.0" prefWidth="520.0" style="-fx-background-color: #2a2a2a;">
+      <AnchorPane prefHeight="60.0" prefWidth="520.0" style="-fx-background-color: #192841;">
          <children>
-            <Label contentDisplay="CENTER" layoutX="220.0" layoutY="16.0" text="New User" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="224.0" layoutY="20.0" text="NEW USER" textFill="WHITE">
                <font>
-                  <Font size="19.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
          </children>
@@ -30,10 +30,10 @@
       <PasswordField fx:id="passwordPasswordField" layoutX="277.0" layoutY="190.0" prefHeight="25.0" prefWidth="190.0" />
       <PasswordField fx:id="confirmPasswordPasswordField" layoutX="277.0" layoutY="249.0" prefHeight="25.0" prefWidth="190.0" />
       <Label layoutX="49.0" layoutY="226.0" text="Role" />
-      <Button fx:id="createUserButton" layoutX="152.0" layoutY="328.0" mnemonicParsing="false" onAction="#createUserButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #404040;" text="Create User" textFill="WHITE" />
-      <Button fx:id="cancelButton" layoutX="286.0" layoutY="328.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #404040;" text="Back" textFill="WHITE" />
       <Label fx:id="usermessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="168.0" layoutY="73.0" prefHeight="18.0" prefWidth="190.0" textFill="#22be41" />
       <Label fx:id="passwordmatchLabel" layoutX="276.0" layoutY="284.0" prefHeight="18.0" prefWidth="190.0" textFill="#bd2222" />
       <ChoiceBox fx:id="roleChoiceBox" layoutX="49.0" layoutY="251.0" prefHeight="27.0" prefWidth="190.0" />
+      <Button fx:id="createUserButton" layoutX="168.0" layoutY="326.0" mnemonicParsing="false" onAction="#createUserButtonOnAction" text="Create User" />
+      <Button fx:id="cancelButton" layoutX="272.0" layoutY="326.0" mnemonicParsing="false" onAction="#backButtonOnAction" prefHeight="25.0" prefWidth="78.0" text="Back" />
    </children>
 </AnchorPane>
