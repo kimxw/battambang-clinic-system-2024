@@ -273,23 +273,7 @@
             </TextArea>
          </children>
       </Pane>
-      <Pane fx:id="dentalPane" layoutX="338.0" layoutY="414.0" prefHeight="137.0" prefWidth="278.0">
-         <children>
-            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="153.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status5Label" alignment="CENTER" layoutX="156.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="-20.0" layoutY="5.0" prefHeight="19.0" prefWidth="82.0" text="Dental">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="28.0" prefHeight="109.0" prefWidth="261.0" promptText="- no additional notes -" wrapText="true">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </TextArea>
-         </children>
-      </Pane>
-      <Pane fx:id="headLicePane" layoutX="22.0" layoutY="416.0" prefHeight="143.0" prefWidth="278.0">
+      <Pane fx:id="headLicePane" layoutX="297.0" layoutY="412.0" prefHeight="143.0" prefWidth="278.0">
          <children>
             <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="179.0" layoutY="7.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="status4Label" alignment="CENTER" layoutX="182.0" layoutY="7.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
@@ -359,5 +343,21 @@
             <Font size="11.0" />
          </font>
       </Label>
+      <Pane fx:id="dentalPane" layoutX="62.0" layoutY="412.0" prefHeight="137.0" prefWidth="278.0">
+         <children>
+            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="139.0" layoutY="5.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status5Label" alignment="CENTER" layoutX="142.0" layoutY="5.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="-20.0" layoutY="5.0" prefHeight="19.0" prefWidth="82.0" text="Dental">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="28.0" prefHeight="172.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </TextArea>
+         </children>
+      </Pane>
    </children>
 </Pane>
