@@ -158,6 +158,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
         clearHearingFields();
         clearSnellensFields();
         clearDentalFields();
+        clearConsultFields();
 
         // Set the logged-in user info in the doctorLabel
         doctorLabel.setText(LoginPageController.loggedInUserInfo);
@@ -177,6 +178,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
                     clearSnellensFields();
                     clearDentalFields();
                     clearHistoryFields();
+                    clearConsultFields();
                 }
             }
         });
@@ -662,6 +664,15 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
 
     private void clearHistoryFields() {
         Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
+    }
+
+    private void clearConsultFields() {
+        inputConsultNotesTextArea.setText("");
+        prescriptionTableView.setItems(FXCollections.observableArrayList());
+        conditionChoiceBox.setValue("");
+        yesRadioButton.setSelected(false);
+        noRadioButton.setSelected(false);
+        consultCompleteCheckBox.setSelected(false);
     }
 
 
