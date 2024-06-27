@@ -68,6 +68,9 @@ public class PrescriptionController extends DatabaseConnection implements Initia
     private Button deleteButton;
 
     @FXML
+    private Button clearButton;
+
+    @FXML
     private Button exitButton;
 
     @FXML
@@ -281,6 +284,12 @@ public class PrescriptionController extends DatabaseConnection implements Initia
         inputQuantityTextField.clear();
         inputUnitsTextField.clear();
         inputDosageTextArea.clear();
+        inputIdTextField.clear();
+    }
+
+    @FXML
+    private void clearButtonOnAction(ActionEvent e) {
+        clearInputFields();
     }
 
 
