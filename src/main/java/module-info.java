@@ -23,9 +23,11 @@ module com.orb.battambang {
 
     opens com.orb.battambang.checkupstation to javafx.fxml;
 
-    opens com.orb.battambang.doctor to javafx.fxml;
+    opens com.orb.battambang.doctor to javafx.fxml, javafx.base;
+    exports com.orb.battambang.doctor;
 
     opens com.orb.battambang.pharmacy to javafx.fxml, javafx.base;
     exports com.orb.battambang.pharmacy;
     opens com.orb.battambang.education to javafx.fxml;
+
 }

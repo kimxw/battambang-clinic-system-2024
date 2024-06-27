@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.PrescriptionController">
+    <children>
+        <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#a9cbe2" height="260.0" layoutX="697.0" layoutY="376.0" stroke="WHITE" strokeType="INSIDE" width="378.0" />
+        <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1244.0" style="-fx-background-color: #192841;">
+            <children>
+                <Label layoutX="38.0" layoutY="27.0" prefHeight="31.0" prefWidth="316.0" text="Prescription" textFill="WHITE">
+                    <font>
+                        <Font size="21.0" />
+                    </font>
+                </Label>
+                <Button fx:id="exitButton" layoutX="1181.0" layoutY="30.0" mnemonicParsing="false" onAction="#exitButtonOnAction" text="Exit" />
+            </children>
+        </AnchorPane>
+        <TableView fx:id="prescriptionTableView" layoutX="24.0" layoutY="135.0" prefHeight="501.0" prefWidth="651.0">
+            <columns>
+                <TableColumn fx:id="nameColumn" prefWidth="162.88886833190918" text="Name" />
+                <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="64.4444580078125" text="Qty (mg)" />
+                <TableColumn fx:id="unitsColumn" minWidth="5.0" prefWidth="55.444488525390625" text="Units" />
+                <TableColumn fx:id="dosageColumn" prefWidth="367.55548095703125" text="Dosage Instructions" />
+            </columns>
+        </TableView>
+        <Label layoutX="717.0" layoutY="380.0" text="Choose/Enter Medication:">
+         <font>
+            <Font name="System Bold" size="11.0" />
+         </font></Label>
+        <Label layoutX="716.0" layoutY="421.0" text="ID">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="869.0" layoutY="408.0" text="Name">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="856.0" layoutY="436.0" text="Qty (mg)">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="706.0" layoutY="508.0" text="Numer of Units">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <TextField fx:id="inputIdTextField" layoutX="739.0" layoutY="417.0" prefHeight="25.0" prefWidth="78.0" />
+        <TextField fx:id="inputNameTextField" layoutX="913.0" layoutY="402.0" prefHeight="25.0" prefWidth="140.0" />
+        <TextField fx:id="inputUnitsTextField" layoutX="811.0" layoutY="504.0" prefHeight="26.0" prefWidth="152.0" promptText="how many units to dispense?">
+            <font>
+                <Font size="10.0" />
+            </font></TextField>
+        <Button fx:id="addUpdateButton" layoutX="1097.0" layoutY="556.0" mnemonicParsing="false" onAction="#addUpdateButtonOnAction" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #192841;" text="Add/Update" textFill="WHITE" />
+        <TextField fx:id="inputQuantityTextField" layoutX="913.0" layoutY="432.0" prefHeight="25.0" prefWidth="140.0" />
+        <Line endX="904.0" endY="221.0" layoutX="161.0" layoutY="243.0" startX="545.0" startY="221.0" stroke="#4e8173" />
+        <Label layoutX="826.0" layoutY="422.0" text="OR">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+        <Line endX="671.3333740234375" endY="313.6666564941406" layoutX="162.0" layoutY="138.0" startX="671.3333740234375" startY="268.3333435058594" stroke="#4e8173" />
+      <Button fx:id="deleteButton" layoutX="1097.0" layoutY="591.0" mnemonicParsing="false" onAction="#deleteButtonOnAction" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #192841;" text="Delete" textFill="WHITE" />
+      <TableView fx:id="medicineTableView" layoutX="699.0" layoutY="136.0" prefHeight="230.0" prefWidth="513.0">
+        <columns>
+          <TableColumn fx:id="idTableColumn" prefWidth="80.6666259765625" text="ID" />
+          <TableColumn fx:id="medicineNameTableColumn" prefWidth="244.66656494140625" text="Name" />
+            <TableColumn fx:id="medicineQuantityTableColumn" prefWidth="96.333251953125" text="Quantity (mg)" />
+            <TableColumn fx:id="stockTableColumn" prefWidth="91.0" text="Stock Left" />
+        </columns>
+      </TableView>
+      <TextArea fx:id="inputDosageTextArea" layoutX="811.0" layoutY="538.0" prefHeight="84.0" prefWidth="255.0" />
+      <Label layoutX="706.0" layoutY="542.0" text="Dosage instructions">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="717.0" layoutY="473.0" text="Choose/Enter Prescription:">
+         <font>
+            <Font name="System Bold" size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="102.0" text="Prescription">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="700.0" layoutY="102.0" text="Medicine Records">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+    </children>
+</Pane>
