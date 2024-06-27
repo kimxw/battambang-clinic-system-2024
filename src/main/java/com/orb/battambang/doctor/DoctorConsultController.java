@@ -3,6 +3,7 @@ package com.orb.battambang.doctor;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.Prescription;
 import com.orb.battambang.util.QueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
@@ -19,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +29,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
+import com.orb.battambang.util.WrappedTextCellFactory;
+import com.orb.battambang.login.LoginPageController;
 
 public class DoctorConsultController extends DatabaseConnection implements Initializable {
     @FXML
@@ -109,6 +119,35 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
     @FXML
     private ImageView TXTImageView;
 
+    @FXML
+    private TextArea inputConsultNotesTextArea;
+    @FXML
+    private TableView<Prescription.PrescriptionEntry> prescriptionTableView;
+    @FXML
+    private TableColumn<Prescription.PrescriptionEntry, String> nameColumn;
+    @FXML
+    private TableColumn<Prescription.PrescriptionEntry, String> quantityColumn;
+    @FXML
+    private TableColumn<Prescription.PrescriptionEntry, String> unitsColumn;
+    @FXML
+    private TableColumn<Prescription.PrescriptionEntry, String> dosageColumn;
+    @FXML
+    private ChoiceBox<String> conditionChoiceBox;
+    private String[] condition = {"Acute", "Chronic", "Acute and Chronic"};
+    @FXML
+    private Button updateButton;
+    @FXML
+    private Button createReferralButton;
+    @FXML
+    private Button addMedicationButton;
+    @FXML
+    private RadioButton yesRadioButton, noRadioButton;
+    @FXML
+    private CheckBox consultCompleteCheckBox;
+    @FXML
+    private Label warningLabel;
+    @FXML
+    private Label doctorLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -119,6 +158,9 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
         clearHearingFields();
         clearSnellensFields();
         clearDentalFields();
+
+        // Set the logged-in user info in the doctorLabel
+        doctorLabel.setText(LoginPageController.loggedInUserInfo);
 
         QueueManager waitingQueueManager = new QueueManager(waitingListView, "doctorWaitingTable");
         QueueManager progressQueueManager = new QueueManager(inProgressListView, "doctorProgressTable");
@@ -138,7 +180,118 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
                 }
             }
         });
+
+        conditionChoiceBox.getItems().addAll(condition);
+
+        // Initialize columns
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
+        unitsColumn.setCellValueFactory(new PropertyValueFactory<>("units"));
+        dosageColumn.setCellValueFactory(new PropertyValueFactory<>("dosageInstructions"));
+
+        nameColumn.setCellFactory(new WrappedTextCellFactory<>());
+        quantityColumn.setCellFactory(new WrappedTextCellFactory<>());
+        unitsColumn.setCellFactory(new WrappedTextCellFactory<>());
+        dosageColumn.setCellFactory(new WrappedTextCellFactory<>());
     }
+
+    @FXML
+    public void updateButtonOnAction(ActionEvent e) {
+        String consultNotes = inputConsultNotesTextArea.getText();
+        String condition = conditionChoiceBox.getValue();
+        boolean referralStatus = yesRadioButton.isSelected();
+        String doctorConsultStatus = consultCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
+
+        String queueNumberText = queueNumberTextField.getText();
+        if (queueNumberText.isEmpty()) {
+            Labels.showMessageLabel(warningLabel, "Please fill in the queue number.", false);
+            return;
+        }
+
+        int queueNumber;
+        try {
+            queueNumber = Integer.parseInt(queueNumberText);
+        } catch (NumberFormatException ex) {
+            Labels.showMessageLabel(warningLabel, "Please enter a valid queue number.", false);
+            return;
+        }
+
+        // Check if queueNumber exists in patientQueueTable
+        String checkQueueNumberQuery = "SELECT COUNT(*) FROM patientQueueTable WHERE queueNumber = ?";
+        try (PreparedStatement checkQueueNumberStmt = connection.prepareStatement(checkQueueNumberQuery)) {
+            checkQueueNumberStmt.setInt(1, queueNumber);
+            ResultSet resultSet = checkQueueNumberStmt.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt(1);
+            if (count == 0) {
+                Labels.showMessageLabel(warningLabel, "Queue number does not exist.", false);
+                return;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Handle the exception appropriately
+            Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
+            return;
+        }
+
+        if (conditionChoiceBox.getValue() == null) {
+            Labels.showMessageLabel(warningLabel, "Please choose a condition.", false);
+            return;
+        }
+
+        if (!yesRadioButton.isSelected() && !noRadioButton.isSelected()) {
+            Labels.showMessageLabel(warningLabel, "Please select a referral status.", false);
+            return;
+        }
+
+        // Check if queueNumber exists in doctorConsultTable
+        String checkDoctorConsultQuery = "SELECT COUNT(*) FROM doctorConsultTable WHERE queueNumber = ?";
+        try (PreparedStatement checkDoctorConsultStmt = connection.prepareStatement(checkDoctorConsultQuery)) {
+            checkDoctorConsultStmt.setInt(1, queueNumber);
+            ResultSet resultSet = checkDoctorConsultStmt.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt(1);
+
+            if (count > 0) {
+                // Update existing record
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, condition = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
+                    doctorConsultTableStmt.setString(1, consultNotes);
+                    doctorConsultTableStmt.setString(2, condition);
+                    doctorConsultTableStmt.setBoolean(3, referralStatus);
+                    doctorConsultTableStmt.setString(4, doctorLabel.getText()); // Update doctor column with doctorLabel text
+                    doctorConsultTableStmt.setInt(5, queueNumber);
+                    doctorConsultTableStmt.executeUpdate();
+                }
+            } else {
+                // Insert new record
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, condition, referralStatus, doctor) VALUES (?, ?, ?, ?, ?)";
+                try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
+                    doctorConsultTableStmt.setInt(1, queueNumber);
+                    doctorConsultTableStmt.setString(2, consultNotes);
+                    doctorConsultTableStmt.setString(3, condition);
+                    doctorConsultTableStmt.setBoolean(4, referralStatus);
+                    doctorConsultTableStmt.setString(5, doctorLabel.getText()); // Set doctor column with doctorLabel text
+                    doctorConsultTableStmt.executeUpdate();
+                }
+            }
+
+            // Update patientQueueTable
+            String updatePatientQueueTableQuery = "UPDATE patientQueueTable SET doctorConsultStatus = ? WHERE queueNumber = ?";
+            try (PreparedStatement patientQueueTableStmt = connection.prepareStatement(updatePatientQueueTableQuery)) {
+                patientQueueTableStmt.setString(1, doctorConsultStatus);
+                patientQueueTableStmt.setInt(2, queueNumber);
+                patientQueueTableStmt.executeUpdate();
+            }
+
+            // Clear warning label and show success message if all operations succeed
+            Labels.showMessageLabel(warningLabel, "Update successful.", true);
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Handle the exception appropriately
+            Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
+        }
+    }
+
+
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
@@ -152,8 +305,142 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
             displayHearingRecords(queueNumber);
             displaySnellensRecords(queueNumber);
             displayDentalRecords(queueNumber);
+            displayConsultationNotes(queueNumber);
+            displayPrescription(queueNumber);
+            displayCondition(queueNumber);
+            displayReferral(queueNumber);
+            displayConsultComplete(queueNumber);
             updateParticularsPane(queueNumber);   // must update after loading all others!
 
+        }
+    }
+
+    @FXML
+    public void editPrescriptionButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("prescription.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+
+            // Set the queue number in the PrescriptionController
+            String queueNumberText = queueNumberTextField.getText();
+            PrescriptionController controller = loader.getController(); // Get the controller instance
+            controller.setQueueNumber(Integer.parseInt(queueNumberText));
+            // Pass instance of DoctorConsultController to PrescriptionController
+            controller.setDoctorConsultController(this);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public void displayConsultationNotes(int queueNumber) {
+        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                inputConsultNotesTextArea.setText(resultSet.getString("consultationNotes"));
+            } else {
+                inputConsultNotesTextArea.setText("");
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            inputConsultNotesTextArea.setText("");
+        }
+    }
+
+    public void displayPrescription(int queueNumber) {
+        String patientQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String prescriptionText = resultSet.getString("prescription");
+
+                if (prescriptionText != null && !prescriptionText.isEmpty()) {
+                    // Convert prescriptionText to ObservableList<Prescription.PrescriptionEntry>
+                    ObservableList<Prescription.PrescriptionEntry> prescriptionList = Prescription.convertToObservableList(prescriptionText);
+
+                    // Display prescriptionList in TableView
+                    prescriptionTableView.setItems(prescriptionList);
+                } else {
+                    // If prescriptionText is null or empty, clear the TableView
+                    prescriptionTableView.setItems(FXCollections.observableArrayList());
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Handle SQLException properly in your application
+        }
+    }
+
+    public void displayCondition(int queueNumber) {
+        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String condition = resultSet.getString("condition");
+                conditionChoiceBox.setValue(condition); // Set the selected value in the ChoiceBox
+            } else {
+                conditionChoiceBox.setValue(""); // Set an empty value if no condition is found
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException, optionally show a message or log the error
+            ex.printStackTrace();
+        }
+    }
+
+    public void displayReferral(int queueNumber) {
+        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                boolean referralStatus = resultSet.getBoolean("referralStatus");
+                if (referralStatus) {
+                    yesRadioButton.setSelected(true); // Select Yes if referralStatus is true
+                    noRadioButton.setSelected(false);
+                } else {
+                    yesRadioButton.setSelected(false);
+                    noRadioButton.setSelected(true); // Select No if referralStatus is false
+                }
+            } else {
+                // If no result found, clear selection
+                yesRadioButton.setSelected(false);
+                noRadioButton.setSelected(false);
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException, optionally show a message or log the error
+            ex.printStackTrace();
+        }
+    }
+
+    public void displayConsultComplete(int queueNumber) {
+        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String doctorConsultStatus = resultSet.getString("doctorConsultStatus");
+
+                // Toggle CheckBox based on doctorConsultStatus
+                if ("Complete".equalsIgnoreCase(doctorConsultStatus)) {
+                    consultCompleteCheckBox.setSelected(true); // Tick the CheckBox for complete status
+                } else {
+                    consultCompleteCheckBox.setSelected(false); // Untick the CheckBox for incomplete or deferred status
+                }
+            } else {
+                // If no result found, clear CheckBox selection
+                consultCompleteCheckBox.setSelected(false);
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException, optionally show a message or log the error
+            ex.printStackTrace();
         }
     }
 
