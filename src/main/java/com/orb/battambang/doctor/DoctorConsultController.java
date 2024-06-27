@@ -235,7 +235,8 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
             return;
         }
 
-        if (conditionChoiceBox.getValue() == null) {
+
+        if (conditionChoiceBox.getValue().equals("")) {
             Labels.showMessageLabel(warningLabel, "Please choose a condition.", false);
             return;
         }

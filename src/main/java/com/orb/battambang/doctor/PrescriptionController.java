@@ -2,6 +2,7 @@ package com.orb.battambang.doctor;
 
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.pharmacy.Medicine;
+import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.Prescription;
 import com.orb.battambang.util.WrappedTextCellFactory;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
@@ -87,6 +89,9 @@ public class PrescriptionController extends DatabaseConnection implements Initia
 
     @FXML
     private TableColumn<Medicine, Integer> stockTableColumn;
+
+    @FXML
+    private Label warningLabel;
 
     private int queueNumber;
 
@@ -250,7 +255,7 @@ public class PrescriptionController extends DatabaseConnection implements Initia
         // Validate input (ensure all fields are filled)
         if (name.isEmpty() || quantity.isEmpty() || units.isEmpty() || dosageInstructions.isEmpty()) {
             // Optionally show an error message or handle empty fields scenario
-            System.out.println("Please fill in all fields.");
+            Labels.showMessageLabel(warningLabel, "Please fill in all fields.", false);
             return;
         }
 

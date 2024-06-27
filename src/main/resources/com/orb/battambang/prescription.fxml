@@ -102,5 +102,15 @@
          </font>
       </Label>
       <Button fx:id="clearButton" layoutX="1097.0" layoutY="521.0" mnemonicParsing="false" onAction="#clearButtonOnAction" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #192841;" text="Clear Fields" textFill="WHITE" />
+      <Label layoutX="1097.0" layoutY="495.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="warningLabel" layoutX="1086.0" layoutY="494.0" prefHeight="17.0" prefWidth="134.0">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
     </children>
 </Pane>
