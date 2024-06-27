@@ -29,6 +29,25 @@ public class LoginPageController extends DatabaseConnection{
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordPasswordField;
+    // static variable to store logged-in user info
+    public static String loggedInUserInfo;
+
+    // Method to fetch user info from database
+    private String getUserInfo(String username) {
+        String query = "SELECT id, firstName, lastName FROM staffTable WHERE username = '" + username + "';";
+        try (Statement statement = DatabaseConnection.connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                return firstName + " " + lastName + " (" + id + ")";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @FXML
     private void loginButtonOnAction(ActionEvent e) {
@@ -68,6 +87,9 @@ public class LoginPageController extends DatabaseConnection{
             ResultSet resultSet = statement.executeQuery(verifyLogin);
             while (resultSet.next()) {
                 if (resultSet.getInt(1) == 1) {
+                    String userInfo = getUserInfo(username);
+                    loggedInUserInfo = userInfo; // Store the logged-in user's info
+
                     Stage stage = (Stage) loginMessageLabel.getScene().getWindow();
                     String role = getRoleByUsername(username);
                     switch (role) {
@@ -78,6 +100,10 @@ public class LoginPageController extends DatabaseConnection{
                         case "CheckUpStation" -> {
                             stage.close();
                             openCheckupMenu();
+                        }
+                        case "Education" -> {
+                            stage.close();
+                            openEducation();
                         }
                         case "Doctor" -> {
                             stage.close();
@@ -126,7 +152,7 @@ public class LoginPageController extends DatabaseConnection{
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
             Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
             newUserStage.setTitle("Reception");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
@@ -136,7 +162,6 @@ public class LoginPageController extends DatabaseConnection{
             e.getCause();
         }
     }
-
     public void openCheckupMenu() {
 
         try {
@@ -158,9 +183,24 @@ public class LoginPageController extends DatabaseConnection{
             stage.setTitle("Check-up Stations");
             // newUserStage.initStyle(StageStyle.UNDECORATED);
 
-            Scene scene = new Scene(root, 1080, 600);
+            Scene scene = new Scene(root, 1230, 650);
             stage.setScene(scene);
             stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    public void openEducation() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("education-station.fxml"));
+            Stage newUserStage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
+            newUserStage.setTitle("Doctor Consult");
+            //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setScene(scene);
+            newUserStage.show();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
@@ -172,7 +212,7 @@ public class LoginPageController extends DatabaseConnection{
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("doctor-consult.fxml"));
             Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
             newUserStage.setTitle("Doctor Consult");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
@@ -187,7 +227,7 @@ public class LoginPageController extends DatabaseConnection{
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("medicine-dispense.fxml"));
             Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 1080 , 600);
+            Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
             newUserStage.setTitle("Pharmacy");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);

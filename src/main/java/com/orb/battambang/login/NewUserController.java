@@ -17,7 +17,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class NewUserController extends DatabaseConnection implements Initializable {
-    private String[] roles = {"Reception", "CheckUpStation", "Doctor", "Pharmacy"};
+    private String[] roles = {"Reception", "CheckUpStation", "Education", "Doctor", "Pharmacy"};
     @FXML
     private Label usermessageLabel;
     @FXML

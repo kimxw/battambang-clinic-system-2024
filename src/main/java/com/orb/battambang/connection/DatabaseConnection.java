@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DatabaseConnection {
     protected static String filePath;
-    protected static Connection connection = null;
+    public static Connection connection = null;
 
     public static boolean establishConnection(String inputPath) {
         boolean success = false;

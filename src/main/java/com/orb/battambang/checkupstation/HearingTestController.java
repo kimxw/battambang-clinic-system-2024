@@ -2,6 +2,8 @@ package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -40,7 +42,7 @@ public class HearingTestController extends CheckupMenuController implements Init
     @FXML
     private Label status3Label;
     @FXML
-    private Label status4Label;
+    private Label status6Label;
     @FXML
     private Rectangle status1Rectangle;
     @FXML
@@ -48,7 +50,7 @@ public class HearingTestController extends CheckupMenuController implements Init
     @FXML
     private Rectangle status3Rectangle;
     @FXML
-    private Rectangle status4Rectangle;
+    private Rectangle status6Rectangle;
     @FXML
     private Button searchButton;
     @FXML
@@ -63,10 +65,21 @@ public class HearingTestController extends CheckupMenuController implements Init
     private TextArea additionalNotesTextArea;
     @FXML
     private Label warningLabel;
+    @FXML
+    private Label deferLabel;
+
+    @FXML
+    private ListView<Integer> waitingListView;
+    @FXML
+    private ListView<Integer> inProgressListView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize any necessary data here
+        // for waiting list
+        // Initialize the waiting list
+        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
+        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -96,28 +109,31 @@ public class HearingTestController extends CheckupMenuController implements Init
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
+            displayHearingRecords(queueNumber);
+        }
+    }
 
-            String patientQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(patientQuery);
+    private void displayHearingRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
 
-                if (resultSet.next()) {
-                    boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
-                    if (hasHearingProblems) {
-                        yesRadioButton.setSelected(true);
-                    } else {
-                        noRadioButton.setSelected(true);
-                    }
-                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            if (resultSet.next()) {
+                boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
+                if (hasHearingProblems) {
+                    yesRadioButton.setSelected(true);
                 } else {
-                    clearRecordFields();
+                    noRadioButton.setSelected(true);
                 }
-            } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+                additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
+            } else {
                 clearRecordFields();
             }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearRecordFields();
         }
     }
 
@@ -127,99 +143,12 @@ public class HearingTestController extends CheckupMenuController implements Init
         additionalNotesTextArea.setText("");
     }
 
-    public void updateParticularsPane(int queueNumber) {
-        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        String bmiRecordQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
-        String snellensRecordQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
-        String hearingRecordQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
-        String historyRecordQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;;
-
-        try {
-            Statement statement = DatabaseConnection.connection.createStatement();
-
-            // Fetch patient details
-            ResultSet patientResultSet = statement.executeQuery(patientQuery);
-            if (patientResultSet.next()) {
-                String name = patientResultSet.getString("name");
-                int age = patientResultSet.getInt("age");
-                String sex = patientResultSet.getString("sex");
-                String phoneNumber = patientResultSet.getString("phoneNumber");
-
-                queueNoLabel.setText(String.valueOf(queueNumber));
-                nameLabel.setText(name);
-                ageLabel.setText(String.valueOf(age));
-                sexLabel.setText(sex);
-                phoneNumberLabel.setText(phoneNumber);
-            } else {
-                queueNoLabel.setText("");
-                nameLabel.setText("");
-                ageLabel.setText("");
-                sexLabel.setText("");
-                phoneNumberLabel.setText("");
-                Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
-                status1Rectangle.setStyle("-fx-fill: #707070;");
-                status1Label.setText(" Not found");
-                status2Rectangle.setStyle("-fx-fill: #707070;");
-                status2Label.setText(" Not found");
-                status3Rectangle.setStyle("-fx-fill: #707070;");
-                status3Label.setText(" Not found");
-                status4Rectangle.setStyle("-fx-fill: #707070;");
-                status4Label.setText(" Not found");
-                return;
-            }
-
-            // update record labels
-            ResultSet bmiResultSet = statement.executeQuery(bmiRecordQuery);
-            if (bmiResultSet.next()) {
-                status1Rectangle.setStyle("-fx-fill: #9dd895;");
-                status1Label.setText(" Complete");
-            } else {
-                status1Rectangle.setStyle("-fx-fill: #fa8072;");
-                status1Label.setText("Incomplete");
-            }
-
-            ResultSet snellensResultSet = statement.executeQuery(snellensRecordQuery);
-            if (snellensResultSet.next()) {
-                status2Rectangle.setStyle("-fx-fill: #9dd895;");
-                status2Label.setText(" Complete");
-            } else {
-                status2Rectangle.setStyle("-fx-fill: #fa8072;");
-                status2Label.setText("Incomplete");
-            }
-
-            ResultSet hearingResultSet = statement.executeQuery(hearingRecordQuery);
-            if (hearingResultSet.next()) {
-                status3Rectangle.setStyle("-fx-fill: #9dd895;");
-                status3Label.setText(" Complete");
-            } else {
-                status3Rectangle.setStyle("-fx-fill: #fa8072;");
-                status3Label.setText("Incomplete");
-            }
-
-            ResultSet historyResultSet = statement.executeQuery(historyRecordQuery);
-            if (historyResultSet.next()) {
-                status4Rectangle.setStyle("-fx-fill: #9dd895;");
-                status4Label.setText(" Complete");
-            } else {
-                status4Rectangle.setStyle("-fx-fill: #fa8072;");
-                status4Label.setText("Incomplete");
-            }
-
-            // Close the statement
-            statement.close();
-        } catch (SQLException exc) {
-            exc.printStackTrace();
-            Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
-        }
-    }
-
     @FXML
     private void updateButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
-            System.out.println(queueNumber);
             addHearingTest(queueNumber);
             updateParticularsPane(queueNumber);
         }
@@ -239,6 +168,13 @@ public class HearingTestController extends CheckupMenuController implements Init
                 preparedStatement.setString(3, notes);
 
                 preparedStatement.executeUpdate();
+
+                String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Complete' WHERE queueNumber = ?";
+                try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                    updateStatusStatement.setInt(1, queueNumber);
+                    updateStatusStatement.executeUpdate();
+                }
+
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
             } catch (SQLException e1) {
                 Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
@@ -257,4 +193,23 @@ public class HearingTestController extends CheckupMenuController implements Init
         phoneNumberLabel.setText("");
     }
 
+    @FXML
+    private void deferButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
+
+        } else {
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
+
+            String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Deferred' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+                Labels.showMessageLabel(deferLabel, "Defered Q" + queueNumber + " successfully", "blue");
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(deferLabel, "Unable to defer Q" + queueNumber, false);
+            }
+            updateParticularsPane(queueNumber);
+        }
+    }
 }

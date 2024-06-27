@@ -6,25 +6,22 @@ import com.orb.battambang.util.QueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Queue;
 import java.util.ResourceBundle;
 
-public class HeightAndWeightController extends CheckupMenuController implements Initializable {
+public class HeadLiceController extends CheckupMenuController implements Initializable {
+
 
     @FXML
     private Label queueSelectLabel;
@@ -55,36 +52,26 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     @FXML
     private Rectangle status6Rectangle;
     @FXML
-    private TextField heightTextField;
-    @FXML
-    private TextField weightTextField;
-    @FXML
-    private TextArea additionalNotesTextArea;
-    @FXML
-    private Label bmiLabel;
-    @FXML
-    private Label categoryLabel;
-    @FXML
-    private Label warningLabel;
-    @FXML
-    private Label deferLabel;
-    @FXML
-    private Rectangle categoryRectangle;
-    @FXML
     private Button searchButton;
-    @FXML
-    private Button updateButton;
     @FXML
     private TextField queueNumberTextField;
     @FXML
     private Pane particularsPane;
+    @FXML
+    private RadioButton yesRadioButton;
+    @FXML
+    private RadioButton noRadioButton;
+    @FXML
+    private TextArea additionalNotesTextArea;
+    @FXML
+    private Label warningLabel;
+    @FXML
+    private Label deferLabel;
 
     @FXML
     private ListView<Integer> waitingListView;
-//    private ObservableList<Integer> waitingList;
     @FXML
     private ListView<Integer> inProgressListView;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -92,7 +79,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         // Initialize the waiting list
         QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
         QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
-        
+
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -106,6 +93,14 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         });
 
         particularsPane.setVisible(false); // Initially hide the particularsPane
+
+        // Create a ToggleGroup
+        ToggleGroup group = new ToggleGroup();
+
+        // Add the radio buttons to the group
+        yesRadioButton.setToggleGroup(group);
+        noRadioButton.setToggleGroup(group);
+
     }
 
     @FXML
@@ -116,136 +111,77 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
-            displayHeightAndWeight(queueNumber);
+            displayHeadLiceRecords(queueNumber);
         }
     }
 
-    private void displayHeightAndWeight(int queueNumber) {
-
-        String patientQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
+    private void displayHeadLiceRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                weightTextField.setText(resultSet.getString("weight"));
-                heightTextField.setText(resultSet.getString("height"));
+                boolean hadHeadLice = resultSet.getBoolean("headLice");
+                if (hadHeadLice) {
+                    yesRadioButton.setSelected(true);
+                } else {
+                    noRadioButton.setSelected(true);
+                }
                 additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
-                bmiButtonOnAction(new ActionEvent());
             } else {
-                clearFields();
+                clearRecordFields();
             }
         } catch (SQLException ex) {
             Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
-            clearFields();
+            clearRecordFields();
         }
     }
 
-    private void clearFields() {
-        weightTextField.setText("");
-        heightTextField.setText("");
+    private void clearRecordFields() {
+        yesRadioButton.setSelected(false);
+        noRadioButton.setSelected(false);
         additionalNotesTextArea.setText("");
-        bmiLabel.setText("");
-        categoryLabel.setText("");
-        categoryRectangle.setStyle("-fx-fill: #dddddd;");
     }
 
-
     @FXML
-    public void updateButtonOnAction(ActionEvent e) {
+    private void updateButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
-            addHeightAndWeight(queueNumber);
+            addHeadLice(queueNumber);
             updateParticularsPane(queueNumber);
         }
     }
 
-    private void addHeightAndWeight(int queueNumber) {
+    private void addHeadLice(int queueNumber) {
         try {
-            String heightStr = heightTextField.getText();
-            String weightStr = weightTextField.getText();
+
+            Boolean headLice = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
             String notes = additionalNotesTextArea.getText();
 
-            double height = Double.parseDouble(heightStr);
-            double weight = Double.parseDouble(weightStr);
+            String insertToCreate = "INSERT OR REPLACE INTO headLiceTable (queueNumber, headLice, additionalNotes) VALUES (?, ?, ?)";
 
-            double bmi = Double.parseDouble(bmiLabel.getText());
-            String bmiCategory = categoryLabel.getText();
-
-            String insertOrUpdateQuery = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
-
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);
-                preparedStatement.setDouble(2, height);
-                preparedStatement.setDouble(3, weight);
-                preparedStatement.setDouble(4, bmi);
-                preparedStatement.setString(5, bmiCategory);
-                preparedStatement.setString(6, notes);
+                preparedStatement.setBoolean(2, headLice);
+                preparedStatement.setString(3, notes);
 
                 preparedStatement.executeUpdate();
 
-                String updateStatusQuery = "UPDATE patientQueueTable SET bmiStatus = 'Complete' WHERE queueNumber = ?";
+                String updateStatusQuery = "UPDATE patientQueueTable SET liceStatus = 'Complete' WHERE queueNumber = ?";
                 try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                     updateStatusStatement.setInt(1, queueNumber);
                     updateStatusStatement.executeUpdate();
                 }
 
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
-
-            } catch (SQLException e) {
-                Labels.showMessageLabel(warningLabel, "Database error.", false);
-                e.printStackTrace();
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
             }
 
-        } catch (NumberFormatException e) {
-            Labels.showMessageLabel(warningLabel, "Invalid number format. Please check height and weight fields.", false);
-        } catch (Exception e) {
+        } catch (Exception e2) {
             Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void bmiButtonOnAction(ActionEvent e) {
-        String height = heightTextField.getText();
-        String weight = weightTextField.getText();
-        if (height.isEmpty() || weight.isEmpty()) {
-            Labels.showMessageLabel(warningLabel, "Input height and weight.", false);
-        } else {
-            double bmi = BMICalculator.calculateBMI(Double.parseDouble(weight), Double.parseDouble(height));
-
-            String ageSexQuery = "SELECT age, sex FROM patientQueueTable WHERE queueNumber = " + queueNoLabel.getText();
-            int age = 0;
-            String sex = "";
-
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(ageSexQuery);
-                if (resultSet.next()) {
-                    age = resultSet.getInt("age");
-                    sex = resultSet.getString("sex");
-                }
-            } catch (SQLException exc) {
-                exc.printStackTrace();
-                Labels.showMessageLabel(warningLabel, "Error fetching patient data.", false);
-                return;
-            }
-
-            String bmiCategory = BMICalculator.determineBMICategory(bmi, age, sex);
-            if (bmiCategory.equals("Underweight")) {
-                categoryRectangle.setStyle("-fx-fill: #429ebd;");
-            } else if (bmiCategory.equals("Healthy Weight")) {
-                categoryRectangle.setStyle("-fx-fill: #94b447;");
-            } else if (bmiCategory.equals("Overweight")) {
-                categoryRectangle.setStyle("-fx-fill: #cf6024;");
-            } else if (bmiCategory.equals("Obese")) {
-                categoryRectangle.setStyle("-fx-fill: #c4281c;");
-            } else {
-                categoryRectangle.setStyle("-fx-fill: #6b6b6b;");
-            }
-            bmiLabel.setText("" + bmi);
-            categoryLabel.setText(bmiCategory);
         }
     }
 
@@ -265,7 +201,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
 
-            String updateStatusQuery = "UPDATE patientQueueTable SET bmiStatus = 'Deferred' WHERE queueNumber = ?";
+            String updateStatusQuery = "UPDATE patientQueueTable SET liceStatus = 'Deferred' WHERE queueNumber = ?";
             try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                 updateStatusStatement.setInt(1, queueNumber);
                 updateStatusStatement.executeUpdate();
