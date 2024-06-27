@@ -3,6 +3,10 @@ package com.orb.battambang.pharmacy;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.connection.DatabaseConnection;
+import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.Rectangles;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,7 +19,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
@@ -49,12 +56,59 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     private TableColumn<Medicine, Integer> quantityTableColumn;
     @FXML
     private TableColumn<Medicine, Integer> stockTableColumn;
+    @FXML
+    private ListView<Integer> waitingListView;
+    @FXML
+    private ListView<Integer> inProgressListView;
+    @FXML
+    private Pane particularsPane;
+    @FXML
+    private TextField queueNumberTextField;
+    @FXML
+    private Label queueNoLabel;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label ageLabel;
+    @FXML
+    private Label sexLabel;
+    @FXML
+    private Label phoneNumberLabel;
+    @FXML
+    private Label queueSelectLabel;
+    @FXML
+    private Label status1Label;
+    @FXML
+    private Rectangle status1Rectangle;
+    @FXML
+    private Text prescriptionText;
 
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        QueueManager waitingQueueManager = new QueueManager(waitingListView, "pharmacyWaitingTable");
+        QueueManager progressQueueManager = new QueueManager(inProgressListView, "pharmacyProgressTable");
+
+        queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Hide particularsPane when typing starts
+                if (newValue != null && !newValue.isEmpty()) {
+                    particularsPane.setVisible(false);
+                    clearParticularsFields();
+                }
+            }
+        });
+
+        particularsPane.setVisible(false); // Initially hide the particularsPane
+
+        initialiseMedicineTable();
+
+    }
+
+    private void initialiseMedicineTable() {
         String medicineViewQuery = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable;";
 
         try {
@@ -133,6 +187,92 @@ public class MedicineDispenseController extends DatabaseConnection implements In
 
         } catch (Exception exc) {
             exc.printStackTrace();
+        }
+    }
+
+    private void clearParticularsFields() {
+        queueNoLabel.setText("");
+        nameLabel.setText("");
+        ageLabel.setText("");
+        sexLabel.setText("");
+        phoneNumberLabel.setText("");
+        prescriptionText.setText("");
+    }
+
+    @FXML
+    public void searchButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
+        } else {
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            updateParticularsPane(queueNumber);
+            particularsPane.setVisible(true);
+            displayPrescription(queueNumber);
+        }
+    }
+
+    private void updateParticularsPane(int queueNumber) {
+        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+
+        try {
+            Statement statement = DatabaseConnection.connection.createStatement();
+
+            // Fetch patient details
+            ResultSet patientResultSet = statement.executeQuery(patientQuery);
+            if (patientResultSet.next()) {
+                String name = patientResultSet.getString("name");
+                int age = patientResultSet.getInt("age");
+                String sex = patientResultSet.getString("sex");
+                String phoneNumber = patientResultSet.getString("phoneNumber");
+
+                queueNoLabel.setText(String.valueOf(queueNumber));
+                nameLabel.setText(name);
+                ageLabel.setText(String.valueOf(age));
+                sexLabel.setText(sex);
+                phoneNumberLabel.setText(phoneNumber);
+
+                String pharmacyStatus = patientResultSet.getString("pharmacyStatus");
+
+                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, pharmacyStatus);
+
+            } else {
+                nameLabel.setText("");
+                ageLabel.setText("");
+                sexLabel.setText("");
+                phoneNumberLabel.setText("");
+                Labels.showMessageLabel(queueSelectLabel, "Patient does not exist", false);
+                Rectangles.updateStatusRectangle(status1Rectangle, status1Label, "Not found");
+            }
+
+            // Close the statement and resultSet
+            patientResultSet.close();
+            statement.close();
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
+        }
+    }
+
+    private void displayPrescription(int queueNumber) {
+        String patientQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+
+        try {
+            Statement statement = DatabaseConnection.connection.createStatement();
+
+            ResultSet prescriptionResultSet = statement.executeQuery(patientQuery);
+            if (prescriptionResultSet.next()) {
+                String prescription = prescriptionResultSet.getString("prescription");
+
+                prescriptionText.setText(formatPrescription(prescription));
+
+            }
+
+            // Close the statement and resultSet
+            prescriptionResultSet.close();
+            statement.close();
+        } catch (SQLException exc) {
+            exc.printStackTrace();
+            Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
     }
 
@@ -227,7 +367,8 @@ public class MedicineDispenseController extends DatabaseConnection implements In
 
                                 // Update the TableView
                                 medicineObservableList.clear();
-                                initialize(null, null); // Refresh the TableView
+                                initialiseMedicineTable();
+
                             } else {
                                 Labels.showMessageLabel(messageLabel2, "Medicine not found.", false);
                                 warningLabel.setText(""); // Clear the warning label if there's an error
@@ -262,5 +403,166 @@ public class MedicineDispenseController extends DatabaseConnection implements In
         inputQuantityTextField.clear();
         inputUnitTextField.clear();
     }
+
+    @FXML public void clearButtonOnAction(ActionEvent e) {
+        inputIdTextField.clear();
+        inputNameTextField.clear();
+        inputQuantityTextField.clear();
+        inputUnitTextField.clear();
+    }
+
+    @FXML
+    public void addButtonOnAction(ActionEvent e) {
+        Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!waitingListView.getItems().isEmpty()) {
+                selectedPatient = waitingListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            movePatientToInProgress(selectedPatient);
+        }
+    }
+
+    private void movePatientToInProgress(Integer queueNumber) {
+
+        String deleteFromWaitingListQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO pharmacyProgressTable (queueNumber) VALUES (?)";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+             PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Insert into progress list
+            insertStatement.setInt(1, queueNumber);
+            insertStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            waitingListView.getItems().remove(queueNumber);
+            inProgressListView.getItems().add(queueNumber);
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    public void sendButtonOnAction(ActionEvent e) {
+        Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!inProgressListView.getItems().isEmpty()) {
+                selectedPatient = inProgressListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient != null) {
+            removeFromQueue(selectedPatient);
+        }
+
+        int queueNumber = selectedPatient.intValue();
+        //update dispense status to complete
+        String updateStatusQuery = "UPDATE patientQueueTable SET pharmacyStatus = 'Dispensed' WHERE queueNumber = ?";
+        try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+            updateStatusStatement.setInt(1, queueNumber);
+            updateStatusStatement.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
+    }
+
+    private void removeFromQueue(Integer queueNumber) {
+
+        String deleteFromProgressListQuery = "DELETE FROM pharmacyProgressTable WHERE queueNumber = ?";
+
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Delete from waiting list
+            deleteStatement.setInt(1, queueNumber);
+            deleteStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            inProgressListView.getItems().remove(queueNumber);
+
+        } catch (SQLException e) {
+            try {
+                if (connection != null) {
+                    connection.rollback(); // Roll back transaction if any error occurs
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+
+    //move to utils later
+
+    private String formatPrescription(String prescriptionString) {
+
+        String[] medicationEntries = prescriptionString.split(";");
+        StringBuilder formattedString = new StringBuilder();
+
+        for (String entry : medicationEntries) {
+            String[] parts = entry.split(",");
+
+            // Ensure each entry has exactly four parts before processing
+            if (parts.length == 4) {
+                String name = parts[0].trim();
+                String quantityInMilligrams = parts[1].trim();
+                String units = parts[2].trim();
+                String dosageInstructions = parts[3].trim();
+
+                if (formattedString.length() > 0) {
+                    formattedString.append("\n");
+                }
+
+                formattedString.append(String.format("%s %s - %s%n%s%n", name, quantityInMilligrams, units, dosageInstructions));
+            }
+        }
+
+        return formattedString.toString();
+    }
+
 
 }
