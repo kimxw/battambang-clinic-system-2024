@@ -13,9 +13,9 @@ public class Rectangles {
 
     public static void updateStatusRectangle(Rectangle rectangle, Label label, String message) {
         label.setText(message);
-        if (message.equals("Complete")) {
+        if (message.equals("Complete") || message.equals("Dispensed")) {
             rectangle.setStyle("-fx-fill: #bdd9ba;");
-        } else if (message.equals("Incomplete")) {
+        } else if (message.equals("Incomplete") || message.equals("Not dispensed")) {
             rectangle.setStyle("-fx-fill: #e59295;");
         } else if (message.equals("Deferred")) {
             rectangle.setStyle("-fx-fill: #bea9df;");

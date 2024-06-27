@@ -450,7 +450,6 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
 
-            // Fetch patient details
             ResultSet patientResultSet = statement.executeQuery(patientQuery);
             if (patientResultSet.next()) {
                 String name = patientResultSet.getString("name");
