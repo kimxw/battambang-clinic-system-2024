@@ -5,13 +5,13 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.MedicineDispenseController">
    <children>
@@ -31,7 +31,7 @@
       <Label layoutX="33.0" layoutY="118.0" text="Select Patient :" />
       <TextField fx:id="queueNumberTextField" layoutX="121.0" layoutY="115.0" prefHeight="25.0" prefWidth="90.0" promptText="Queue no." />
       <Button fx:id="searchButton" layoutX="217.0" layoutY="116.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane fx:id="particularsPane" layoutX="44.0" layoutY="168.0" prefHeight="412.0" prefWidth="233.0">
+      <Pane fx:id="particularsPane" layoutX="44.0" layoutY="168.0" prefHeight="441.0" prefWidth="233.0">
          <children>
             <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="123.0" layoutY="186.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="104.0" />
             <Label fx:id="status1Label" alignment="CENTER" layoutX="129.0" layoutY="186.0" prefHeight="17.0" prefWidth="90.0" text="Not Dispensed" textAlignment="CENTER" textFill="WHITE" />
@@ -60,7 +60,8 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Text fx:id="prescriptionText" layoutX="2.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="dummy prescription" wrappingWidth="223.0" />
+            <TextArea fx:id="prescriptionTextArea" editable="false" layoutX="-1.0" layoutY="216.0" prefHeight="111.0" prefWidth="233.0" wrapText="true" />
+            <TextArea fx:id="allergiesTextArea" editable="false" layoutX="-1.0" layoutY="357.0" prefHeight="75.0" prefWidth="233.0" wrapText="true" />
          </children>
       </Pane>
       <Label fx:id="queueSelectLabel" layoutX="122.0" layoutY="87.0" prefHeight="17.0" prefWidth="140.0" />
@@ -94,6 +95,11 @@
             <Label layoutY="1.0" text="Particulars">
                <font>
                   <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutY="335.0" text="Drug Allergies :" textFill="#ff2222">
+               <font>
+                  <Font name="System Bold" size="13.0" />
                </font>
             </Label>
             <Label layoutX="1.0" layoutY="28.0" text="Queue No. :">
