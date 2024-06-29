@@ -30,4 +30,14 @@ public class DatabaseConnection {
         return success;
     }
 
+    public static void closeDatabaseConnection() {
+        try {
+            if (DatabaseConnection.connection != null && !DatabaseConnection.connection.isClosed()) {
+                DatabaseConnection.connection.close();
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
 }

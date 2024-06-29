@@ -34,64 +34,96 @@ public class LowStockController extends DatabaseConnection implements Initializa
     @FXML
     private TableColumn<Medicine, Integer> stockTableColumn;
 
-    ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
+    private ObservableList<Medicine> medicineObservableList;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeTableColumns();
+        initializeMedicineList();
+        setupFilters();
+    }
 
+    private void initializeTableColumns() {
+        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
+        stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
+    }
+
+    private void initializeMedicineList() {
+        medicineObservableList = FXCollections.observableArrayList();
         String medicineViewQuery = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable;";
 
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(medicineViewQuery);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(medicineViewQuery)) {
 
             while (resultSet.next()) {
-                Integer id = resultSet.getInt("Id");
-                String name = resultSet.getString("Name");
-                Integer quantity = resultSet.getInt("QuantityInMilligrams");
-                Integer stock = resultSet.getInt("StockLeft");
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                Integer quantity = resultSet.getInt("quantityInMilligrams");
+                Integer stock = resultSet.getInt("stockLeft");
 
                 medicineObservableList.add(new Medicine(id, name, quantity, stock));
             }
 
-            idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-            nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("quantityInMilligrams"));
-            stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
-
-            // Create a filtered list and set the initial predicate to filter medicines with stock less than 20
-            FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList, medicine -> medicine.getStockLeft() < 20);
-
-            //filter by id
-            idSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredList.setPredicate(medicineSearchModel -> {
-                    String searchId = newValue.trim();
-                    String searchName = nameSearchTextField.getText().trim().toLowerCase();
-                    boolean matchId = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
-                    boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
-                    boolean matchStock = medicineSearchModel.getStockLeft() < 20; // Add this line
-                    return matchId && matchName && matchStock;
-                });
-            });
-
-            // Filter by name
-            nameSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredList.setPredicate(medicineSearchModel -> {
-                    String searchId = idSearchTextField.getText().trim();
-                    String searchName = newValue.trim().toLowerCase();
-                    boolean matchQueue = searchId.isEmpty() || medicineSearchModel.getId().toString().contains(searchId);
-                    boolean matchName = searchName.isEmpty() || medicineSearchModel.getName().toLowerCase().contains(searchName);
-                    boolean matchStock = medicineSearchModel.getStockLeft() < 20; // Add this line
-                    return matchQueue && matchName && matchStock;
-                });
-            });
-
-            SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+            SortedList<Medicine> sortedList = new SortedList<>(medicineObservableList);
             sortedList.comparatorProperty().bind(medicineTableView.comparatorProperty());
             medicineTableView.setItems(sortedList);
 
         } catch (Exception exc) {
             exc.printStackTrace();
         }
+    }
+
+    private void setupFilters() {
+        FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList, medicine -> medicine.getStockLeft() < 20);
+
+        idSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(medicine -> filterMedicine(medicine, newValue.trim(), nameSearchTextField.getText().trim().toLowerCase()));
+        });
+
+        nameSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(medicine -> filterMedicine(medicine, idSearchTextField.getText().trim(), newValue.trim().toLowerCase()));
+        });
+
+        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(medicineTableView.comparatorProperty());
+        medicineTableView.setItems(sortedList);
+    }
+
+    private boolean filterMedicine(Medicine medicine, String searchId, String searchName) {
+        boolean matchId = searchId.isEmpty() || medicine.getId().toString().contains(searchId);
+        boolean matchName = searchName.isEmpty() || medicine.getName().toLowerCase().contains(searchName);
+        boolean matchStock = medicine.getStockLeft() < 20;
+        return matchId && matchName && matchStock;
+    }
+
+    // Getters for testing purposes
+    public TextField getIdSearchTextField() {
+        return idSearchTextField;
+    }
+
+    public TextField getNameSearchTextField() {
+        return nameSearchTextField;
+    }
+
+    public TableView<Medicine> getMedicineTableView() {
+        return medicineTableView;
+    }
+
+    public TableColumn<Medicine, Integer> getIdTableColumn() {
+        return idTableColumn;
+    }
+
+    public TableColumn<Medicine, String> getNameTableColumn() {
+        return nameTableColumn;
+    }
+
+    public TableColumn<Medicine, Integer> getQuantityTableColumn() {
+        return quantityTableColumn;
+    }
+
+    public TableColumn<Medicine, Integer> getStockTableColumn() {
+        return stockTableColumn;
     }
 }
