@@ -92,7 +92,7 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextArea fx:id="heightAndWeightTextArea" layoutX="20.0" layoutY="108.0" prefHeight="67.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
+            <TextArea fx:id="heightAndWeightTextArea" editable="false" layoutX="20.0" layoutY="108.0" prefHeight="67.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
@@ -226,7 +226,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="snellensTextArea" layoutX="-15.0" layoutY="108.0" prefHeight="67.0" prefWidth="261.0" promptText="- no additional notes -" wrapText="true">
+            <TextArea fx:id="snellensTextArea" editable="false" layoutX="-15.0" layoutY="108.0" prefHeight="67.0" prefWidth="261.0" promptText="- no additional notes -" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
@@ -266,7 +266,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="hearingTextArea" layoutX="-14.0" layoutY="42.0" prefHeight="67.0" prefWidth="261.0" promptText="- no additional notes -" wrapText="true">
+            <TextArea fx:id="hearingTextArea" editable="false" layoutX="-14.0" layoutY="42.0" prefHeight="67.0" prefWidth="261.0" promptText="- no additional notes -" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
@@ -292,7 +292,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="headLiceTextArea" layoutX="20.0" layoutY="50.0" prefHeight="84.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
+            <TextArea fx:id="headLiceTextArea" editable="false" layoutX="20.0" layoutY="50.0" prefHeight="84.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
@@ -352,7 +352,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextArea fx:id="dentalTextArea" layoutX="-20.0" layoutY="28.0" prefHeight="172.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
+            <TextArea fx:id="dentalTextArea" editable="false" layoutX="-20.0" layoutY="28.0" prefHeight="172.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
                <font>
                   <Font size="11.0" />
                </font>
