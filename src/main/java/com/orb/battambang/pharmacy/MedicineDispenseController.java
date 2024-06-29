@@ -81,7 +81,9 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     @FXML
     private Rectangle status1Rectangle;
     @FXML
-    private Text prescriptionText;
+    private TextArea prescriptionTextArea;
+    @FXML
+    private TextArea allergiesTextArea;
 
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
 
@@ -196,7 +198,8 @@ public class MedicineDispenseController extends DatabaseConnection implements In
         ageLabel.setText("");
         sexLabel.setText("");
         phoneNumberLabel.setText("");
-        prescriptionText.setText("");
+        prescriptionTextArea.setText("");
+        allergiesTextArea.setText("");
     }
 
     @FXML
@@ -254,21 +257,29 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     }
 
     private void displayPrescription(int queueNumber) {
-        String patientQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        String prescriptionQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+        String allergiesQuery = "SELECT drugAllergies FROM historyTable WHERE queueNumber = " + queueNumber;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
 
-            ResultSet prescriptionResultSet = statement.executeQuery(patientQuery);
+            ResultSet prescriptionResultSet = statement.executeQuery(prescriptionQuery);
             if (prescriptionResultSet.next()) {
                 String prescription = prescriptionResultSet.getString("prescription");
 
-                prescriptionText.setText(formatPrescription(prescription));
+                prescriptionTextArea.setText(formatPrescription(prescription));
 
             }
-
-            // Close the statement and resultSet
             prescriptionResultSet.close();
+
+            ResultSet allergiesResultSet = statement.executeQuery(allergiesQuery);
+            if (allergiesResultSet.next()) {
+                String allergies = prescriptionResultSet.getString("drugAllergies");
+
+                allergiesTextArea.setText(allergies);
+            }
+            allergiesResultSet.close();
+
             statement.close();
         } catch (SQLException exc) {
             exc.printStackTrace();
@@ -557,7 +568,7 @@ public class MedicineDispenseController extends DatabaseConnection implements In
                     formattedString.append("\n");
                 }
 
-                formattedString.append(String.format("%s %s - %s%n%s%n", name, quantityInMilligrams, units, dosageInstructions));
+                formattedString.append(String.format("%s %s - %s units%n%s%n", name, quantityInMilligrams, units, dosageInstructions));
             }
         }
 
