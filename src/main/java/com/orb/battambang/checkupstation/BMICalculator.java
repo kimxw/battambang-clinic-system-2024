@@ -9,7 +9,6 @@ public class BMICalculator {
     }
 
     public static String determineBMICategory(double bmi, int age, String sex) {
-
         if (age >= 2 && age <= 19) {
             if (bmi < 5) {
                 return "Underweight";
