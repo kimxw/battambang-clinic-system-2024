@@ -482,7 +482,7 @@ public class MedicineDispenseController extends DatabaseConnection implements In
     }
 
     @FXML
-    public void sendButtonOnAction(ActionEvent e) {
+    public void checkoutButtonOnAction(ActionEvent e) {
         Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!inProgressListView.getItems().isEmpty()) {

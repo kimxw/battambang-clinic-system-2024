@@ -148,6 +148,20 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
     }
 
     @FXML
+    private void receptionButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+
+    @FXML
     public void heightAndWeightButtonOnAction(ActionEvent e) {
         loadFXML("height-and-weight.fxml", e);
     }

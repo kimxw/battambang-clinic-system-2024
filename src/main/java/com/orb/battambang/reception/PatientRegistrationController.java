@@ -32,6 +32,8 @@ public class PatientRegistrationController extends DatabaseConnection implements
     @FXML
     private Button switchUserButton;
     @FXML
+    private Button triageButton;
+    @FXML
     private TextField inputNameTextField;
     @FXML
     private TextField inputAgeTextField;
@@ -116,6 +118,20 @@ public class PatientRegistrationController extends DatabaseConnection implements
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
     }
+
+    @FXML
+    private void triageButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
 
     @FXML
     public void addButtonOnAction(ActionEvent e) {

@@ -61,16 +61,18 @@
                </font>
             </Label>
             <Button fx:id="switchUserButton" layoutX="1141.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
-            <Button layoutX="1021.0" layoutY="28.0" mnemonicParsing="false" onAction="#goToTriageButtonOnAction" prefHeight="25.0" prefWidth="100.0" text="Go to Traige" />
+
+            <Button fx:id="triageButton" layoutX="1008.0" layoutY="28.0" mnemonicParsing="false" onAction="#triageButtonOnAction" prefHeight="25.0" prefWidth="113.0" text="Go to Triage" />
+
          </children>
       </AnchorPane>
       <TableView fx:id="patientTableView" layoutX="35.0" layoutY="145.0" prefHeight="435.0" prefWidth="665.0">
          <columns>
-            <TableColumn fx:id="queueNoTableColumn" prefWidth="71.33332824707031" text="Queue no." />
-            <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="195.1666717529297" text="Name" />
-            <TableColumn fx:id="ageTableColumn" minWidth="5.0" prefWidth="69.83334350585938" text="Age" />
-            <TableColumn fx:id="sexTableColumn" prefWidth="55.0" text="Sex" />
-            <TableColumn fx:id="phoneNumberTableColumn" prefWidth="154.5" text="Phone number" />
+            <TableColumn fx:id="queueNoTableColumn" prefWidth="68.00000381469727" text="Queue no." />
+            <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="136.33333587646484" text="Name" />
+            <TableColumn fx:id="ageTableColumn" minWidth="5.0" prefWidth="37.66670227050781" text="Age" />
+            <TableColumn fx:id="sexTableColumn" prefWidth="35.0" text="Sex" />
+            <TableColumn fx:id="phoneNumberTableColumn" prefWidth="169.33331298828125" text="Phone number" />
             <TableColumn fx:id="addressTableColumn" prefWidth="216.8333740234375" text="Address" />
          </columns>
          <columnResizePolicy>

@@ -13,14 +13,15 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.HeadLiceController">
    <children>
-      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1244.0" style="-fx-background-color: #192841;">
+      <AnchorPane layoutX="-12.0" prefHeight="84.0" prefWidth="1247.0" style="-fx-background-color: #192841;">
          <children>
-            <Label layoutX="48.0" layoutY="27.0" prefHeight="31.0" prefWidth="316.0" text="CHECK-UP STATIONS" textFill="WHITE">
+            <Label layoutX="48.0" layoutY="27.0" prefHeight="31.0" prefWidth="316.0" text="CHECK-UP STATION" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
             </Label>
-            <Button fx:id="switchUserButton" layoutX="1141.0" layoutY="30.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
+            <Button fx:id="switchUserButton" layoutX="1141.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
+            <Button fx:id="receptionButton" layoutX="1008.0" layoutY="28.0" mnemonicParsing="false" onAction="#receptionButtonOnAction" prefHeight="25.0" prefWidth="113.0" text="Go to Reception" />
          </children>
       </AnchorPane>
       <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
