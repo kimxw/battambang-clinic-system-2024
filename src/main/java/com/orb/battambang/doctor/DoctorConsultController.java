@@ -198,7 +198,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
     }
 
     @FXML
-    public void updateButtonOnAction(ActionEvent e) {
+        public void updateButtonOnAction(ActionEvent e) {
         String consultNotes = inputConsultNotesTextArea.getText();
         String condition = conditionChoiceBox.getValue();
         boolean referralStatus = yesRadioButton.isSelected();

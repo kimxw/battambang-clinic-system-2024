@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.sql.*;
@@ -288,6 +289,11 @@ public class PatientRegistrationController extends DatabaseConnection implements
         } else {
             Labels.showMessageLabel(messageLabel1, "Please select a patient to delete.", false);
         }
+    }
+
+    @FXML
+    private void goToTriageButtonOnAction(ActionEvent e) {
+        //do nothing for now
     }
 
     void loadFXML(String fxmlFile, ActionEvent e) {
