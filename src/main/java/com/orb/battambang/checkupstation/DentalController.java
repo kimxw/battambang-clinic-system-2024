@@ -18,6 +18,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
 public class DentalController extends CheckupMenuController implements Initializable {
 
 

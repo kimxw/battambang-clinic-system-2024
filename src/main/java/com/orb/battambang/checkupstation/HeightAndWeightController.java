@@ -24,6 +24,8 @@ import java.sql.Statement;
 import java.util.Queue;
 import java.util.ResourceBundle;
 
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
 public class HeightAndWeightController extends CheckupMenuController implements Initializable {
 
     @FXML

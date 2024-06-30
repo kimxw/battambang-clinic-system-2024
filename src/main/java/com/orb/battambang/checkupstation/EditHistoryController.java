@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
 public class EditHistoryController extends CheckupMenuController implements Initializable {
 
     protected static int queueNumber = -1;

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class HistoryRecordsController extends DatabaseConnection implements Initializable {
+public class HistoryRecordsController implements Initializable {
     @FXML
     private Text systemText;
     @FXML

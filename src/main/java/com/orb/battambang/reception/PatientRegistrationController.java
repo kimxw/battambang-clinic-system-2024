@@ -22,7 +22,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-public class PatientRegistrationController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class PatientRegistrationController implements Initializable {
 
     private boolean isEditOperation = false;
     private Patient selectedPatientForEdit;
@@ -291,10 +293,6 @@ public class PatientRegistrationController extends DatabaseConnection implements
         }
     }
 
-    @FXML
-    private void goToTriageButtonOnAction(ActionEvent e) {
-        //do nothing for now
-    }
 
     void loadFXML(String fxmlFile, ActionEvent e) {
         try {

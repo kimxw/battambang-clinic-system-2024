@@ -17,7 +17,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class PatientSearchController extends DatabaseConnection implements Initializable{
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class PatientSearchController implements Initializable{
 
     @FXML
     private TextField queueSearchTextField;

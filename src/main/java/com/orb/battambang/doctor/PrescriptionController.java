@@ -31,7 +31,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.PreparedStatement;
 
-public class PrescriptionController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class PrescriptionController implements Initializable {
 
     @FXML
     private TableView<Prescription.PrescriptionEntry> prescriptionTableView;

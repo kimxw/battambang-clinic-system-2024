@@ -38,7 +38,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.orb.battambang.util.WrappedTextCellFactory;
 import com.orb.battambang.login.LoginPageController;
 
-public class DoctorConsultController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class DoctorConsultController implements Initializable {
     @FXML
     private Button switchUserButton;
     @FXML
@@ -451,7 +453,7 @@ public class DoctorConsultController extends DatabaseConnection implements Initi
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
 
         try {
-            Statement statement = DatabaseConnection.connection.createStatement();
+            Statement statement = connection.createStatement();
 
             ResultSet patientResultSet = statement.executeQuery(patientQuery);
             if (patientResultSet.next()) {

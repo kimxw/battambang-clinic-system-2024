@@ -28,7 +28,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-public class MedicineDispenseController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class MedicineDispenseController implements Initializable {
 
     @FXML
     private Label messageLabel1;
@@ -218,7 +220,7 @@ public class MedicineDispenseController extends DatabaseConnection implements In
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
 
         try {
-            Statement statement = DatabaseConnection.connection.createStatement();
+            Statement statement = connection.createStatement();
 
             // Fetch patient details
             ResultSet patientResultSet = statement.executeQuery(patientQuery);
@@ -261,7 +263,7 @@ public class MedicineDispenseController extends DatabaseConnection implements In
         String allergiesQuery = "SELECT drugAllergies FROM historyTable WHERE queueNumber = " + queueNumber;
 
         try {
-            Statement statement = DatabaseConnection.connection.createStatement();
+            Statement statement = connection.createStatement();
 
             ResultSet prescriptionResultSet = statement.executeQuery(prescriptionQuery);
             if (prescriptionResultSet.next()) {

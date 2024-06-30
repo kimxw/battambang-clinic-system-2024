@@ -17,7 +17,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class LowStockController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class LowStockController implements Initializable {
 
     @FXML
     private TextField idSearchTextField;

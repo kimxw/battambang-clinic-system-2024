@@ -26,7 +26,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class EducationController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class EducationController implements Initializable {
 
     @FXML
     private Label warningLabel;
@@ -117,7 +119,7 @@ public class EducationController extends DatabaseConnection implements Initializ
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
 
         try {
-            Statement statement = DatabaseConnection.connection.createStatement();
+            Statement statement = connection.createStatement();
 
             // Fetch patient details
             ResultSet patientResultSet = statement.executeQuery(patientQuery);

@@ -1,7 +1,6 @@
 package com.orb.battambang.login;
 import com.orb.battambang.util.Labels;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -16,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class NewUserController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class NewUserController implements Initializable {
     private String[] roles = {"Reception", "CheckUpStation", "Education", "Doctor", "Pharmacy"};
     @FXML
     private Label usermessageLabel;

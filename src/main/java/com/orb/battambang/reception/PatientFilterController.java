@@ -23,7 +23,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class PatientFilterController extends DatabaseConnection implements Initializable{
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class PatientFilterController implements Initializable{
 
     @FXML
     private Label messageLabel2;

@@ -3,7 +3,6 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.QueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
@@ -32,7 +31,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-public class CheckupMenuController extends DatabaseConnection implements Initializable {
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
+public class CheckupMenuController implements Initializable {
 
     @FXML
     private Label queueSelectLabel;
@@ -205,7 +206,7 @@ public class CheckupMenuController extends DatabaseConnection implements Initial
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
 
         try {
-            Statement statement = DatabaseConnection.connection.createStatement();
+            Statement statement = connection.createStatement();
 
             // Fetch patient details
             ResultSet patientResultSet = statement.executeQuery(patientQuery);

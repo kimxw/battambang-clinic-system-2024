@@ -109,11 +109,6 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutY="335.0" text="Drug Allergies :" textFill="#ff2222">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
             <Label layoutX="1.0" layoutY="28.0" text="Queue No. :">
                <font>
                   <Font size="13.0" />

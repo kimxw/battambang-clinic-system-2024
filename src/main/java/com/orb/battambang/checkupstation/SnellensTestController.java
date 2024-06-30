@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import static com.orb.battambang.connection.DatabaseConnection.connection;
+
 public class SnellensTestController extends CheckupMenuController implements Initializable {
 
 

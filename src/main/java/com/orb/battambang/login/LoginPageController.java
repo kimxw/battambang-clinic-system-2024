@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class LoginPageController extends DatabaseConnection{
+public class LoginPageController{
 
     double x, y;
 
