@@ -135,7 +135,7 @@ public class DoctorConsultController implements Initializable {
     private TableColumn<Prescription.PrescriptionEntry, String> dosageColumn;
     @FXML
     private ChoiceBox<String> conditionChoiceBox;
-    private String[] condition = {"Acute", "Chronic", "Acute and Chronic"};
+    private String[] condition = {"None", "Acute", "Chronic", "Acute and Chronic"};
     @FXML
     private Button updateButton;
     @FXML
