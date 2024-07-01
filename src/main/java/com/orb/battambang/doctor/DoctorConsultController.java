@@ -2,6 +2,7 @@ package com.orb.battambang.doctor;
 
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
+import com.orb.battambang.pharmacy.Medicine;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.Prescription;
 import com.orb.battambang.util.QueueManager;
@@ -135,7 +136,7 @@ public class DoctorConsultController implements Initializable {
     private TableColumn<Prescription.PrescriptionEntry, String> dosageColumn;
     @FXML
     private ChoiceBox<String> conditionChoiceBox;
-    private String[] condition = {"Acute", "Chronic", "Acute and Chronic"};
+    private String[] condition = {"None", "Acute", "Chronic", "Acute and Chronic"};
     @FXML
     private Button updateButton;
     @FXML
@@ -150,7 +151,6 @@ public class DoctorConsultController implements Initializable {
     private Label warningLabel;
     @FXML
     private Label doctorLabel;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -200,9 +200,15 @@ public class DoctorConsultController implements Initializable {
     }
 
     @FXML
-        public void updateButtonOnAction(ActionEvent e) {
+    public void updateButtonOnAction(ActionEvent e) {
+        if (queueNoLabel.getText().equals("")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+            return;
+        }
+
         String consultNotes = inputConsultNotesTextArea.getText();
         String condition = conditionChoiceBox.getValue();
+        String prescriptionString = Prescription.convertToString(prescriptionTableView.getItems());
         boolean referralStatus = yesRadioButton.isSelected();
         String doctorConsultStatus = consultCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
 
@@ -232,7 +238,8 @@ public class DoctorConsultController implements Initializable {
                 return;
             }
         } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle the exception appropriately
+            System.out.println(ex); // Handle the exception appropriately
+            System.out.println("updateButtonOnAction");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
             return;
         }
@@ -258,24 +265,26 @@ public class DoctorConsultController implements Initializable {
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, condition = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, condition = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setString(1, consultNotes);
                     doctorConsultTableStmt.setString(2, condition);
-                    doctorConsultTableStmt.setBoolean(3, referralStatus);
-                    doctorConsultTableStmt.setString(4, doctorLabel.getText()); // Update doctor column with doctorLabel text
-                    doctorConsultTableStmt.setInt(5, queueNumber);
+                    doctorConsultTableStmt.setString(3, prescriptionString);
+                    doctorConsultTableStmt.setBoolean(4, referralStatus);
+                    doctorConsultTableStmt.setString(5, doctorLabel.getText()); // Update doctor column with doctorLabel text
+                    doctorConsultTableStmt.setInt(6, queueNumber);
                     doctorConsultTableStmt.executeUpdate();
                 }
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, condition, referralStatus, doctor) VALUES (?, ?, ?, ?, ?)";
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, condition, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setInt(1, queueNumber);
                     doctorConsultTableStmt.setString(2, consultNotes);
                     doctorConsultTableStmt.setString(3, condition);
-                    doctorConsultTableStmt.setBoolean(4, referralStatus);
-                    doctorConsultTableStmt.setString(5, doctorLabel.getText()); // Set doctor column with doctorLabel text
+                    doctorConsultTableStmt.setString(4, prescriptionString);
+                    doctorConsultTableStmt.setBoolean(5, referralStatus);
+                    doctorConsultTableStmt.setString(6, doctorLabel.getText()); // Set doctor column with doctorLabel text
                     doctorConsultTableStmt.executeUpdate();
                 }
             }
@@ -291,11 +300,11 @@ public class DoctorConsultController implements Initializable {
             // Clear warning label and show success message if all operations succeed
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
         } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle the exception appropriately
+            System.out.println(ex);
+            System.out.println("updateButtonOnAction2");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
         }
     }
-
 
 
     @FXML
@@ -322,6 +331,12 @@ public class DoctorConsultController implements Initializable {
 
     @FXML
     public void editPrescriptionButtonOnAction(ActionEvent e) {
+
+        if (queueNoLabel.getText().equals("")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+            return;
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("prescription.fxml"));
             Parent root = loader.load();
@@ -338,7 +353,7 @@ public class DoctorConsultController implements Initializable {
             controller.setDoctorConsultController(this);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Labels.showMessageLabel(warningLabel, "Unexpected error occured.", false);
         }
     }
 
@@ -379,8 +394,13 @@ public class DoctorConsultController implements Initializable {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace(); // Handle SQLException properly in your application
+            System.out.println(ex); // Handle SQLException properly in your application
         }
+    }
+
+    //overloaded
+    public void displayPrescription(ObservableList<Prescription.PrescriptionEntry> updatedPrescriptionList) {
+        prescriptionTableView.setItems(updatedPrescriptionList);
     }
 
     public void displayCondition(int queueNumber) {
@@ -396,7 +416,7 @@ public class DoctorConsultController implements Initializable {
             }
         } catch (SQLException ex) {
             // Handle SQLException, optionally show a message or log the error
-            ex.printStackTrace();
+            System.out.println(ex);
         }
     }
 
@@ -421,7 +441,7 @@ public class DoctorConsultController implements Initializable {
             }
         } catch (SQLException ex) {
             // Handle SQLException, optionally show a message or log the error
-            ex.printStackTrace();
+            System.out.println(ex);
         }
     }
 
@@ -445,7 +465,7 @@ public class DoctorConsultController implements Initializable {
             }
         } catch (SQLException ex) {
             // Handle SQLException, optionally show a message or log the error
-            ex.printStackTrace();
+            System.out.println(ex);
         }
     }
 
@@ -502,7 +522,8 @@ public class DoctorConsultController implements Initializable {
             // Close the statement
             statement.close();
         } catch (SQLException exc) {
-            exc.printStackTrace();
+            System.out.println(exc);
+            System.out.println("updateParticularsPane");
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
     }
@@ -699,7 +720,7 @@ public class DoctorConsultController implements Initializable {
                 // Show the new window
                 stage.show();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
@@ -733,7 +754,7 @@ public class DoctorConsultController implements Initializable {
                 // Show the new window
                 stage.show();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
 
@@ -752,7 +773,7 @@ public class DoctorConsultController implements Initializable {
             stage.close();
             newUserStage.show();
         } catch (Exception exc) {
-            exc.printStackTrace();
+            System.out.println(exc);
             exc.getCause();
         }
     }
@@ -804,14 +825,14 @@ public class DoctorConsultController implements Initializable {
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
-            e.printStackTrace();
+            System.out.println(e);
         } finally {
             try {
                 if (connection != null) {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
@@ -863,14 +884,14 @@ public class DoctorConsultController implements Initializable {
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
-            e.printStackTrace();
+            System.out.println(e);
         } finally {
             try {
                 if (connection != null) {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
