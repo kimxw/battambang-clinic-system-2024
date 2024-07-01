@@ -155,6 +155,19 @@ public class PatientFilterController implements Initializable{
     }
 
     @FXML
+    private void triageButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
+    @FXML
     public void newPatientButtonOnAction(ActionEvent e) {
         loadFXML("patient-registration.fxml", e);
     }

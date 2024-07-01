@@ -45,7 +45,7 @@ public class PromptConnectController {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-            newUserStage.setTitle("Employee Table");
+            newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
             newUserStage.show();
         } catch (Exception e) {
