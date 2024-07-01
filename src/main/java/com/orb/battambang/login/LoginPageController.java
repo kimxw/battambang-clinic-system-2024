@@ -153,7 +153,7 @@ public class LoginPageController{
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
-            newUserStage.setTitle("Reception");
+            newUserStage.setTitle("");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
             newUserStage.show();
@@ -180,7 +180,7 @@ public class LoginPageController{
                 stage.setY(event.getScreenY());
             });
 
-            stage.setTitle("Check-up Stations");
+            stage.setTitle("");
             // newUserStage.initStyle(StageStyle.UNDECORATED);
 
             Scene scene = new Scene(root, 1230, 650);

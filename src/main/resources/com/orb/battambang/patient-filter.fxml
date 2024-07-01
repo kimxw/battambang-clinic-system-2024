@@ -47,7 +47,7 @@
                </font>
             </Label>
             <Button fx:id="switchUserButton" layoutX="1141.0" layoutY="28.0" mnemonicParsing="false" onAction="#switchUserButtonOnAction" text="Switch User" />
-            <Button layoutX="1021.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Go to Traige" />
+            <Button layoutX="1021.0" layoutY="28.0" mnemonicParsing="false" onAction="#triageButtonOnAction" prefHeight="25.0" prefWidth="100.0" text="Go to Traige" />
          </children>
       </AnchorPane>
       <TableView fx:id="patientTableView" layoutX="35.0" layoutY="145.0" prefHeight="435.0" prefWidth="665.0">

@@ -279,6 +279,8 @@ public class PrescriptionController implements Initializable {
             // If not exists, add a new entry
             Prescription.PrescriptionEntry newEntry = new Prescription.PrescriptionEntry(name, quantity, units, dosageInstructions);
             prescriptionObservableList.add(newEntry);
+            prescriptionTableView.setItems(prescriptionObservableList);
+            prescriptionTableView.refresh();
         }
 
         // clear input fields after adding/updating
@@ -322,13 +324,8 @@ public class PrescriptionController implements Initializable {
 
     @FXML
     private void exitButtonOnAction(ActionEvent event) {
-        // 1. Convert prescriptionObservableList to a string
-        String prescriptionString = Prescription.convertToString(prescriptionObservableList);
 
-        // Update doctorConsultTable's prescription column for the current queueNumber
-        updatePrescriptionInDatabase(queueNumber, prescriptionString);
-
-        doctorConsultController.displayPrescription(queueNumber);
+        doctorConsultController.displayPrescription(prescriptionObservableList);
 
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
