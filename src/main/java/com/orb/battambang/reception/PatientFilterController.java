@@ -164,6 +164,7 @@ public class PatientFilterController implements Initializable{
             stage.setScene(scene);
         } catch (Exception exc) {
             exc.printStackTrace();
+
         }
     }
 
