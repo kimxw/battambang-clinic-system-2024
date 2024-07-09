@@ -7,16 +7,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class PromptConnectController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class PromptConnectController implements Initializable {
     @FXML
-    private TextField pathTextField;
+    private ChoiceBox<String> locationChoiceBox;
+    private final String[] choiceBoxOptions = new String[] {"MOPK", "TNK5", "Kbal Koh"};
 
     @FXML
     private Button connectButton;
@@ -24,15 +30,19 @@ public class PromptConnectController {
     @FXML
     private Label warningLabel;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        locationChoiceBox.getItems().addAll(choiceBoxOptions);
+    }
     @FXML
     private void onConnectButton() {
 
-        boolean success = DatabaseConnection.establishConnection(pathTextField.getText()); //check if valid connection established
+        boolean success = DatabaseConnection.establishConnection(locationChoiceBox.getValue()); //check if valid connection established
 
         if (!success) {
-            Labels.showMessageLabel(warningLabel, "Invalid path to database. Please try again.", false);
+            Labels.showMessageLabel(warningLabel, "Please select a location.", false);
         } else {
-            Labels.showMessageLabel(warningLabel, "Connection successful. Loading...", true);
+            Labels.showMessageLabel(warningLabel, "Connecting to database . . .", "green", 3);
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {openLoginPage(); close();}));
             timeline.setCycleCount(1);
             timeline.play();

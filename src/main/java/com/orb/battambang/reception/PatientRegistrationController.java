@@ -4,6 +4,7 @@ import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.TableViewUpdater;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,7 +16,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.controlsfx.control.action.Action;
 
 import java.net.URL;
@@ -32,7 +35,7 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private Label messageLabel1;
     @FXML
-    private Button switchUserButton;
+    private Button logoutButton;
     @FXML
     private Button triageButton;
     @FXML
@@ -61,10 +64,25 @@ public class PatientRegistrationController implements Initializable {
     private ChoiceBox<Character> inputSexChoiceBox;
     private final Character[] choiceBoxOptions = new Character[] {'M', 'F'};
 
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setUpMenu();
+
         inputSexChoiceBox.getItems().addAll(choiceBoxOptions);
 
         // Set cell value factories
@@ -105,7 +123,7 @@ public class PatientRegistrationController implements Initializable {
     }
 
     @FXML
-    public void switchUserButtonOnAction(ActionEvent e) {
+    public void logoutButtonOnAction(ActionEvent e) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();
@@ -113,27 +131,13 @@ public class PatientRegistrationController implements Initializable {
 
             newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
-            Stage stage = (Stage) switchUserButton.getScene().getWindow();
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
             stage.close();
             newUserStage.show();
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
     }
-
-    @FXML
-    private void triageButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-    }
-
 
     @FXML
     public void addButtonOnAction(ActionEvent e) {
@@ -305,5 +309,72 @@ public class PatientRegistrationController implements Initializable {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
     }
+
+
+    private void setUpMenu() {
+        sliderAnchorPane.setTranslateX(-200);
+        menuLabel.setVisible(true);
+        menuBackLabel.setVisible(false);
+
+        menuLabel.setOnMouseClicked(event -> {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(sliderAnchorPane);
+
+            slide.setToX(0);
+            slide.play();
+
+            sliderAnchorPane.setTranslateX(-200);
+
+            slide.setOnFinished((ActionEvent e) -> {
+                menuLabel.setVisible(false);
+                menuBackLabel.setVisible(true);
+
+            });
+        });
+
+        menuBackLabel.setOnMouseClicked(event -> {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.4));
+            slide.setNode(sliderAnchorPane);
+
+            slide.setToX(-200);
+            slide.play();
+
+            sliderAnchorPane.setTranslateX(0);
+
+            slide.setOnFinished((ActionEvent e) -> {
+                menuLabel.setVisible(true);
+                menuBackLabel.setVisible(false);
+
+            });
+        });
+
+    }
+
+    //menu items
+    @FXML
+    public void menuHomeButtonOnAction(ActionEvent e) {
+
+    }
+
+    @FXML
+    public void menuReceptionButtonOnAction(ActionEvent e) {
+
+    }
+
+    @FXML
+    private void menuTriageButtonOnAction(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+    }
+
 
 }

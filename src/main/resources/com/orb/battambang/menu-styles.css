@@ -1,23 +1,10 @@
-/* styles.css */
-
-.list-view {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
+.menuItem {
+    -fx-background-color: #192841;
 }
 
-.list-cell {
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-    -fx-font-size: 15px;
-}
-
-.list-cell:selected {
-    -fx-background-color: transparent;
-    -fx-text-fill: red;
-    -fx-font-weight: bold;
-}
-
-.list-cell:focused {
-    -fx-background-color: transparent;
+.menuItem:hover{
+    -fx-background-color: #0a162b;
+    -fx-border-color-: WHITE;
+    -fx-border-width: 0px 0px 3px 0px;
 }
 

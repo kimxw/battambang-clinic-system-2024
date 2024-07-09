@@ -161,14 +161,14 @@
       </Pane>
       <Pane fx:id="queuePane" layoutX="1019.0" layoutY="75.0" prefHeight="500.0" prefWidth="197.0">
          <children>
-            <ListView fx:id="inProgressListView" layoutX="24.0" layoutY="56.0" prefHeight="412.0" prefWidth="45.0" stylesheets="@styles.css" />
+            <ListView fx:id="inProgressListView" layoutX="24.0" layoutY="56.0" prefHeight="412.0" prefWidth="45.0" stylesheets="@list-styles.css" />
             <Label alignment="CENTER" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
             <Label alignment="CENTER" layoutX="-6.0" layoutY="4.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Doctor)">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="86.0" layoutY="56.0" prefHeight="412.0" prefWidth="41.0" stylesheets="@styles.css" />
+            <ListView fx:id="waitingListView" layoutX="86.0" layoutY="56.0" prefHeight="412.0" prefWidth="41.0" stylesheets="@list-styles.css" />
             <Label alignment="CENTER" layoutX="60.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
             <Button layoutX="132.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
                <font>

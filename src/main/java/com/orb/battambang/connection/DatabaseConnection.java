@@ -6,12 +6,17 @@ public class DatabaseConnection {
     protected static String filePath;
     public static Connection connection = null;
 
-    public static boolean establishConnection(String inputPath) {
+    public static boolean establishConnection(String location) {
+        if (location == null || location.isEmpty()) {
+            return false;
+        }
+        location = location.equals("Kbal Koh") ? "KbalKoh" : location;
+        System.out.println(location);
         boolean success = false;
-        DatabaseConnection.filePath = inputPath;
+        DatabaseConnection.filePath = "./src/main/resources/databases/" + location + "-clinicdb.db";
         try {
             Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:/" + filePath;
+            String url = "jdbc:sqlite:" + filePath;
             connection = DriverManager.getConnection(url);
 
             //executing a simple query to see if connection is legitimate
