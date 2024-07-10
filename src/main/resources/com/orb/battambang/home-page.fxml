@@ -1,142 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.VBox?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.education.EducationController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" style="-fx-background-color: #ebebeb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.home.HomePageController">
    <children>
-
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="429.0" layoutX="34.0" layoutY="118.0" stroke="#ebebeb00" strokeType="INSIDE" width="340.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="375.0" layoutX="48.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
-      <Label layoutX="53.0" layoutY="131.0" text="Select Patient :">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <TextField fx:id="queueNumberTextField" layoutX="146.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
-      <Button fx:id="searchButton" layoutX="299.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane fx:id="particularsPane" layoutX="80.0" layoutY="182.0" prefHeight="245.0" prefWidth="255.0">
+      <Pane layoutX="52.0" layoutY="110.0" prefHeight="459.0" prefWidth="1104.0">
          <children>
-            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="161.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status1Label" alignment="CENTER" layoutX="165.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="nameLabel" layoutX="87.0" layoutY="59.0" prefHeight="19.0" prefWidth="134.0">
+            <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="426.0" layoutX="55.0" layoutY="10.0" stroke="TRANSPARENT" strokeType="INSIDE" width="654.0" />
+            <Label layoutX="86.0" layoutY="38.0" text="Welcome, Sreelakshmi">
                <font>
-                  <Font size="13.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
             </Label>
-            <Label fx:id="ageLabel" layoutX="85.0" layoutY="86.0" prefHeight="19.0" prefWidth="41.0">
+            <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="358.0" layoutX="757.0" layoutY="10.0" stroke="TRANSPARENT" strokeType="INSIDE" width="326.0" />
+            <Pane layoutX="82.0" layoutY="96.0" prefHeight="246.0" prefWidth="301.0">
+               <children>
+                  <Label layoutX="9.0" layoutY="37.0" text="Name:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="68.0" text="Staff ID:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="145.0" layoutY="37.0" prefHeight="20.0" prefWidth="203.0" text="Sreelakshmi Haridos">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="145.0" layoutY="68.0" prefHeight="20.0" prefWidth="203.0" text="12">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="98.0" text="Primary Role:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="145.0" layoutY="98.0" prefHeight="20.0" prefWidth="203.0" text="Receptionist">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="132.0" text="Current Location:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="145.0" layoutY="133.0" prefHeight="20.0" prefWidth="203.0" text="MPOK">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="-9.0" text="Details" textFill="#797979">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="423.0" layoutY="73.0" prefHeight="311.0" prefWidth="307.0">
+               <children>
+                  <Label layoutX="10.0" layoutY="14.0" text="Permissions" textFill="#797979">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="59.0" prefHeight="20.0" prefWidth="99.0" text="Admin" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#e3abff9e" height="20.0" layoutX="11.0" layoutY="59.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="59.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#9832ce">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="92.0" prefHeight="20.0" prefWidth="99.0" text="Reception" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="125.0" prefHeight="20.0" prefWidth="99.0" text="Triage" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="92.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="92.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="126.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="126.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="159.0" prefHeight="20.0" prefWidth="99.0" text="Education" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="192.0" prefHeight="20.0" prefWidth="99.0" text="Consultation" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="159.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="159.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="193.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="193.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="103.0" layoutY="225.0" prefHeight="20.0" prefWidth="99.0" text="Pharmacy" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ff777374" height="20.0" layoutX="11.0" layoutY="226.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="226.0" prefHeight="20.0" prefWidth="43.0" text="No" textFill="#bf1b15">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label layoutX="789.0" layoutY="38.0" text="About">
                <font>
-                  <Font size="13.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
             </Label>
-            <Label fx:id="sexLabel" layoutX="87.0" layoutY="119.0" prefHeight="19.0" prefWidth="26.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="phoneNumberLabel" layoutX="87.0" layoutY="149.0" prefHeight="19.0" prefWidth="134.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="queueNoLabel" layoutX="85.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
+            <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="176.0" layoutX="757.0" layoutY="260.0" stroke="TRANSPARENT" strokeType="INSIDE" width="327.0" />
+            <Pane layoutX="781.0" layoutY="96.0" prefHeight="246.0" prefWidth="301.0">
+               <children>
+                  <Label layoutX="9.0" layoutY="37.0" text="Version:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="68.0" text="Released:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="120.0" layoutY="37.0" prefHeight="20.0" prefWidth="203.0" text="CLM-v1.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="120.0" layoutY="68.0" prefHeight="20.0" prefWidth="203.0" text="20 July 2024">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="106.0" text="Instructions:" textFill="#686868">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="7.0" layoutY="-9.0" text="Clinic Management System" textFill="#797979">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="CENTER" layoutX="121.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="User Guide" />
+               </children>
+            </Pane>
          </children>
       </Pane>
-      <Label fx:id="queueSelectLabel" layoutX="146.0" layoutY="101.0" prefHeight="17.0" prefWidth="140.0" />
-      <Pane fx:id="fixedPane" layoutX="79.0" layoutY="183.0" prefHeight="240.0" prefWidth="120.0">
-         <children>
-            <Label layoutX="1.0" layoutY="56.0" text="Name :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="1.0" layoutY="85.0" text="Age :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="1.0" layoutY="118.0" text="Sex :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="1.0" layoutY="148.0" text="Phone No. :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutY="184.0" text="Station Status">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="1.0" layoutY="213.0" text="Education">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutY="1.0" text="Particulars">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="1.0" layoutY="28.0" text="Queue No. :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Pane fx:id="queuePane" layoutX="932.0" layoutY="121.0" prefHeight="500.0" prefWidth="247.0">
-         <children>
-            <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
-            <Label alignment="CENTER" layoutX="-14.0" layoutY="4.0" prefHeight="17.0" prefWidth="185.0" text="Queue Manager (Education)">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <ListView fx:id="waitingListView" layoutX="111.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="85.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
-            <Button layoutX="169.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
-               <font>
-                  <Font size="11.0" />
-               </font></Button>
-            <Button layoutX="169.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
-               <font>
-                  <Font size="11.0" />
-               </font></Button>
-         </children>
-      </Pane>
-      <CheckBox fx:id="educationCompleteCheckBox" layoutX="80.0" layoutY="428.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="39.0">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </CheckBox>
-      <Text layoutX="100.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This patient has successfully completed  the education station." wrappingWidth="235.0732421875">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Text>
-      <Button layoutX="271.0" layoutY="489.0" mnemonicParsing="false" onAction="#updateButtonOnAction" text="Update" />
-      <Label fx:id="warningLabel" layoutX="86.0" layoutY="493.0" prefHeight="17.0" prefWidth="176.0" />
-      <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+      <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css" translateX="-200.0">
          <children>
             <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
                <children>

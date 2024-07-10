@@ -3,10 +3,7 @@ package com.orb.battambang.doctor;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.pharmacy.Medicine;
-import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.Prescription;
-import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,7 +34,6 @@ import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.orb.battambang.util.WrappedTextCellFactory;
 import com.orb.battambang.login.LoginPageController;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
@@ -149,10 +146,45 @@ public class DoctorConsultController implements Initializable {
     private CheckBox consultCompleteCheckBox;
     @FXML
     private Label warningLabel;
+
     @FXML
-    private Label doctorLabel;
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //initialising MenuGallery
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
 
         clearParticularsFields();
         clearBMIFields();
@@ -161,9 +193,6 @@ public class DoctorConsultController implements Initializable {
         clearSnellensFields();
         clearDentalFields();
         clearConsultFields();
-
-        // Set the logged-in user info in the doctorLabel
-        doctorLabel.setText(LoginPageController.loggedInUserInfo);
 
         QueueManager waitingQueueManager = new QueueManager(waitingListView, "doctorWaitingTable");
         QueueManager progressQueueManager = new QueueManager(inProgressListView, "doctorProgressTable");
@@ -271,7 +300,7 @@ public class DoctorConsultController implements Initializable {
                     doctorConsultTableStmt.setString(2, condition);
                     doctorConsultTableStmt.setString(3, prescriptionString);
                     doctorConsultTableStmt.setBoolean(4, referralStatus);
-                    doctorConsultTableStmt.setString(5, doctorLabel.getText()); // Update doctor column with doctorLabel text
+                    doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Update doctor column with doctorLabel text
                     doctorConsultTableStmt.setInt(6, queueNumber);
                     doctorConsultTableStmt.executeUpdate();
                 }
@@ -284,7 +313,7 @@ public class DoctorConsultController implements Initializable {
                     doctorConsultTableStmt.setString(3, condition);
                     doctorConsultTableStmt.setString(4, prescriptionString);
                     doctorConsultTableStmt.setBoolean(5, referralStatus);
-                    doctorConsultTableStmt.setString(6, doctorLabel.getText()); // Set doctor column with doctorLabel text
+                    doctorConsultTableStmt.setString(6, menuUserButton.getText()); // Set doctor column with doctorLabel text
                     doctorConsultTableStmt.executeUpdate();
                 }
             }
