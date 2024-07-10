@@ -1,7 +1,6 @@
 package com.orb.battambang.util;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.util.Labels;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class SideMenu {
+public class MenuGallery {
     private final AnchorPane sliderAnchorPane;
     private final Label menuLabel;
     private final Label menuBackLabel;
@@ -28,8 +27,10 @@ public class SideMenu {
     private final Button queueManagerButton;
     private final Button adminButton;
     private final Button logoutButton;
+    private final Button userButton;
+    private final Button locationButton;
 
-    public SideMenu(
+    public MenuGallery(
             AnchorPane sliderAnchorPane,
             Label menuLabel,
             Label menuBackLabel,
@@ -41,7 +42,9 @@ public class SideMenu {
             Button pharmacyButton,
             Button queueManagerButton,
             Button adminButton,
-            Button logoutButton) {
+            Button logoutButton,
+            Button userButton,
+            Button locationButton) {
 
         this.sliderAnchorPane = sliderAnchorPane;
         this.menuLabel = menuLabel;
@@ -55,6 +58,8 @@ public class SideMenu {
         this.queueManagerButton = queueManagerButton;
         this.adminButton = adminButton;
         this.logoutButton = logoutButton;
+        this.userButton = userButton;
+        this.locationButton = locationButton;
 
         setUpMenu();
 
@@ -119,7 +124,15 @@ public class SideMenu {
 
     @FXML
     public void receptionButtonOnAction(ActionEvent e) {
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
     }
 
     @FXML

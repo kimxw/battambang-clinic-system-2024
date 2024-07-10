@@ -1,10 +1,9 @@
 package com.orb.battambang.reception;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.TableViewUpdater;
-import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,8 +17,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.sql.*;
@@ -34,10 +31,6 @@ public class PatientRegistrationController implements Initializable {
 
     @FXML
     private Label messageLabel1;
-    @FXML
-    private Button logoutButton;
-    @FXML
-    private Button triageButton;
     @FXML
     private TextField inputNameTextField;
     @FXML
@@ -76,12 +69,31 @@ public class PatientRegistrationController implements Initializable {
     private Button menuReceptionButton;
     @FXML
     private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
 
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setUpMenu();
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
 
         inputSexChoiceBox.getItems().addAll(choiceBoxOptions);
 
@@ -120,23 +132,6 @@ public class PatientRegistrationController implements Initializable {
 
         // Start polling to update the TableView
         new TableViewUpdater(patientObservableList, patientTableView);
-    }
-
-    @FXML
-    public void logoutButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-
-            newUserStage.setTitle("Login");
-            newUserStage.setScene(scene);
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.close();
-            newUserStage.show();
-        } catch (Exception exc) {
-            Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
-        }
     }
 
     @FXML
@@ -307,72 +302,7 @@ public class PatientRegistrationController implements Initializable {
             stage.setScene(scene);
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
-        }
-    }
-
-
-    private void setUpMenu() {
-        sliderAnchorPane.setTranslateX(-200);
-        menuLabel.setVisible(true);
-        menuBackLabel.setVisible(false);
-
-        menuLabel.setOnMouseClicked(event -> {
-            TranslateTransition slide = new TranslateTransition();
-            slide.setDuration(Duration.seconds(0.4));
-            slide.setNode(sliderAnchorPane);
-
-            slide.setToX(0);
-            slide.play();
-
-            sliderAnchorPane.setTranslateX(-200);
-
-            slide.setOnFinished((ActionEvent e) -> {
-                menuLabel.setVisible(false);
-                menuBackLabel.setVisible(true);
-
-            });
-        });
-
-        menuBackLabel.setOnMouseClicked(event -> {
-            TranslateTransition slide = new TranslateTransition();
-            slide.setDuration(Duration.seconds(0.4));
-            slide.setNode(sliderAnchorPane);
-
-            slide.setToX(-200);
-            slide.play();
-
-            sliderAnchorPane.setTranslateX(0);
-
-            slide.setOnFinished((ActionEvent e) -> {
-                menuLabel.setVisible(true);
-                menuBackLabel.setVisible(false);
-
-            });
-        });
-
-    }
-
-    //menu items
-    @FXML
-    public void menuHomeButtonOnAction(ActionEvent e) {
-
-    }
-
-    @FXML
-    public void menuReceptionButtonOnAction(ActionEvent e) {
-
-    }
-
-    @FXML
-    private void menuTriageButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
+            System.out.println(exc);
         }
     }
 

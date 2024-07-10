@@ -1,10 +1,19 @@
-.menuItem {
+.topMenuItem {
     -fx-background-color: #192841;
 }
 
-.menuItem:hover{
-    -fx-background-color: #0a162b;
-    -fx-border-color-: WHITE;
+.topMenuItem:hover{
+    -fx-border-color: white;
     -fx-border-width: 0px 0px 3px 0px;
+}
+
+.sliderMenuItem {
+    -fx-background-color: #192841;
+}
+
+.sliderMenuItem:hover{
+    -fx-background-color: #384861;
+    -fx-border-color: white;
+    -fx-border-width: 0px 0px 0px 3px;
 }
 
