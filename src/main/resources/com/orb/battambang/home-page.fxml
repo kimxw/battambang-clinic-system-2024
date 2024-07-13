@@ -16,7 +16,7 @@
       <Pane layoutX="52.0" layoutY="110.0" prefHeight="459.0" prefWidth="1104.0">
          <children>
             <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="426.0" layoutX="55.0" layoutY="10.0" stroke="TRANSPARENT" strokeType="INSIDE" width="654.0" />
-            <Label layoutX="86.0" layoutY="38.0" text="Welcome, Sreelakshmi">
+            <Label fx:id="welcomeLabel" layoutX="86.0" layoutY="38.0" text="Welcome, Sreelakshmi">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -34,12 +34,12 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="145.0" layoutY="37.0" prefHeight="20.0" prefWidth="203.0" text="Sreelakshmi Haridos">
+                  <Label fx:id="nameLabel" layoutX="145.0" layoutY="37.0" prefHeight="20.0" prefWidth="203.0" text="Sreelakshmi Haridos">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="145.0" layoutY="68.0" prefHeight="20.0" prefWidth="203.0" text="12">
+                  <Label fx:id="staffIDLabel" layoutX="145.0" layoutY="68.0" prefHeight="20.0" prefWidth="203.0" text="12">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -49,7 +49,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="145.0" layoutY="98.0" prefHeight="20.0" prefWidth="203.0" text="Receptionist">
+                  <Label fx:id="primaryRoleLabel" layoutX="145.0" layoutY="98.0" prefHeight="20.0" prefWidth="203.0" text="Receptionist">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -59,7 +59,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label layoutX="145.0" layoutY="133.0" prefHeight="20.0" prefWidth="203.0" text="MPOK">
+                  <Label fx:id="locationLabel" layoutX="145.0" layoutY="133.0" prefHeight="20.0" prefWidth="203.0" text="MPOK">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -83,8 +83,8 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#e3abff9e" height="20.0" layoutX="11.0" layoutY="59.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="59.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#9832ce">
+                  <Rectangle fx:id="adminPermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#e3abff9e" height="20.0" layoutX="11.0" layoutY="59.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="adminPermLabel" alignment="CENTER" layoutX="22.0" layoutY="59.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#9832ce">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -99,14 +99,14 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="92.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="92.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                  <Rectangle fx:id="receptionPermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="92.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="receptionPermLabel" alignment="CENTER" layoutX="22.0" layoutY="92.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="126.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="126.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                  <Rectangle fx:id="triagePermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="126.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="triagePermLabel" alignment="CENTER" layoutX="22.0" layoutY="126.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -121,14 +121,14 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="159.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="159.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                  <Rectangle fx:id="educationPermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="159.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="educationPermLabel" alignment="CENTER" layoutX="22.0" layoutY="159.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="193.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="193.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
+                  <Rectangle fx:id="consultationPermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#a7cf5d9e" height="20.0" layoutX="11.0" layoutY="193.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="consultationPermLabel" alignment="CENTER" layoutX="22.0" layoutY="193.0" prefHeight="20.0" prefWidth="43.0" text="Yes" textFill="#5f8b07">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -138,8 +138,8 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ff777374" height="20.0" layoutX="11.0" layoutY="226.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="226.0" prefHeight="20.0" prefWidth="43.0" text="No" textFill="#bf1b15">
+                  <Rectangle fx:id="pharmacyPermRectangle" arcHeight="20.0" arcWidth="20.0" fill="#ff777373" height="20.0" layoutX="11.0" layoutY="226.0" stroke="TRANSPARENT" strokeType="INSIDE" width="65.0" />
+                  <Label fx:id="pharmacyPermLabel" alignment="CENTER" layoutX="22.0" layoutY="226.0" prefHeight="20.0" prefWidth="43.0" text="No" textFill="#bf1b15">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -148,11 +148,11 @@
             </Pane>
             <Label layoutX="789.0" layoutY="38.0" text="About">
                <font>
-                  <Font name="System Bold" size="22.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <Rectangle arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="176.0" layoutX="757.0" layoutY="260.0" stroke="TRANSPARENT" strokeType="INSIDE" width="327.0" />
-            <Pane layoutX="781.0" layoutY="96.0" prefHeight="246.0" prefWidth="301.0">
+            <Pane layoutX="781.0" layoutY="81.0" prefHeight="246.0" prefWidth="301.0">
                <children>
                   <Label layoutX="9.0" layoutY="37.0" text="Version:" textFill="#686868">
                      <font>
@@ -327,9 +327,9 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="203.0" styleClass="topMenuItem" text="Sreelakshmi Haridos " textFill="WHITE" translateX="760.0">
+                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
                            <image>
                               <Image url="@../../../icons/user.png" />
                            </image>
@@ -339,7 +339,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="120.0" styleClass="topMenuItem" text="Location" textFill="WHITE" translateX="430.0">
+                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
                      <graphic>
                         <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
                            <image>

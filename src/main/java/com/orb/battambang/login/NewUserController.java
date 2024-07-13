@@ -1,4 +1,5 @@
 package com.orb.battambang.login;
+import com.orb.battambang.connection.AuthDatabaseConnection;
 import com.orb.battambang.util.Labels;
 
 import javafx.animation.KeyFrame;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class NewUserController implements Initializable {
-    private String[] roles = {"Reception", "CheckUpStation", "Education", "Doctor", "Pharmacy"};
+    private String[] roles = {"Admin", "Reception", "Triage", "Education", "Consultation", "Pharmacy"};
     @FXML
     private Label usermessageLabel;
     @FXML
@@ -60,29 +61,41 @@ public class NewUserController implements Initializable {
         String lastname = lastNameTextField.getText();
         String username = usernameTextField.getText();
         String password = passwordPasswordField.getText();
-        String role = roleChoiceBox.getValue();
-
-        String insertFields = "INSERT INTO staffTable(firstName, lastName, username, password, role) VALUES ('";
-        String insertValues = firstname + "', '" + lastname + "', '" + username + "', '" + password + "', '" + role + "')";
-        String insertToCreate = insertFields + insertValues;
+        String primaryRole = roleChoiceBox.getValue();
 
         String checkUserQuery = "SELECT COUNT(*) FROM staffTable WHERE username = '" + username + "'";
 
+        String insertFields = "INSERT INTO staffTable(firstName, lastName, username, password, primaryRole, admin, reception, triage, education, consultation, pharmacy) VALUES ('";
+        String insertValues = firstname + "', '" + lastname + "', '" + username + "', '" + password + "', '" + primaryRole + "', 0, 0, 0, 0, 0, 0)";
+        String insertToCreate = insertFields + insertValues;
+
+        //give receptionist access to triage for height and weight
+        String givePerms = "UPDATE staffTable SET " + primaryRole.toLowerCase() + " = 1 WHERE username = '" + username + "'";
+        if (primaryRole.equalsIgnoreCase("reception")) {
+            givePerms = "UPDATE staffTable SET reception = 1, triage = 1 WHERE username = '" + username + "'";
+        }
+
+        if (primaryRole.equalsIgnoreCase("admin")) {
+            givePerms = "UPDATE staffTable SET admin = 1, reception = 1, triage = 1, education = 1, consult = 1, pharmacy = 1 WHERE username = '" + username + "'";
+        }
+
         try {
-            Statement statement  = connection.createStatement();
+            Statement statement  = AuthDatabaseConnection.connection.createStatement();
             ResultSet resultSet = statement.executeQuery(checkUserQuery);
 
             if (resultSet.next() && resultSet.getInt(1) > 0) {
-                Labels.showMessageLabel(usermessageLabel, "Username is already taken.", false);
+                Labels.showMessageLabel(usermessageLabel, "Username is already taken", false);
                 return;
             }
 
             statement.executeUpdate(insertToCreate);
+            statement.executeUpdate(givePerms);
+
             Labels.showMessageLabel(usermessageLabel, "User created successfully!", true);
             statement.close();
         } catch (Exception e) {
-            Labels.showMessageLabel(usermessageLabel, "Invalid fields.", false);
-            e.printStackTrace();
+            Labels.showMessageLabel(usermessageLabel, "Please check all fields", false);
+            System.out.println(e);
         }
 
     }

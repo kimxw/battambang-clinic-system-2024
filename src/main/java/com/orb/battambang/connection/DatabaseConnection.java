@@ -11,7 +11,6 @@ public class DatabaseConnection {
             return false;
         }
         location = location.equals("Kbal Koh") ? "KbalKoh" : location;
-        System.out.println(location);
         boolean success = false;
         DatabaseConnection.filePath = "./src/main/resources/databases/" + location + "-clinicdb.db";
         try {

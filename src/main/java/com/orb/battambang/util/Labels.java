@@ -9,7 +9,7 @@ public class Labels {
 
     public static void showMessageLabel(Label messageLabel, String message, boolean success) {
         if (success) {
-            messageLabel.setStyle("-fx-text-fill: green;");
+            messageLabel.setStyle("-fx-text-fill: #5f8b07;");
         } else {
             messageLabel.setStyle("-fx-text-fill: red;");
         }

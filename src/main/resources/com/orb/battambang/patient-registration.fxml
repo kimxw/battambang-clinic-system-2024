@@ -215,9 +215,9 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="203.0" styleClass="topMenuItem" text="Sreelakshmi Haridos " textFill="WHITE" translateX="760.0">
+                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
                            <image>
                               <Image url="@../../../icons/user.png" />
                            </image>
@@ -227,7 +227,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="120.0" styleClass="topMenuItem" text="Location" textFill="WHITE" translateX="430.0">
+                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
                      <graphic>
                         <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
                            <image>

@@ -185,6 +185,21 @@
                </font></Button>
          </children>
       </Pane>
+      <Pane fx:id="noPermissionPane" prefHeight="655.0" prefWidth="1234.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffb2" height="650.0" layoutX="-2.0" stroke="#ffffff00" strokeType="INSIDE" width="1230.0" />
+            <Label layoutX="475.0" layoutY="292.0" prefHeight="77.0" prefWidth="435.0" text="You do not have permission to edit this page" textFill="#bf1b15">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="421.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" translateX="7.0">
+               <image>
+                  <Image url="@../../../icons/warning.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
          <children>
             <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">

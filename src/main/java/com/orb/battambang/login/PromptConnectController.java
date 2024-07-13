@@ -20,34 +20,36 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PromptConnectController implements Initializable {
-    @FXML
-    private ChoiceBox<String> locationChoiceBox;
-    private final String[] choiceBoxOptions = new String[] {"MOPK", "TNK5", "Kbal Koh"};
+//    @FXML
+//    private ChoiceBox<String> locationChoiceBox;
+//    private final String[] choiceBoxOptions = new String[] {"MOPK", "TNK5", "Kbal Koh"};
 
     @FXML
-    private Button connectButton;
+    private Button goButton;
 
-    @FXML
-    private Label warningLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        locationChoiceBox.getItems().addAll(choiceBoxOptions);
+        //locationChoiceBox.getItems().addAll(choiceBoxOptions);
     }
+//    private void onConnectButton() {
+//
+//        boolean success = DatabaseConnection.establishConnection(locationChoiceBox.getValue()); //check if valid connection established
+//
+//        if (!success) {
+//            Labels.showMessageLabel(warningLabel, "Please select a location.", false);
+//        } else {
+//            Labels.showMessageLabel(warningLabel, "Connecting to database . . .", "green", 3);
+//            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {openLoginPage(); close();}));
+//            timeline.setCycleCount(1);
+//            timeline.play();
+//        }
+//
+//    }
+
     @FXML
-    private void onConnectButton() {
-
-        boolean success = DatabaseConnection.establishConnection(locationChoiceBox.getValue()); //check if valid connection established
-
-        if (!success) {
-            Labels.showMessageLabel(warningLabel, "Please select a location.", false);
-        } else {
-            Labels.showMessageLabel(warningLabel, "Connecting to database . . .", "green", 3);
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {openLoginPage(); close();}));
-            timeline.setCycleCount(1);
-            timeline.play();
-        }
-
+    private void goButtonOnAction() {
+        openLoginPage();
     }
 
     private void openLoginPage() {
@@ -58,6 +60,7 @@ public class PromptConnectController implements Initializable {
             newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
             newUserStage.show();
+            close();
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
@@ -65,10 +68,7 @@ public class PromptConnectController implements Initializable {
     }
 
     private void close() {
-        // Get the stage associated with any node in the scene
-        Stage stage = (Stage) connectButton.getScene().getWindow();
-
-        // Close the stage
+        Stage stage = (Stage) goButton.getScene().getWindow();
         stage.close();
     }
 }

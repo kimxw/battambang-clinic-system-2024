@@ -1,6 +1,9 @@
 package com.orb.battambang.util;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.login.NewLoginPageController;
+
+import com.orb.battambang.login.Staff;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,10 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MenuGallery {
+
     private final AnchorPane sliderAnchorPane;
     private final Label menuLabel;
     private final Label menuBackLabel;
@@ -29,6 +34,8 @@ public class MenuGallery {
     private final Button logoutButton;
     private final Button userButton;
     private final Button locationButton;
+
+    private Staff staff;
 
     public MenuGallery(
             AnchorPane sliderAnchorPane,
@@ -60,12 +67,14 @@ public class MenuGallery {
         this.logoutButton = logoutButton;
         this.userButton = userButton;
         this.locationButton = locationButton;
+        this.staff = NewLoginPageController.getStaffDetails();
 
         setUpMenu();
 
     }
 
     private void setUpMenu() {
+
         sliderAnchorPane.setTranslateX(-200);
         menuLabel.setVisible(true);
         menuBackLabel.setVisible(false);
@@ -114,53 +123,167 @@ public class MenuGallery {
         adminButton.setOnAction(this :: adminButtonOnAction);
         logoutButton.setOnAction(this :: logoutButtonOnAction);
 
+        locationButton.setText(NewLoginPageController.getStaffDetails().getLocation());
+        userButton.setText(NewLoginPageController.getStaffDetails().getFirstName() +
+                " " + NewLoginPageController.getStaffDetails().getLastName() +
+                " | Staff ID: " + NewLoginPageController.getStaffDetails().getStaffID());
+
     }
 
-    //menu items
+
     @FXML
     public void homeButtonOnAction(ActionEvent e) {
-
-    }
-
-    @FXML
-    public void receptionButtonOnAction(ActionEvent e) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("home-page.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setTitle("Home");
             stage.setScene(scene);
         } catch (Exception exc) {
-            exc.printStackTrace();
+            System.out.println(exc);
         }
     }
 
     @FXML
+    public void receptionButtonOnAction(ActionEvent e) {
+        boolean isReception = staff.isReception();
+        if (isReception) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Reception");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-patient-registration.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Reception");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
+
+    }
+
+    @FXML
     private void triageButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
+        boolean isTriage = staff.isTriage();
+        if (isTriage) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Triage");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-checkup-menu.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Triage");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
         }
     }
 
     @FXML
     public void educationButtonOnAction(ActionEvent e) {
-
+        boolean isEducation = staff.isEducation();
+        if (isEducation) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("education-station.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Education");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-education-station.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Education");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
     }
 
     @FXML
     public void consultButtonOnAction(ActionEvent e) {
-
+        boolean isConsultation = staff.isConsultation();
+        if (isConsultation) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("doctor-consult.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Consultation");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-doctor-consult.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Consultation");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
     }
 
     @FXML
     public void pharmacyButtonOnAction(ActionEvent e) {
-
+        boolean isPharmacy = staff.isPharmacy();
+        if (isPharmacy) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("medicine-dispense.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Pharmacy");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-medicine-dispense.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setTitle("Pharmacy");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
     }
 
     @FXML
