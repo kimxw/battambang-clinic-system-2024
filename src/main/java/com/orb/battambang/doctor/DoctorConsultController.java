@@ -1,8 +1,6 @@
 package com.orb.battambang.doctor;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.connection.DatabaseConnection;
-import com.orb.battambang.pharmacy.Medicine;
 import com.orb.battambang.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,9 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,7 +30,6 @@ import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.orb.battambang.login.LoginPageController;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -194,8 +189,8 @@ public class DoctorConsultController implements Initializable {
         clearDentalFields();
         clearConsultFields();
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "doctorWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "doctorProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "doctorWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "doctorProgressTable");
 
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override

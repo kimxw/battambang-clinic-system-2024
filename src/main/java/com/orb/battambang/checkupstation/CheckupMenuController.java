@@ -4,7 +4,7 @@ import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.MiniQueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,11 +21,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -138,8 +136,8 @@ public class CheckupMenuController implements Initializable {
         // for waiting list
         // Initialize the waiting list
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {

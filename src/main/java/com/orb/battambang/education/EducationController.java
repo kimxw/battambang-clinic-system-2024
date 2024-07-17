@@ -1,10 +1,9 @@
 package com.orb.battambang.education;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.MiniQueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,8 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -105,8 +102,8 @@ public class EducationController implements Initializable {
         // for waiting list
         // Initialize the waiting list
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "educationWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "educationProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "educationWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "educationProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {

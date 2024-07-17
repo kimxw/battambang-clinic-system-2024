@@ -1,18 +1,15 @@
 package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.util.MiniQueueManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -131,8 +128,8 @@ public class HistoryController extends CheckupMenuController implements Initiali
 
         // for waiting list
         // Initialize the waiting list
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {

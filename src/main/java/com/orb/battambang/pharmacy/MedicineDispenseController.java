@@ -2,9 +2,8 @@ package com.orb.battambang.pharmacy;
 
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.MiniQueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,7 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
@@ -128,8 +126,8 @@ public class MedicineDispenseController implements Initializable {
                 menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "pharmacyWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "pharmacyProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "pharmacyWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "pharmacyProgressTable");
 
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override

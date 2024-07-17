@@ -14,15 +14,33 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" stylesheets="@menu-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.queue.QueueManagerController">
    <children>
-      <Rectangle fx:id="moreActionsRectangle" arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutX="3.0" layoutY="59.0" stroke="TRANSPARENT" strokeType="INSIDE" width="100.0" />
-      <Label layoutX="12.0" layoutY="77.0" prefHeight="19.0" prefWidth="100.0" text="More actions" textAlignment="CENTER">
+      <Button fx:id="moreActionsCloseButton" layoutX="4.0" layoutY="67.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="120.0" style="-fx-background-color: #ababab;" text="More Actions">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/pull-up.png" />
+               </image>
+            </ImageView>
+         </graphic>
          <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
-      </Label>
-      <Pane fx:id="actionsPane" layoutX="105.0" layoutY="66.0" prefHeight="44.0" prefWidth="887.0">
+      </Button>
+      <Button fx:id="moreActionsOpenButton" layoutX="4.0" layoutY="67.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="120.0" styleClass="moreActionsItem" text="More Actions">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/pull-down.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Pane fx:id="actionsPane" layoutX="129.0" layoutY="66.0" prefHeight="44.0" prefWidth="887.0" translateY="-44.0">
          <children>
             <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" width="901.0" />
             <Label layoutX="24.0" layoutY="12.0" prefHeight="19.0" prefWidth="149.0" text="Add / move externally:" textAlignment="CENTER">
@@ -45,8 +63,162 @@
             </Label>
             <TextField layoutX="704.0" layoutY="9.0" prefHeight="25.0" prefWidth="101.0" promptText="Queue Number" />
             <Button layoutX="814.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Remove" />
+            <Line endX="-172.0" endY="-162.5" layoutX="678.0" layoutY="200.0" startX="-172.0" startY="-192.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
          </children>
       </Pane>
+      <AnchorPane fx:id="queuePane" layoutX="10.0" layoutY="125.0" prefHeight="523.0" prefWidth="1166.0">
+         <children>
+            <Line endX="-100.0" endY="365.0" layoutX="287.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
+            <Line endX="-100.0" endY="365.0" layoutX="150.0" layoutY="140.0" startX="-100.0" startY="-69.0" stroke="#666666" />
+            <Line endX="-100.0" endY="365.0" layoutX="424.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" />
+            <Line endX="-100.0" endY="365.0" layoutX="561.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
+            <Line endX="-100.0" endY="365.0" layoutX="698.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
+            <Line endX="-100.0" endY="365.0" layoutX="835.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
+            <Line endX="-100.0" endY="365.0" layoutX="972.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
+            <Line endX="-100.0" endY="365.0" layoutX="1109.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
+            <Line endX="-100.0" endY="365.0" layoutX="1246.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
+            <Label layoutX="63.0" layoutY="70.0" text="6: Sokha Chan">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1022.0" layoutY="70.0" prefHeight="19.0" prefWidth="120.0" text="1: Prem Ska">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="93.0" layoutY="40.0" text="Waiting" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="222.0" layoutY="42.0" text="In Progress" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="197.0" layoutY="70.0" text="6: Sokha Chan">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="197.0" layoutY="90.0" text="6: Sokha Chan">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="197.0" layoutY="110.0" text="6: Sokha Chan">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="172.0" layoutY="36.0" mnemonicParsing="false" text="-&gt;" />
+            <Button layoutX="309.0" layoutY="37.0" mnemonicParsing="false" text="-&gt;" />
+            <Label alignment="CENTER" layoutX="368.0" layoutY="40.0" text="Waiting" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="497.0" layoutY="42.0" text="In Progress" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="447.0" layoutY="36.0" mnemonicParsing="false" text="-&gt;" />
+            <Button layoutX="584.0" layoutY="37.0" mnemonicParsing="false" text="-&gt;" />
+            <Label alignment="CENTER" layoutX="643.0" layoutY="40.0" text="Waiting" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="772.0" layoutY="42.0" text="In Progress" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="722.0" layoutY="36.0" mnemonicParsing="false" text="-&gt;" />
+            <Button layoutX="859.0" layoutY="37.0" mnemonicParsing="false" text="-&gt;" />
+            <Label alignment="CENTER" layoutX="918.0" layoutY="40.0" text="Waiting" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="1047.0" layoutY="42.0" text="In Progress" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Button layoutX="997.0" layoutY="36.0" mnemonicParsing="false" text="-&gt;" />
+            <Button layoutX="1134.0" layoutY="37.0" mnemonicParsing="false" text="-&gt;" />
+            <Label alignment="CENTER" layoutX="120.0" layoutY="-4.0" prefHeight="21.0" prefWidth="133.0" text="Triage" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="394.0" layoutY="-4.0" prefHeight="21.0" prefWidth="133.0" text="Education" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="669.0" layoutY="-4.0" prefHeight="21.0" prefWidth="133.0" text="Consultation" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="943.0" layoutY="-4.0" prefHeight="21.0" prefWidth="133.0" text="Pharmacy" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+         <children>
+            <HBox prefHeight="67.0" prefWidth="1230.0" style="-fx-background-color: #192841;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" translateX="15.0" translateY="20.0">
+                     <image>
+                        <Image url="@../../../icons/menu.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="menuLabel" prefHeight="25.0" prefWidth="91.0" text="        Menu" textFill="WHITE" translateX="-15.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menuBackLabel" prefHeight="25.0" prefWidth="125.0" text="        Menu" textFill="WHITE" translateX="-106.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
+                           <image>
+                              <Image url="@../../../icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                           <image>
+                              <Image url="@../../../icons/location.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css" translateX="-200.0">
          <children>
             <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
@@ -166,155 +338,5 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
-         <children>
-            <HBox prefHeight="67.0" prefWidth="1230.0" style="-fx-background-color: #192841;">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" translateX="15.0" translateY="20.0">
-                     <image>
-                        <Image url="@../../../icons/menu.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="menuLabel" prefHeight="25.0" prefWidth="91.0" text="        Menu" textFill="WHITE" translateX="-15.0" translateY="22.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="menuBackLabel" prefHeight="25.0" prefWidth="125.0" text="        Menu" textFill="WHITE" translateX="-106.0" translateY="22.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
-                           <image>
-                              <Image url="@../../../icons/user.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
-                           <image>
-                              <Image url="@../../../icons/location.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </AnchorPane>
-      <Line endX="-100.0" endY="365.0" layoutX="305.0" layoutY="255.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-      <Line endX="-100.0" endY="365.0" layoutX="168.0" layoutY="254.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-      <Line endX="-100.0" endY="365.0" layoutX="442.0" layoutY="255.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-      <Line endX="-100.0" endY="365.0" layoutX="579.0" layoutY="255.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-      <Line endX="-100.0" endY="365.0" layoutX="716.0" layoutY="256.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-      <Line endX="-100.0" endY="365.0" layoutX="853.0" layoutY="256.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-      <Line endX="-100.0" endY="365.0" layoutX="990.0" layoutY="256.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-      <Line endX="-100.0" endY="365.0" layoutX="1127.0" layoutY="256.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-      <Line endX="-100.0" endY="365.0" layoutX="1264.0" layoutY="256.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-      <Label layoutX="81.0" layoutY="184.0" text="6: Sokha Chan">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="1040.0" layoutY="184.0" prefHeight="19.0" prefWidth="120.0" text="1: Prem Ska">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="111.0" layoutY="154.0" text="Waiting" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="240.0" layoutY="156.0" text="In Progress" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="215.0" layoutY="184.0" text="6: Sokha Chan">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="215.0" layoutY="204.0" text="6: Sokha Chan">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="215.0" layoutY="224.0" text="6: Sokha Chan">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Label>
-      <Button layoutX="190.0" layoutY="150.0" mnemonicParsing="false" text="-&gt;" />
-      <Button layoutX="327.0" layoutY="151.0" mnemonicParsing="false" text="-&gt;" />
-      <Label alignment="CENTER" layoutX="386.0" layoutY="154.0" text="Waiting" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="515.0" layoutY="156.0" text="In Progress" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Button layoutX="465.0" layoutY="150.0" mnemonicParsing="false" text="-&gt;" />
-      <Button layoutX="602.0" layoutY="151.0" mnemonicParsing="false" text="-&gt;" />
-      <Label alignment="CENTER" layoutX="661.0" layoutY="154.0" text="Waiting" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="790.0" layoutY="156.0" text="In Progress" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Button layoutX="740.0" layoutY="150.0" mnemonicParsing="false" text="-&gt;" />
-      <Button layoutX="877.0" layoutY="151.0" mnemonicParsing="false" text="-&gt;" />
-      <Label alignment="CENTER" layoutX="936.0" layoutY="154.0" text="Waiting" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="1065.0" layoutY="156.0" text="In Progress" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Button layoutX="1015.0" layoutY="150.0" mnemonicParsing="false" text="-&gt;" />
-      <Button layoutX="1152.0" layoutY="151.0" mnemonicParsing="false" text="-&gt;" />
-      <Label alignment="CENTER" layoutX="138.0" layoutY="114.0" prefHeight="21.0" prefWidth="133.0" text="Triage" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="412.0" layoutY="114.0" prefHeight="21.0" prefWidth="133.0" text="Education" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="687.0" layoutY="114.0" prefHeight="21.0" prefWidth="133.0" text="Consultation" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="961.0" layoutY="114.0" prefHeight="21.0" prefWidth="133.0" text="Pharmacy" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Line endX="-172.0" endY="-162.5" layoutX="782.0" layoutY="266.0" startX="-172.0" startY="-192.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
    </children>
 </Pane>

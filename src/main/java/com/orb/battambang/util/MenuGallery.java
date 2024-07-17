@@ -288,7 +288,16 @@ public class MenuGallery {
 
     @FXML
     public void queueManagerButtonOnAction(ActionEvent e) {
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("queue-manager.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setTitle("Pharmacy");
+            stage.setScene(scene);
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
     }
 
     @FXML

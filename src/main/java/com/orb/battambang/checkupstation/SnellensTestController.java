@@ -1,11 +1,8 @@
 package com.orb.battambang.checkupstation;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.util.MiniQueueManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -121,8 +117,8 @@ public class SnellensTestController extends CheckupMenuController implements Ini
 
         // for waiting list
         // Initialize the waiting list
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {

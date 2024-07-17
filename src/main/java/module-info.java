@@ -34,4 +34,7 @@ module com.orb.battambang {
     opens com.orb.battambang.home to javafx.fxml;
     exports com.orb.battambang.home to javafx.fxml;
 
+    opens com.orb.battambang.queue to javafx.fxml;
+    exports com.orb.battambang.queue to javafx.fxml;
+
 }

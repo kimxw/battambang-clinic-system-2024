@@ -13,13 +13,13 @@ import java.sql.Statement;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QueueManager {
+public class MiniQueueManager {
 
     private final String column;
     private final ObservableList<Integer> queueList;
     private final Connection connection = DatabaseConnection.connection;
 
-    public QueueManager(ListView<Integer> queueListView, String column) {
+    public MiniQueueManager(ListView<Integer> queueListView, String column) {
         this.queueList = FXCollections.observableArrayList();
         this.column = column;
         queueListView.setItems(queueList);
