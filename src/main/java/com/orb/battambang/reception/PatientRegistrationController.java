@@ -205,15 +205,17 @@ public class PatientRegistrationController implements Initializable {
                         patientObservableList.add(new Patient(queueNo, inputName, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress));
 
                         // Also add the new patient to the triageWaitingTable
-                        String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber) VALUES (?);";
+                        String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber, name) VALUES (?, ?);";
                         try (PreparedStatement queueUpdateStatement = connection.prepareStatement(updateWaitingQueue)) {
                             queueUpdateStatement.setInt(1, queueNo);
+                            queueUpdateStatement.setString(2, inputName);
                             queueUpdateStatement.executeUpdate();
                         }
                     }
                 }
                 clearInputFields();
             } catch (Exception exc) {
+                System.out.println(exc);
                 Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
             }
         }

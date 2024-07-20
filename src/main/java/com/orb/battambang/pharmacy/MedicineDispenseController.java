@@ -474,14 +474,24 @@ public class MedicineDispenseController implements Initializable {
 
     private void movePatientToInProgress(Integer queueNumber) {
 
+        String nameFromWaitingListQuery = "SELECT name FROM pharmacyWaitingTable WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO pharmacyProgressTable (queueNumber) VALUES (?)";
+        String insertIntoProgressListQuery = "INSERT INTO pharmacyProgressTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -489,6 +499,7 @@ public class MedicineDispenseController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -503,7 +514,7 @@ public class MedicineDispenseController implements Initializable {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -512,7 +523,7 @@ public class MedicineDispenseController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
@@ -528,19 +539,19 @@ public class MedicineDispenseController implements Initializable {
 
         if (selectedPatient != null) {
             removeFromQueue(selectedPatient);
+            int queueNumber = selectedPatient.intValue();
+            //update dispense status to complete
+            String updateStatusQuery = "UPDATE patientQueueTable SET pharmacyStatus = 'Dispensed' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
         }
 
-        int queueNumber = selectedPatient.intValue();
-        //update dispense status to complete
-        String updateStatusQuery = "UPDATE patientQueueTable SET pharmacyStatus = 'Dispensed' WHERE queueNumber = ?";
-        try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
-            updateStatusStatement.setInt(1, queueNumber);
-            updateStatusStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
     }
 
     private void removeFromQueue(Integer queueNumber) {

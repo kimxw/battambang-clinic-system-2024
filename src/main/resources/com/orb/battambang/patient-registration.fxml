@@ -53,7 +53,7 @@
                </font>
             </Label>
             <Button fx:id="addButton" layoutX="358.0" layoutY="371.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: #bdd9ba;" text="Add/ Update" />
-            <Label fx:id="messageLabel1" alignment="CENTER_RIGHT" layoutX="20.0" layoutY="377.0" prefHeight="18.0" prefWidth="176.0" />
+            <Label fx:id="messageLabel1" alignment="CENTER_RIGHT" layoutX="20.0" layoutY="378.0" prefHeight="18.0" prefWidth="149.0" />
             <Button fx:id="editButton" layoutX="192.0" layoutY="371.0" mnemonicParsing="false" onAction="#editButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #bea9df;" text="Edit" />
          </children>
       </Pane>

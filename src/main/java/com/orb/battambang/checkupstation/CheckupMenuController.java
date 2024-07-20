@@ -320,15 +320,24 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void movePatientToInProgress(Integer queueNumber) {
-
+        String nameFromWaitingListQuery = "SELECT name FROM triageWaitingTable WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
+        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                 name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -336,6 +345,7 @@ public class CheckupMenuController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -350,7 +360,7 @@ public class CheckupMenuController implements Initializable {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -359,7 +369,7 @@ public class CheckupMenuController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
@@ -379,15 +389,24 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void movePatientToEducation(Integer queueNumber) {
-
+        String nameFromWaitingListQuery = "SELECT name FROM triageProgressTable WHERE queueNumber = ?";
         String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
-        String insertIntoNextListQuery = "INSERT INTO educationWaitingTable (queueNumber) VALUES (?)";
+        String insertIntoNextListQuery = "INSERT INTO educationWaitingTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -395,6 +414,7 @@ public class CheckupMenuController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -402,14 +422,13 @@ public class CheckupMenuController implements Initializable {
 
             // Update the ListViews
             inProgressListView.getItems().remove(queueNumber);
-
         } catch (SQLException e) {
             try {
                 if (connection != null) {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -418,7 +437,7 @@ public class CheckupMenuController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
