@@ -176,25 +176,41 @@
             <Font size="11.0" />
          </font>
       </Button>
-      <Pane fx:id="queuePane" layoutX="971.0" layoutY="118.0" prefHeight="500.0" prefWidth="247.0">
+      <Pane fx:id="queuePane" layoutX="967.0" layoutY="88.0" prefHeight="500.0" prefWidth="236.0">
          <children>
-            <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
-            <Label alignment="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Triage)">
+            <ListView fx:id="inProgressListView" layoutX="159.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="133.0" layoutY="41.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
+            <Label alignment="CENTER" layoutX="62.0" layoutY="8.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Triage)">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="111.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="85.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
-            <Button layoutX="169.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
+            <ListView fx:id="waitingListView" layoutX="53.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="26.0" layoutY="39.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
+            <Button layoutX="98.0" layoutY="37.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
-            <Button layoutX="169.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="211.0" layoutY="37.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">

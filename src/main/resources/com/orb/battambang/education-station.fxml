@@ -5,16 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.VBox?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.education.EducationController">
    <children>
 
@@ -103,25 +103,41 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="queuePane" layoutX="932.0" layoutY="121.0" prefHeight="500.0" prefWidth="247.0">
+      <Pane fx:id="queuePane" layoutX="967.0" layoutY="88.0" prefHeight="500.0" prefWidth="236.0">
          <children>
-            <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
-            <Label alignment="CENTER" layoutX="-14.0" layoutY="4.0" prefHeight="17.0" prefWidth="185.0" text="Queue Manager (Education)">
+            <ListView fx:id="inProgressListView" layoutX="159.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="133.0" layoutY="41.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
+            <Label alignment="CENTER" layoutX="48.0" layoutY="8.0" prefHeight="17.0" prefWidth="184.0" text="Queue Manager (Education)">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="111.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="85.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
-            <Button layoutX="169.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
+            <ListView fx:id="waitingListView" layoutX="53.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="26.0" layoutY="39.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
+            <Button layoutX="98.0" layoutY="37.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
-            <Button layoutX="169.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="211.0" layoutY="37.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <CheckBox fx:id="educationCompleteCheckBox" layoutX="80.0" layoutY="428.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="39.0">

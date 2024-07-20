@@ -283,18 +283,23 @@ public class QueueManagerController implements Initializable {
 
     @FXML
     private void reorderButtonOnAction(ActionEvent event) {
-        String current = reorderChoiceBox.getSelectionModel().getSelectedItem();
-        if (current == null) {
-            Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a queue", "#bf1b15", "/icons/cross.png");
-            return;
-        }
+        try {
+            String current = reorderChoiceBox.getSelectionModel().getSelectedItem();
+            if (current == null) {
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a queue", "#bf1b15", "/icons/cross.png");
+                return;
+            }
 
-        Button button = (Button) event.getSource();
-        String buttonId = button.getId();
-        if (buttonId.equals("moveUpButton")) {
-            choiceQueueManagerMap.get(current).swapPosition(true);
-        } else {
-            choiceQueueManagerMap.get(current).swapPosition(false);
+            Button button = (Button) event.getSource();
+            String buttonId = button.getId();
+
+            if (buttonId.equals("moveUpButton")) {
+                choiceQueueManagerMap.get(current).swapPosition(true);
+            } else {
+                choiceQueueManagerMap.get(current).swapPosition(false);
+            }
+        } catch (Exception e) {
+            Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
         }
     }
 

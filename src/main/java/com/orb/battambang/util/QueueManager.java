@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionModel;
 
 import java.sql.*;
 import java.util.List;
@@ -54,6 +55,8 @@ public class QueueManager {
     }
 
     public void updateWaitingList() {
+        SelectionModel<String> selectionModel = this.getCurrentListView().getSelectionModel();
+        String selected = selectionModel.getSelectedItem();
         String query = "SELECT queueNumber, name FROM " + currentTable;
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -63,6 +66,11 @@ public class QueueManager {
             while (resultSet.next()) {
                 queueList.add(String.format("%d: %s", resultSet.getInt("queueNumber"), resultSet.getString("name")));
             }
+
+            if(selected != null) {
+                selectionModel.select(selected);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -167,6 +175,8 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
+
+            currentListView.getSelectionModel().clearSelection();
             currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
             targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
         } catch (SQLException e) {
@@ -287,6 +297,7 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
+            currentListView.getSelectionModel().clearSelection();
             currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
         } catch (SQLException e) {
             //add my exception handling here
@@ -366,7 +377,112 @@ public class QueueManager {
     }
 
     public void swapPosition(boolean isUp) {
+        SelectionModel<String> selectionModel = this.currentListView.getSelectionModel();
+        String currentEntry = selectionModel.getSelectedItem();
+        if (currentEntry == null) {
+            throw new RuntimeException("No patient selected");
+        }
+        int queueNumberA = Integer.parseInt(currentEntry.substring(0, currentEntry.indexOf(':')));
+        if (isUp) {
+            selectionModel.selectPrevious();
+            String prevEntry = selectionModel.getSelectedItem();
+            selectionModel.clearSelection();
+            if (currentEntry.equals(prevEntry)) {
+                return;
+            }
 
+            int queueNumberB = Integer.parseInt(prevEntry.substring(0, prevEntry.indexOf(':')));
+            swapHelper(queueNumberA, queueNumberB);
+        } else {
+            selectionModel.selectNext();
+            String nextEntry = selectionModel.getSelectedItem();
+            selectionModel.clearSelection();
+            if (currentEntry.equals(nextEntry)) {
+                return;
+            }
+
+            int queueNumberB = Integer.parseInt(nextEntry.substring(0, nextEntry.indexOf(':')));
+            swapHelper(queueNumberA, queueNumberB);
+        }
+        selectionModel.select(currentEntry);
+    }
+
+    private void swapHelper(int queueNumberA, int queueNumberB) {
+
+        String nameAQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
+        String nameBQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
+        String updateQuery = "UPDATE " + currentTable + " SET queueNumber = ?, name = ? WHERE queueNumber = ?";
+
+        try (PreparedStatement nameAStatement = connection.prepareStatement(nameAQuery);
+             PreparedStatement nameBStatement = connection.prepareStatement(nameBQuery);
+             PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String nameA = "";
+            String nameB = "";
+
+            nameAStatement.setInt(1, queueNumberA);
+            ResultSet rsA = nameAStatement.executeQuery();
+            if (rsA.next()) {
+                nameA = rsA.getString("name");
+            }
+            rsA.close();
+
+            nameBStatement.setInt(1, queueNumberB);
+            ResultSet rsB = nameBStatement.executeQuery();
+            if (rsB.next()) {
+                nameB = rsB.getString("name");
+            }
+            rsB.close();
+
+            if (nameA.equals("") || nameB.equals("")) {
+                return;
+            }
+
+            // perform swap (-1 and temp patient due to unique constraint which makes copying not possible)
+            updateStatement.setInt(1, -1);
+            updateStatement.setString(2, "TEMPORARY PATIENT");
+            updateStatement.setInt(3, queueNumberB);
+            updateStatement.executeUpdate();
+
+            updateStatement.clearParameters();
+            updateStatement.setInt(1, queueNumberB);
+            updateStatement.setString(2, nameB);
+            updateStatement.setInt(3, queueNumberA);
+            updateStatement.executeUpdate();
+
+            updateStatement.clearParameters();
+            updateStatement.setInt(1, queueNumberA);
+            updateStatement.setString(2, nameA);
+            updateStatement.setInt(3, -1);
+            updateStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            // Update the ListViews
+            updateWaitingList();
+        } catch (SQLException e) {
+            //add my exception handling here
+            try {
+                connection.rollback(); // Roll back transaction if any error occurs
+                System.out.print(e);
+            } catch (SQLException rollbackEx) {
+                System.out.println(rollbackEx);
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true); // Restore auto-commit mode
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
     }
 
 

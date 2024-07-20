@@ -257,9 +257,15 @@
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d8d8d8" height="33.0" layoutY="620.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1230.0" />
-      <Label layoutX="19.0" layoutY="627.0" prefHeight="17.0" prefWidth="343.0" text="Average Patient Wait Time (last 10 patients): 15 minutes" />
-      <Label fx:id="warningLabel" layoutX="984.0" layoutY="627.0" prefHeight="17.0" prefWidth="230.0" />
-      <ImageView fx:id="warningImageView" fitHeight="24.0" fitWidth="24.0" layoutX="958.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" />
+      <Label layoutX="53.0" layoutY="625.0" prefHeight="20.0" prefWidth="451.0" text="Average Patient Wait Time (last 10 patients): 15 minutes">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label fx:id="warningLabel" layoutX="984.0" layoutY="625.0" prefHeight="17.0" prefWidth="230.0">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ImageView fx:id="warningImageView" fitHeight="24.0" fitWidth="24.0" layoutX="958.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
       <Line endX="-100.0" endY="33.0" layoutX="1041.0" layoutY="620.0" startX="-100.0" startY="1.0" stroke="#ebebeb" strokeWidth="3.0" />
       <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
          <children>
@@ -427,5 +433,10 @@
             </VBox>
          </children>
       </AnchorPane>
+      <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="26.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/queue-pwt.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

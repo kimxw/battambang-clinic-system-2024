@@ -147,25 +147,41 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="queuePane" layoutX="1019.0" layoutY="79.0" prefHeight="500.0" prefWidth="197.0">
+      <Pane fx:id="queuePane" layoutX="1009.0" layoutY="78.0" prefHeight="500.0" prefWidth="236.0">
          <children>
-            <ListView fx:id="inProgressListView" layoutX="24.0" layoutY="56.0" prefHeight="412.0" prefWidth="45.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
-            <Label alignment="CENTER" layoutX="-6.0" layoutY="4.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Doctor)">
+            <ListView fx:id="inProgressListView" layoutX="125.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="99.0" layoutY="41.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
+            <Label alignment="CENTER" layoutX="12.0" layoutY="8.0" prefHeight="17.0" prefWidth="188.0" text="Queue Manager (Consultation)">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="86.0" layoutY="56.0" prefHeight="412.0" prefWidth="41.0" stylesheets="@list-styles.css" />
-            <Label alignment="CENTER" layoutX="60.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
-            <Button layoutX="132.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
+            <ListView fx:id="waitingListView" layoutX="19.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="-8.0" layoutY="39.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
+            <Button layoutX="64.0" layoutY="37.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
-            <Button layoutX="132.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="177.0" layoutY="37.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
                   <Font size="11.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <TextArea fx:id="inputConsultNotesTextArea" layoutX="621.0" layoutY="102.0" prefHeight="118.0" prefWidth="388.0" promptText="Enter consultation notes here." />

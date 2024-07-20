@@ -529,7 +529,7 @@ public class MedicineDispenseController implements Initializable {
     }
 
     @FXML
-    public void checkoutButtonOnAction(ActionEvent e) {
+    public void sendButtonOnAction(ActionEvent e) {
         Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!inProgressListView.getItems().isEmpty()) {
