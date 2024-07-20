@@ -293,7 +293,7 @@ public class MenuGallery {
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setTitle("Pharmacy");
+            stage.setTitle("Queue Manager");
             stage.setScene(scene);
         } catch (Exception exc) {
             exc.printStackTrace();
