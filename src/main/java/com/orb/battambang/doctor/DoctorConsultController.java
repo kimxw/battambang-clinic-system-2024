@@ -1,12 +1,7 @@
 package com.orb.battambang.doctor;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.connection.DatabaseConnection;
-import com.orb.battambang.pharmacy.Medicine;
-import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.Prescription;
-import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,10 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,8 +30,6 @@ import javafx.scene.control.TableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.orb.battambang.util.WrappedTextCellFactory;
-import com.orb.battambang.login.LoginPageController;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -149,10 +141,45 @@ public class DoctorConsultController implements Initializable {
     private CheckBox consultCompleteCheckBox;
     @FXML
     private Label warningLabel;
+
     @FXML
-    private Label doctorLabel;
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //initialising MenuGallery
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
 
         clearParticularsFields();
         clearBMIFields();
@@ -162,11 +189,8 @@ public class DoctorConsultController implements Initializable {
         clearDentalFields();
         clearConsultFields();
 
-        // Set the logged-in user info in the doctorLabel
-        doctorLabel.setText(LoginPageController.loggedInUserInfo);
-
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "doctorWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "doctorProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "doctorWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "doctorProgressTable");
 
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -271,7 +295,7 @@ public class DoctorConsultController implements Initializable {
                     doctorConsultTableStmt.setString(2, condition);
                     doctorConsultTableStmt.setString(3, prescriptionString);
                     doctorConsultTableStmt.setBoolean(4, referralStatus);
-                    doctorConsultTableStmt.setString(5, doctorLabel.getText()); // Update doctor column with doctorLabel text
+                    doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Update doctor column with doctorLabel text
                     doctorConsultTableStmt.setInt(6, queueNumber);
                     doctorConsultTableStmt.executeUpdate();
                 }
@@ -284,7 +308,7 @@ public class DoctorConsultController implements Initializable {
                     doctorConsultTableStmt.setString(3, condition);
                     doctorConsultTableStmt.setString(4, prescriptionString);
                     doctorConsultTableStmt.setBoolean(5, referralStatus);
-                    doctorConsultTableStmt.setString(6, doctorLabel.getText()); // Set doctor column with doctorLabel text
+                    doctorConsultTableStmt.setString(6, menuUserButton.getText()); // Set doctor column with doctorLabel text
                     doctorConsultTableStmt.executeUpdate();
                 }
             }
@@ -793,15 +817,24 @@ public class DoctorConsultController implements Initializable {
     }
 
     private void movePatientToInProgress(Integer queueNumber) {
-
+        String nameFromWaitingListQuery = "SELECT name FROM doctorWaitingTable WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO doctorProgressTable (queueNumber) VALUES (?)";
+        String insertIntoProgressListQuery = "INSERT INTO doctorProgressTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -809,6 +842,7 @@ public class DoctorConsultController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -823,9 +857,9 @@ public class DoctorConsultController implements Initializable {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {
@@ -847,20 +881,30 @@ public class DoctorConsultController implements Initializable {
         }
 
         if (selectedPatient != null) {
-            movePatientToDoctorConsult(selectedPatient);
+            movePatientToPharmacy(selectedPatient);
         }
     }
 
-    private void movePatientToDoctorConsult(Integer queueNumber) {
+    private void movePatientToPharmacy(Integer queueNumber) {
 
+        String nameFromWaitingListQuery = "SELECT name FROM doctorProgressTable WHERE queueNumber = ?";
         String deleteFromProgressListQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = ?";
-        String insertIntoNextListQuery = "INSERT INTO pharmacyWaitingTable (queueNumber) VALUES (?)";
+        String insertIntoNextListQuery = "INSERT INTO pharmacyWaitingTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -868,6 +912,7 @@ public class DoctorConsultController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -875,16 +920,15 @@ public class DoctorConsultController implements Initializable {
 
             // Update the ListViews
             inProgressListView.getItems().remove(queueNumber);
-
         } catch (SQLException e) {
             try {
                 if (connection != null) {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (connection != null) {

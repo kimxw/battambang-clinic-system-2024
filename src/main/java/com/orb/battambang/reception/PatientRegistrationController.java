@@ -1,8 +1,8 @@
 package com.orb.battambang.reception;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.TableViewUpdater;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,8 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.sql.*;
@@ -31,10 +31,6 @@ public class PatientRegistrationController implements Initializable {
 
     @FXML
     private Label messageLabel1;
-    @FXML
-    private Button switchUserButton;
-    @FXML
-    private Button triageButton;
     @FXML
     private TextField inputNameTextField;
     @FXML
@@ -61,10 +57,44 @@ public class PatientRegistrationController implements Initializable {
     private ChoiceBox<Character> inputSexChoiceBox;
     private final Character[] choiceBoxOptions = new Character[] {'M', 'F'};
 
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
+
         inputSexChoiceBox.getItems().addAll(choiceBoxOptions);
 
         // Set cell value factories
@@ -103,37 +133,6 @@ public class PatientRegistrationController implements Initializable {
         // Start polling to update the TableView
         new TableViewUpdater(patientObservableList, patientTableView);
     }
-
-    @FXML
-    public void switchUserButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-
-            newUserStage.setTitle("Login");
-            newUserStage.setScene(scene);
-            Stage stage = (Stage) switchUserButton.getScene().getWindow();
-            stage.close();
-            newUserStage.show();
-        } catch (Exception exc) {
-            Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
-        }
-    }
-
-    @FXML
-    private void triageButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-    }
-
 
     @FXML
     public void addButtonOnAction(ActionEvent e) {
@@ -206,15 +205,17 @@ public class PatientRegistrationController implements Initializable {
                         patientObservableList.add(new Patient(queueNo, inputName, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress));
 
                         // Also add the new patient to the triageWaitingTable
-                        String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber) VALUES (?);";
+                        String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber, name) VALUES (?, ?);";
                         try (PreparedStatement queueUpdateStatement = connection.prepareStatement(updateWaitingQueue)) {
                             queueUpdateStatement.setInt(1, queueNo);
+                            queueUpdateStatement.setString(2, inputName);
                             queueUpdateStatement.executeUpdate();
                         }
                     }
                 }
                 clearInputFields();
             } catch (Exception exc) {
+                System.out.println(exc);
                 Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
             }
         }
@@ -303,7 +304,9 @@ public class PatientRegistrationController implements Initializable {
             stage.setScene(scene);
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
+            System.out.println(exc);
         }
     }
+
 
 }

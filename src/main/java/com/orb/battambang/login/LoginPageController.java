@@ -150,7 +150,7 @@ public class LoginPageController{
 
     private void openPatientRegistration() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("home-page.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
             newUserStage.setTitle("");

@@ -1,8 +1,7 @@
 package com.orb.battambang.reception;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.connection.DatabaseConnection;
-import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.MenuGallery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -30,7 +30,7 @@ public class PatientFilterController implements Initializable{
     @FXML
     private Label messageLabel2;
     @FXML
-    private Button switchUserButton;
+    private Button logoutButton;
     @FXML
     private TextField queueSearchTextField;
     @FXML
@@ -53,11 +53,47 @@ public class PatientFilterController implements Initializable{
     @FXML
     private TableColumn<Patient, String> addressTableColumn;
 
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
+
     ObservableList<Patient> patientSearchModelObservableList = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
+
 
         String patientViewQuery = "SELECT QueueNumber, Name, Age, Sex, PhoneNumber, Address FROM patientQueueTable";
 
@@ -137,38 +173,6 @@ public class PatientFilterController implements Initializable{
     }
 
     @FXML
-    public void switchUserButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-
-            newUserStage.setTitle("Login");
-            newUserStage.setScene(scene);
-            Stage stage = (Stage) switchUserButton.getScene().getWindow();
-            stage.close();
-            newUserStage.show();
-        } catch (Exception exc) {
-            System.out.println(e);
-            exc.getCause();
-        }
-    }
-
-    @FXML
-    private void triageButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("checkup-menu.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-
-        }
-    }
-
-    @FXML
     public void newPatientButtonOnAction(ActionEvent e) {
         loadFXML("patient-registration.fxml", e);
     }
@@ -184,4 +188,5 @@ public class PatientFilterController implements Initializable{
             System.out.println(e);
         }
     }
+
 }

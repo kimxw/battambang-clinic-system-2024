@@ -37,4 +37,20 @@ public class Rectangles {
             rectangle.setStyle("-fx-fill: #999999;"); //not found
         }
     }
+
+    public static void updatePermissionRectangle(Rectangle rectangle, Label label, boolean perm, boolean admin) {
+        if (perm && admin) {
+            label.setText("Yes");
+            label.setStyle("-fx-text-fill: #9832ce");
+            rectangle.setStyle("-fx-fill: #e3abff; -fx-opacity: 0.62");
+        } else if (perm) {
+            label.setText("Yes");
+            label.setStyle("-fx-text-fill: #5f8b07");
+            rectangle.setStyle("-fx-fill: #a7cf5d; -fx-opacity: 0.62");
+        } else {
+            label.setText("No");
+            label.setStyle("-fx-text-fill: #bf1b15");
+            rectangle.setStyle("-fx-fill: #ff7773; -fx-opacity: 0.45");
+        }
+    }
 }

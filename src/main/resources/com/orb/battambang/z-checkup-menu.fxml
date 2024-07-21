@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.CheckupMenuController">
+   <children>
+      <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="500.0" layoutX="18.0" layoutY="118.0" stroke="#ebebeb00" strokeType="INSIDE" width="340.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="32.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
+      <Label layoutX="37.0" layoutY="131.0" text="Select Patient :">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
+      <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="hearingTestButton" layoutX="570.0" layoutY="118.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="headLiceButton" layoutX="668.0" layoutY="118.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
+      <Pane fx:id="particularsPane" layoutX="64.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">
+         <children>
+            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="nameLabel" layoutX="87.0" layoutY="59.0" prefHeight="19.0" prefWidth="134.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="ageLabel" layoutX="85.0" layoutY="86.0" prefHeight="19.0" prefWidth="41.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="sexLabel" layoutX="87.0" layoutY="119.0" prefHeight="19.0" prefWidth="26.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="phoneNumberLabel" layoutX="87.0" layoutY="149.0" prefHeight="19.0" prefWidth="134.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="245.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="276.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="307.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="queueNoLabel" layoutX="85.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="338.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="367.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status2Label" alignment="CENTER" layoutX="141.0" layoutY="245.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status3Label" alignment="CENTER" layoutX="141.0" layoutY="276.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status4Label" alignment="CENTER" layoutX="141.0" layoutY="307.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status5Label" alignment="CENTER" layoutX="141.0" layoutY="338.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status6Label" alignment="CENTER" layoutX="141.0" layoutY="367.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+         </children>
+      </Pane>
+      <Label fx:id="queueSelectLabel" layoutX="146.0" layoutY="101.0" prefHeight="17.0" prefWidth="140.0" />
+      <Pane fx:id="fixedPane" layoutX="63.0" layoutY="183.0" prefHeight="412.0" prefWidth="120.0">
+         <children>
+            <Label layoutX="1.0" layoutY="56.0" text="Name :">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="85.0" text="Age :">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="118.0" text="Sex :">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="148.0" text="Phone No. :">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutY="184.0" text="Stations Status">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="213.0" text="Height and Weight">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutY="1.0" text="Particulars">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="244.0" text="Snellen's Test">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="275.0" text="Hearing Test">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="365.0" text="History/ Triage">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="28.0" text="Queue No. :">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="1.0" layoutY="305.0" text="Hair Lice Checkup">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label layoutY="336.0" text="Dental Checkup">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="dentalButton" layoutX="766.0" layoutY="118.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Dental">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="historyButton" layoutX="864.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="History">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Pane fx:id="queuePane" layoutX="971.0" layoutY="118.0" prefHeight="500.0" prefWidth="247.0">
+         <children>
+            <ListView fx:id="inProgressListView" layoutX="31.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="7.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="In-Progress" />
+            <Label alignment="CENTER" layoutX="9.0" layoutY="4.0" prefHeight="17.0" prefWidth="149.0" text="Queue Manager (Triage)">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ListView fx:id="waitingListView" layoutX="111.0" layoutY="56.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <Label alignment="CENTER" layoutX="85.0" layoutY="31.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
+            <Button layoutX="169.0" layoutY="63.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="25.0" prefWidth="68.0" text="Add next">
+               <font>
+                  <Font size="11.0" />
+               </font></Button>
+            <Button layoutX="169.0" layoutY="98.0" mnemonicParsing="false" onAction="#sendButtonOnAction" prefHeight="23.0" prefWidth="68.0" text="Send over">
+               <font>
+                  <Font size="11.0" />
+               </font></Button>
+         </children>
+      </Pane>
+      <Pane fx:id="noPermissionPane" prefHeight="655.0" prefWidth="1234.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffb2" height="650.0" layoutX="-2.0" stroke="#ffffff00" strokeType="INSIDE" width="1230.0" />
+            <Label layoutX="475.0" layoutY="292.0" prefHeight="77.0" prefWidth="435.0" text="You do not have permission to edit this page" textFill="#bf1b15">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="421.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" translateX="7.0">
+               <image>
+                  <Image url="@../../../icons/warning.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+         <children>
+            <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
+               <children>
+                  <ImageView fitHeight="15.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane prefHeight="4.0" prefWidth="200.0" />
+                  <Button fx:id="menuHomeButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="Home" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6">
+                           <image>
+                              <Image url="@../../../icons/home.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuReceptionButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="Reception" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6">
+                           <image>
+                              <Image url="@../../../icons/registration.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuTriageButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="  Triage" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/triage.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuEducationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="  Education" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/education.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuConsultationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="  Consultation" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/consultation.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuPharmacyButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="  Pharmacy" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/pharmacy.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuQueueManagerButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" styleClass="sliderMenuItem" text="  Queue Manager" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/queuemanager.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Pane prefHeight="123.0" prefWidth="200.0" />
+                  <Button fx:id="menuAdminButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" styleClass="sliderMenuItem" text="  Admin" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" scaleZ="0.7" translateX="6.0">
+                           <image>
+                              <Image url="@../../../icons/admin.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuLogoutButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="199.0" styleClass="sliderMenuItem" text="  Logout" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" scaleZ="0.7" translateX="8.0">
+                           <image>
+                              <Image url="@../../../icons/logout.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+         <children>
+            <HBox prefHeight="67.0" prefWidth="1230.0" style="-fx-background-color: #192841;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" translateX="15.0" translateY="20.0">
+                     <image>
+                        <Image url="@../../../icons/menu.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="menuLabel" prefHeight="25.0" prefWidth="91.0" text="        Menu" textFill="WHITE" translateX="-15.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menuBackLabel" prefHeight="25.0" prefWidth="125.0" text="        Menu" textFill="WHITE" translateX="-106.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="203.0" styleClass="topMenuItem" text="Sreelakshmi Haridos " textFill="WHITE" translateX="760.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                           <image>
+                              <Image url="@../../../icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="120.0" styleClass="topMenuItem" text="Location" textFill="WHITE" translateX="430.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                           <image>
+                              <Image url="@../../../icons/location.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

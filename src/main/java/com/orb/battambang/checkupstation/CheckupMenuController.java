@@ -3,7 +3,8 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
 
-import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.MenuGallery;
+import com.orb.battambang.util.MiniQueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,13 +18,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -92,16 +92,52 @@ public class CheckupMenuController implements Initializable {
     @FXML
     private ListView<Integer> inProgressListView;
 
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
 
     private FXMLLoader fxmlLoader;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //initialising MenuGallery
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
+
         // for waiting list
         // Initialize the waiting list
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
@@ -284,15 +320,24 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void movePatientToInProgress(Integer queueNumber) {
-
+        String nameFromWaitingListQuery = "SELECT name FROM triageWaitingTable WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber) VALUES (?)";
+        String insertIntoProgressListQuery = "INSERT INTO triageProgressTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                 name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -300,6 +345,7 @@ public class CheckupMenuController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -314,7 +360,7 @@ public class CheckupMenuController implements Initializable {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -323,7 +369,7 @@ public class CheckupMenuController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
@@ -343,15 +389,24 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void movePatientToEducation(Integer queueNumber) {
-
+        String nameFromWaitingListQuery = "SELECT name FROM triageProgressTable WHERE queueNumber = ?";
         String deleteFromProgressListQuery = "DELETE FROM triageProgressTable WHERE queueNumber = ?";
-        String insertIntoNextListQuery = "INSERT INTO educationWaitingTable (queueNumber) VALUES (?)";
+        String insertIntoNextListQuery = "INSERT INTO educationWaitingTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromProgressListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoNextListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -359,6 +414,7 @@ public class CheckupMenuController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -366,14 +422,13 @@ public class CheckupMenuController implements Initializable {
 
             // Update the ListViews
             inProgressListView.getItems().remove(queueNumber);
-
         } catch (SQLException e) {
             try {
                 if (connection != null) {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -382,7 +437,7 @@ public class CheckupMenuController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }

@@ -1,15 +1,15 @@
 package com.orb.battambang.checkupstation;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.QueueManager;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.util.MenuGallery;
+import com.orb.battambang.util.MiniQueueManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
@@ -75,12 +75,47 @@ public class HeadLiceController extends CheckupMenuController implements Initial
     @FXML
     private ListView<Integer> inProgressListView;
 
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //initialising MenuGallery
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
+
         // for waiting list
         // Initialize the waiting list
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "triageWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "triageProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {

@@ -2,8 +2,8 @@ package com.orb.battambang.pharmacy;
 
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.connection.DatabaseConnection;
-import com.orb.battambang.util.QueueManager;
+import com.orb.battambang.util.MenuGallery;
+import com.orb.battambang.util.MiniQueueManager;
 import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,10 +19,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
@@ -86,14 +86,48 @@ public class MedicineDispenseController implements Initializable {
     private TextArea prescriptionTextArea;
     @FXML
     private TextArea allergiesTextArea;
-
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
+
+    @FXML
+    private AnchorPane sliderAnchorPane;
+    @FXML
+    private Label menuLabel;
+    @FXML
+    private Label menuBackLabel;
+    @FXML
+    private Button menuHomeButton;
+    @FXML
+    private Button menuReceptionButton;
+    @FXML
+    private Button menuTriageButton;
+    @FXML
+    private Button menuEducationButton;
+    @FXML
+    private Button menuConsultationButton;
+    @FXML
+    private Button menuPharmacyButton;
+    @FXML
+    private Button menuQueueManagerButton;
+    @FXML
+    private Button menuAdminButton;
+    @FXML
+    private Button menuLogoutButton;
+    @FXML
+    private Button menuUserButton;
+    @FXML
+    private Button menuLocationButton;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //initialising MenuGallery
+        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuUserButton, menuLocationButton);
 
-        QueueManager waitingQueueManager = new QueueManager(waitingListView, "pharmacyWaitingTable");
-        QueueManager progressQueueManager = new QueueManager(inProgressListView, "pharmacyProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "pharmacyWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "pharmacyProgressTable");
 
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -440,14 +474,24 @@ public class MedicineDispenseController implements Initializable {
 
     private void movePatientToInProgress(Integer queueNumber) {
 
+        String nameFromWaitingListQuery = "SELECT name FROM pharmacyWaitingTable WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO pharmacyProgressTable (queueNumber) VALUES (?)";
+        String insertIntoProgressListQuery = "INSERT INTO pharmacyProgressTable (queueNumber, name) VALUES (?, ?)";
 
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
+        try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
              PreparedStatement insertStatement = connection.prepareStatement(insertIntoProgressListQuery)) {
 
             // Start a transaction
             connection.setAutoCommit(false);
+
+            //Get name from waiting list
+            String name = "";
+            nameStatement.setInt(1, queueNumber);
+            ResultSet rs = nameStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+            }
 
             // Delete from waiting list
             deleteStatement.setInt(1, queueNumber);
@@ -455,6 +499,7 @@ public class MedicineDispenseController implements Initializable {
 
             // Insert into progress list
             insertStatement.setInt(1, queueNumber);
+            insertStatement.setString(2, name);
             insertStatement.executeUpdate();
 
             // Commit the transaction
@@ -469,7 +514,7 @@ public class MedicineDispenseController implements Initializable {
                     connection.rollback(); // Roll back transaction if any error occurs
                 }
             } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+                System.out.println(rollbackEx);
             }
             e.printStackTrace();
         } finally {
@@ -478,13 +523,13 @@ public class MedicineDispenseController implements Initializable {
                     connection.setAutoCommit(true); // Restore auto-commit mode
                 }
             } catch (SQLException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
     }
 
     @FXML
-    public void checkoutButtonOnAction(ActionEvent e) {
+    public void sendButtonOnAction(ActionEvent e) {
         Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!inProgressListView.getItems().isEmpty()) {
@@ -494,19 +539,19 @@ public class MedicineDispenseController implements Initializable {
 
         if (selectedPatient != null) {
             removeFromQueue(selectedPatient);
+            int queueNumber = selectedPatient.intValue();
+            //update dispense status to complete
+            String updateStatusQuery = "UPDATE patientQueueTable SET pharmacyStatus = 'Dispensed' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
         }
 
-        int queueNumber = selectedPatient.intValue();
-        //update dispense status to complete
-        String updateStatusQuery = "UPDATE patientQueueTable SET pharmacyStatus = 'Dispensed' WHERE queueNumber = ?";
-        try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
-            updateStatusStatement.setInt(1, queueNumber);
-            updateStatusStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
     }
 
     private void removeFromQueue(Integer queueNumber) {
