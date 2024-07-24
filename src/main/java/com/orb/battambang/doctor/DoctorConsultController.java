@@ -381,6 +381,35 @@ public class DoctorConsultController implements Initializable {
         }
     }
 
+    @FXML
+    public void createReferralButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().trim().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("referral.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+
+            // Get the controller instance
+            ReferralController controller = loader.getController();
+
+            // Set the queue number
+            String queueNumberText = queueNumberTextField.getText().trim();
+            controller.setQueueNumber(Integer.parseInt(queueNumberText));
+
+            stage.show();
+
+        } catch (Exception ex) {
+            Labels.showMessageLabel(warningLabel, "Unexpected error occurred.", false);
+            ex.printStackTrace();  // Print stack trace for debugging
+        }
+    }
+
 
     public void displayConsultationNotes(int queueNumber) {
         String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
