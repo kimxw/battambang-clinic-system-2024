@@ -1,6 +1,5 @@
 package com.orb.battambang.doctor;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.pharmacy.Medicine;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.Prescription;
