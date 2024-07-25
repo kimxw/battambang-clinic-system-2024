@@ -10,21 +10,6 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.ReferralController">
    <children>
-      <Button fx:id="exitButton" layoutX="560.0" layoutY="7.0" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Exit">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="updateButton" layoutX="524.0" layoutY="372.0" mnemonicParsing="false" onAction="#updateButtonOnAction" prefHeight="22.0" prefWidth="71.0" text="Update">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="printButton" layoutX="522.0" layoutY="7.0" mnemonicParsing="false" onAction="#printButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Print">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
       <Pane fx:id="pane1" layoutX="14.0" layoutY="2.0" prefHeight="393.0" prefWidth="497.0">
          <children>
             <Pane layoutX="21.0" layoutY="207.0" prefHeight="135.0" prefWidth="550.0" style="-fx-background-color: #D1EEFC;">
@@ -144,5 +129,20 @@
             </TextField>
          </children>
       </Pane>
+      <Button fx:id="exitButton" layoutX="560.0" layoutY="7.0" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Exit">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="updateButton" layoutX="524.0" layoutY="372.0" mnemonicParsing="false" onAction="#updateButtonOnAction" prefHeight="22.0" prefWidth="71.0" text="Update">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="printButton" layoutX="522.0" layoutY="7.0" mnemonicParsing="false" onAction="#printButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Print">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
