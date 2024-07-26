@@ -553,8 +553,10 @@ public class MedicineDispenseController implements Initializable {
                 throw new RuntimeException(ex);
             }
 
+            updateParticularsPane(selectedPatient.intValue());
             Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
         }
+
 
     }
 

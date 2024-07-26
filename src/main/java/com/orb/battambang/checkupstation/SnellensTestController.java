@@ -24,6 +24,7 @@ import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class SnellensTestController extends CheckupMenuController implements Initializable {
 
+    private int initialisingQueueNumber = -1;
 
     @FXML
     private Label queueSelectLabel;
@@ -132,7 +133,21 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             }
         });
 
-        particularsPane.setVisible(false); // Initially hide the particularsPane
+        particularsPane.setVisible(false);
+
+    }
+
+    public void postInitializationSetup() {
+        if (initialisingQueueNumber == -1) {
+            particularsPane.setVisible(false); // Initially hide the particularsPane
+        } else {
+            queueNumberTextField.setText(String.valueOf(initialisingQueueNumber));
+            searchButtonOnAction(new ActionEvent());
+        }
+    }
+
+    public void setInitialisingQueueNumber(int initialisingQueueNumber) {
+        this.initialisingQueueNumber = initialisingQueueNumber;
     }
 
     @FXML

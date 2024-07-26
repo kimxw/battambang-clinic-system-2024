@@ -24,6 +24,7 @@ import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class HeadLiceController extends CheckupMenuController implements Initializable {
 
+    private int initialisingQueueNumber = -1;
 
     @FXML
     private Label queueSelectLabel;
@@ -129,7 +130,7 @@ public class HeadLiceController extends CheckupMenuController implements Initial
             }
         });
 
-        particularsPane.setVisible(false); // Initially hide the particularsPane
+        particularsPane.setVisible(false);
 
         // Create a ToggleGroup
         ToggleGroup group = new ToggleGroup();
@@ -138,6 +139,19 @@ public class HeadLiceController extends CheckupMenuController implements Initial
         yesRadioButton.setToggleGroup(group);
         noRadioButton.setToggleGroup(group);
 
+    }
+
+    public void postInitializationSetup() {
+        if (initialisingQueueNumber == -1) {
+            particularsPane.setVisible(false); // Initially hide the particularsPane
+        } else {
+            queueNumberTextField.setText(String.valueOf(initialisingQueueNumber));
+            searchButtonOnAction(new ActionEvent());
+        }
+    }
+
+    public void setInitialisingQueueNumber(int initialisingQueueNumber) {
+        this.initialisingQueueNumber = initialisingQueueNumber;
     }
 
     @FXML

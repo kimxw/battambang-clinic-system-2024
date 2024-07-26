@@ -31,6 +31,8 @@ import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class HistoryController extends CheckupMenuController implements Initializable {
 
+    private int initialisingQueueNumber = -1;
+
     @FXML
     private Label queueSelectLabel;
     @FXML
@@ -144,8 +146,20 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 }
             }
         });
+        particularsPane.setVisible(false);
+    }
 
-        particularsPane.setVisible(false); // Initially hide the particularsPane
+    public void postInitializationSetup() {
+        if (initialisingQueueNumber == -1) {
+            particularsPane.setVisible(false); // Initially hide the particularsPane
+        } else {
+            queueNumberTextField.setText(String.valueOf(initialisingQueueNumber));
+            searchButtonOnAction(new ActionEvent());
+        }
+    }
+
+    public void setInitialisingQueueNumber(int initialisingQueueNumber) {
+        this.initialisingQueueNumber = initialisingQueueNumber;
     }
 
     @FXML

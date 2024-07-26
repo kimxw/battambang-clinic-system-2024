@@ -1,6 +1,7 @@
 package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.doctor.ReferralController;
 import com.orb.battambang.util.Labels;
 
 import com.orb.battambang.util.MenuGallery;
@@ -34,6 +35,8 @@ import java.util.ResourceBundle;
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class CheckupMenuController implements Initializable {
+
+    private int initialisingQueueNumber = -1;
 
     @FXML
     private Label queueSelectLabel;
@@ -154,49 +157,41 @@ public class CheckupMenuController implements Initializable {
         particularsPane.setVisible(false); // Initially hide the particularsPane
     }
 
+    public void postInitializationSetup() {
+        if (initialisingQueueNumber == -1) {
+            particularsPane.setVisible(false); // Initially hide the particularsPane
+        } else {
+            queueNumberTextField.setText(String.valueOf(initialisingQueueNumber));
+            searchButtonOnAction(new ActionEvent());
+        }
+    }
+
+    public void setInitialisingQueueNumber(int initialisingQueueNumber) {
+        this.initialisingQueueNumber = initialisingQueueNumber;
+    }
+
     void loadFXML(String fxmlFile, ActionEvent e) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxmlFile));
             Parent root = fxmlLoader.load();
+
+            if (!queueNumberTextField.getText().isBlank()) {
+                // Get the controller instance
+                CheckupMenuController controller = fxmlLoader.getController();
+
+                String queueNumberText = queueNumberTextField.getText().trim();
+                controller.setInitialisingQueueNumber(Integer.parseInt(queueNumberText));
+                controller.postInitializationSetup();
+            }
+
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             stage.setScene(scene);
+
         } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
-
-    @FXML
-    public void switchUserButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-
-            newUserStage.setTitle("Login");
-            newUserStage.setScene(scene);
-            Stage stage = (Stage) switchUserButton.getScene().getWindow();
-            stage.close();
-            newUserStage.show();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-            exc.getCause();
-        }
-    }
-
-    @FXML
-    private void receptionButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("patient-registration.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-    }
-
 
     @FXML
     public void heightAndWeightButtonOnAction(ActionEvent e) {
