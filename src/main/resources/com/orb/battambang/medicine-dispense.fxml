@@ -117,37 +117,37 @@
       </Pane>
       <Label layoutX="757.0" layoutY="125.0" text="ID">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
       <Label layoutX="755.0" layoutY="166.0" text="Name">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
       <Label layoutX="756.0" layoutY="200.0" text="Quantity (mg)">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="757.0" layoutY="252.0" text="Units to dispense">
+      <Label layoutX="757.0" layoutY="252.0" text="Dispense units">
          <font>
-            <Font size="11.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="inputIdTextField" layoutX="847.0" layoutY="121.0" prefHeight="25.0" prefWidth="112.0" />
-      <TextField fx:id="inputNameTextField" layoutX="848.0" layoutY="163.0" prefHeight="25.0" prefWidth="112.0" />
-      <TextField fx:id="inputUnitTextField" layoutX="849.0" layoutY="247.0" prefHeight="26.0" prefWidth="112.0">
+      <TextField fx:id="inputIdTextField" layoutX="845.0" layoutY="121.0" prefHeight="25.0" prefWidth="114.0" />
+      <TextField fx:id="inputNameTextField" layoutX="846.0" layoutY="163.0" prefHeight="25.0" prefWidth="114.0" />
+      <TextField fx:id="inputUnitTextField" layoutX="847.0" layoutY="247.0" prefHeight="26.0" prefWidth="114.0">
          <font>
             <Font size="10.0" />
          </font></TextField>
-      <Button fx:id="dispenseButton" layoutX="845.0" layoutY="295.0" mnemonicParsing="false" onAction="#dispenseButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #bdd9ba;" text="Dispense" />
-      <Button fx:id="lowStockButton" layoutX="746.0" layoutY="332.0" mnemonicParsing="false" onAction="#lowStockButtonOnAction" prefHeight="31.0" prefWidth="168.0" style="-fx-background-color: #b2c6dd;" text="View Low Stock Medicines" />
-      <Label fx:id="messageLabel1" layoutX="748.0" layoutY="373.0" prefHeight="18.0" prefWidth="223.0" />
-      <Label fx:id="messageLabel2" layoutX="748.0" layoutY="395.0" prefHeight="18.0" prefWidth="250.0" />
-      <TextField fx:id="inputQuantityTextField" layoutX="848.0" layoutY="196.0" prefHeight="25.0" prefWidth="112.0" />
+      <Button fx:id="dispenseButton" layoutX="844.0" layoutY="296.0" mnemonicParsing="false" onAction="#dispenseButtonOnAction" prefHeight="26.0" prefWidth="81.0" styleClass="button-dispense" stylesheets="@button-style.css" text="Dispense" />
+      <Button fx:id="lowStockButton" layoutX="757.0" layoutY="575.0" mnemonicParsing="false" onAction="#lowStockButtonOnAction" prefHeight="26.0" prefWidth="160.0" styleClass="button-view-low-stock" stylesheets="@button-style.css" text="View Low Stock Medicines" />
+      <Label fx:id="messageLabel1" layoutX="760.0" layoutY="332.0" prefHeight="18.0" prefWidth="223.0" />
+      <Label fx:id="messageLabel2" layoutX="760.0" layoutY="356.0" prefHeight="18.0" prefWidth="250.0" />
+      <Label fx:id="warningLabel" layoutX="760.0" layoutY="379.0" prefHeight="18.0" prefWidth="250.0" textFill="#e45614" />
+      <TextField fx:id="inputQuantityTextField" layoutX="846.0" layoutY="196.0" prefHeight="25.0" prefWidth="114.0" />
       <Line endX="869.0" endY="327.0" layoutX="91.0" layoutY="-93.0" startX="667.0" startY="327.0" stroke="#b2adad95" strokeWidth="2.0" />
-      <Label fx:id="warningLabel" layoutX="748.0" layoutY="420.0" prefHeight="18.0" prefWidth="250.0" textFill="#e45614" />
       <TableView fx:id="medicineTableView" layoutX="316.0" layoutY="93.0" prefHeight="516.0" prefWidth="423.0">
          <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="53.0" text="ID" />
@@ -161,7 +161,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="745.0" layoutY="295.0" mnemonicParsing="false" onAction="#clearButtonOnAction" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: #feb5b7;" text="Clear Fields" />
+      <Button layoutX="753.0" layoutY="296.0" mnemonicParsing="false" onAction="#clearButtonOnAction" prefHeight="26.0" prefWidth="81.0" styleClass="button-clearfields" stylesheets="@button-style.css" text="Clear Fields" />
       <Line endX="869.0" endY="327.0" layoutX="90.0" layoutY="-173.0" startX="667.0" startY="327.0" stroke="#b2adad95" strokeWidth="2.0" style="-fx-stroke-dash-array: 7 7;" />
       <Pane fx:id="queuePane" layoutX="967.0" layoutY="88.0" prefHeight="500.0" prefWidth="236.0">
          <children>
@@ -172,7 +172,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <ListView fx:id="waitingListView" layoutX="53.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
+            <ListView fx:id="waitingListView" layoutX="65.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
             <Label alignment="CENTER" layoutX="26.0" layoutY="39.0" prefHeight="17.0" prefWidth="77.0" text="Waiting" />
             <Button layoutX="98.0" layoutY="37.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="24.0" prefWidth="29.0">
                <font>
@@ -366,5 +366,6 @@
             </HBox>
          </children>
       </AnchorPane>
+      <Button layoutX="757.0" layoutY="539.0" mnemonicParsing="false" onAction="#updateInventoryButtonOnAction" prefHeight="26.0" prefWidth="160.0" styleClass="button-update-inventory" stylesheets="@button-style.css" text="Update Inventory" />
    </children>
 </Pane>

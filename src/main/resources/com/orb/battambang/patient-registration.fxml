@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -52,9 +53,13 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="addButton" layoutX="358.0" layoutY="371.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: #bdd9ba;" text="Add/ Update" />
+            <Button fx:id="addButton" layoutX="358.0" layoutY="371.0" mnemonicParsing="false" onAction="#addButtonOnAction" prefHeight="31.0" prefWidth="91.0" stylesheets="@button-style.css" text="Add/ Update">
+               <styleClass>
+                  <String fx:value="button-clearfields" />
+                  <String fx:value="button-dispense" />
+               </styleClass></Button>
             <Label fx:id="messageLabel1" alignment="CENTER_RIGHT" layoutX="20.0" layoutY="378.0" prefHeight="18.0" prefWidth="149.0" />
-            <Button fx:id="editButton" layoutX="192.0" layoutY="371.0" mnemonicParsing="false" onAction="#editButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #bea9df;" text="Edit" />
+            <Button fx:id="editButton" layoutX="192.0" layoutY="371.0" mnemonicParsing="false" onAction="#editButtonOnAction" prefHeight="31.0" prefWidth="69.0" styleClass="button-update-inventory" stylesheets="@button-style.css" text="Edit" />
          </children>
       </Pane>
       <TableView fx:id="patientTableView" layoutX="35.0" layoutY="145.0" prefHeight="435.0" prefWidth="665.0">
@@ -70,7 +75,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="deleteButton" layoutX="994.0" layoutY="529.0" mnemonicParsing="false" onAction="#deleteButtonOnAction" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color: #e59295;" text="Delete" />
+      <Button fx:id="deleteButton" layoutX="994.0" layoutY="529.0" mnemonicParsing="false" onAction="#deleteButtonOnAction" prefHeight="31.0" prefWidth="69.0" styleClass="button-clearfields" stylesheets="@button-style.css" text="Delete" />
       <Button layoutX="719.0" layoutY="144.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="125.0" style="-fx-background-color: #5c84af;" text="Create New Patient" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />

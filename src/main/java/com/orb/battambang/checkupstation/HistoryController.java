@@ -82,6 +82,8 @@ public class HistoryController extends CheckupMenuController implements Initiali
     private TextField durationTextField;
     @FXML
     private TextArea drugAllergiesTextArea;
+    @FXML
+    private TextArea additionalNotesTextArea;
 
     @FXML
     private ListView<Integer> waitingListView;
@@ -164,11 +166,13 @@ public class HistoryController extends CheckupMenuController implements Initiali
                     PSTextArea.setText(resultSet.getString("PS"));
                     durationTextField.setText(resultSet.getString("duration"));
                     drugAllergiesTextArea.setText(resultSet.getString("drugAllergies"));
+                    additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
                 } else {
                     clearFields();
                 }
             } catch (SQLException ex) {
-                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", true);
+                Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+                //System.out.println(ex);
                 clearFields();
             }
         }
@@ -179,6 +183,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
         PSTextArea.setText("");
         durationTextField.setText("");
         drugAllergiesTextArea.setText("");
+        additionalNotesTextArea.setText("");
     }
 
 
@@ -188,6 +193,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
             int queueNumber = Integer.parseInt(queueNoLabel.getText());
+
             addSymptoms(queueNumber);
             updateParticularsPane(queueNumber);
         }
@@ -199,6 +205,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
             String PS = PSTextArea.getText().isEmpty() ? null : PSTextArea.getText();
             String duration = durationTextField.getText().isEmpty() ? null : durationTextField.getText();
             String allergies = drugAllergiesTextArea.getText().isEmpty() ? null : drugAllergiesTextArea.getText();
+            String additionalNotes = additionalNotesTextArea.getText().isEmpty() ? null : additionalNotesTextArea.getText();
 
             // Check if the row exists
             String checkExistQuery = "SELECT COUNT(*) FROM historyTable WHERE queueNumber = ?";
@@ -210,25 +217,27 @@ public class HistoryController extends CheckupMenuController implements Initiali
 
                 if (count > 0) {
                     // If row exists, update the specific columns
-                    String updateQuery = "UPDATE historyTable SET bodySystem = ?, PS = ?, duration = ?, drugAllergies = ? WHERE queueNumber = ?";
+                    String updateQuery = "UPDATE historyTable SET bodySystem = ?, PS = ?, duration = ?, drugAllergies = ?, additionalNotes = ? WHERE queueNumber = ?";
                     try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
                         updateStatement.setString(1, system);
                         updateStatement.setString(2, PS);
                         updateStatement.setString(3, duration);
                         updateStatement.setString(4, allergies);
-                        updateStatement.setInt(5, queueNumber);
+                        updateStatement.setString(5, additionalNotes);
+                        updateStatement.setInt(6, queueNumber);
 
                         updateStatement.executeUpdate();
                     }
                 } else {
                     // If row doesn't exist, insert a new row
-                    String insertQuery = "INSERT INTO historyTable (queueNumber, bodySystem, PS, duration, drugAllergies) VALUES (?, ?, ?, ?, ?)";
+                    String insertQuery = "INSERT INTO historyTable (queueNumber, bodySystem, PS, duration, drugAllergies, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
                         insertStatement.setInt(1, queueNumber);
                         insertStatement.setString(2, system);
                         insertStatement.setString(3, PS);
                         insertStatement.setString(4, duration);
                         insertStatement.setString(5, allergies);
+                        insertStatement.setString(6, additionalNotes);
 
                         insertStatement.executeUpdate();
                     }
@@ -239,6 +248,9 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
                     updateStatusStatement.setInt(1, queueNumber);
                     updateStatusStatement.executeUpdate();
+                } catch (Exception ex1) {
+                    System.out.println(ex1);
+                    //Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a target queue", "#bf1b15", "/icons/cross.png");
                 }
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
             }

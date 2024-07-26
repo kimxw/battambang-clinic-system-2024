@@ -1,0 +1,81 @@
+/* General button styling without shadows */
+.button-22, .button-clearfields, .button-dispense, .button-update-inventory, .button-view-low-stock {
+  -fx-background-radius: 8px;
+  -fx-border-radius: 8px;
+  -fx-border-color: transparent;
+  -fx-text-fill: #fff;
+  -fx-cursor: hand;
+  -fx-padding: 2px 6px; /* Adjusted padding */
+  -fx-font-family: "RM Neue", sans-serif;
+  -fx-font-size: 11px; /* Decreased font size */
+  -fx-font-weight: bold; /* Bold text */
+  -fx-line-spacing: 1.15;
+  -fx-alignment: center;
+  -fx-text-align: center;
+  -fx-transition: background-color 0.3s ease-in-out; /* Smooth transitions */
+}
+
+/* Specific styles for .button-22 */
+.button-22 {
+  -fx-background-color: linear-gradient(#8ab5d3, #4a90e2); /* Softer blue gradient */
+}
+
+.button-22:hover {
+  -fx-background-color: linear-gradient(#7a9ac5, #0078d4); /* Slightly darker blue gradient */
+}
+
+.button-22:pressed {
+  -fx-background-color: #0078d4; /* Solid color for pressed state */
+}
+
+/* Specific styles for .button-clearfields */
+.button-clearfields {
+  -fx-background-color: linear-gradient(#f77a7a, #c62828); /* Increased chroma red gradient */
+}
+
+.button-clearfields:hover {
+  -fx-background-color: linear-gradient(#f76c6c, #c62828); /* Slightly more vibrant red gradient */
+}
+
+.button-clearfields:pressed {
+  -fx-background-color: #c62828; /* Solid color for pressed state */
+}
+
+/* Specific styles for .button-dispense */
+.button-dispense {
+  -fx-background-color: linear-gradient(#b8d0a0, #6f9b3f); /* Reduced chroma green gradient */
+}
+
+.button-dispense:hover {
+  -fx-background-color: linear-gradient(#b0d5a0, #6f9b3f); /* Slightly less intense green gradient */
+}
+
+.button-dispense:pressed {
+  -fx-background-color: #6f9b3f; /* Solid color for pressed state */
+}
+
+/* Specific styles for .button-update-inventory */
+.button-update-inventory {
+  -fx-background-color: linear-gradient(#a5c4ff, #4a90e2); /* Darker lighter blue gradient */
+}
+
+.button-update-inventory:hover {
+  -fx-background-color: linear-gradient(#a1c8ff, #0078d4); /* Slightly darker light blue gradient */
+}
+
+.button-update-inventory:pressed {
+  -fx-background-color: #0078d4; /* Solid color for pressed state */
+}
+
+/* Specific styles for .button-view-low-stock */
+.button-view-low-stock {
+  -fx-background-color: linear-gradient(#e1b9d7, #a67ca8); /* Softer lilac gradient */
+}
+
+.button-view-low-stock:hover {
+  -fx-background-color: linear-gradient(#e2a1d6, #a67ca8); /* Slightly darker lilac gradient */
+}
+
+.button-view-low-stock:pressed {
+  -fx-background-color: #a67ca8; /* Solid color for pressed state */
+}
