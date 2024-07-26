@@ -126,6 +126,7 @@ public class HeadLiceController extends CheckupMenuController implements Initial
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearRecordFields();
                 }
             }
         });

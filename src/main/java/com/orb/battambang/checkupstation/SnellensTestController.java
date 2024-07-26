@@ -129,6 +129,7 @@ public class SnellensTestController extends CheckupMenuController implements Ini
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearFields();
                 }
             }
         });

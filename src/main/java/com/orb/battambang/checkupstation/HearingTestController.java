@@ -126,6 +126,7 @@ public class HearingTestController extends CheckupMenuController implements Init
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearRecordFields();
                 }
             }
         });

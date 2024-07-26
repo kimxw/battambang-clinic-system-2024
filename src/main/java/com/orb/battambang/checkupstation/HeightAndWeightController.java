@@ -136,6 +136,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearFields();
                 }
             }
         });

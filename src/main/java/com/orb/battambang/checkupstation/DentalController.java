@@ -122,6 +122,7 @@ public class DentalController extends CheckupMenuController implements Initializ
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearRecordFields();
                 }
             }
         });

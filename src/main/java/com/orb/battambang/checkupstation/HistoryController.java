@@ -143,6 +143,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 if (newValue != null && !newValue.isEmpty()) {
                     particularsPane.setVisible(false);
                     clearParticularsFields();
+                    clearFields();
                 }
             }
         });
