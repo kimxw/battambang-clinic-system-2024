@@ -45,7 +45,7 @@
       <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
       <Pane fx:id="particularsPane" layoutX="64.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">
          <children>
-            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="nameLabel" layoutX="87.0" layoutY="59.0" prefHeight="19.0" prefWidth="134.0">
                <font>
@@ -67,16 +67,16 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="245.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="276.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="307.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="245.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="276.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="307.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="queueNoLabel" layoutX="85.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="338.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="SALMON" height="19.0" layoutX="137.0" layoutY="367.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="338.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="367.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="status2Label" alignment="CENTER" layoutX="141.0" layoutY="245.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="status3Label" alignment="CENTER" layoutX="141.0" layoutY="276.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="status4Label" alignment="CENTER" layoutX="141.0" layoutY="307.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />

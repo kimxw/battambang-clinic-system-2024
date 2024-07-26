@@ -267,53 +267,11 @@
          </font></Label>
       <ImageView fx:id="warningImageView" fitHeight="24.0" fitWidth="24.0" layoutX="958.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
       <Line endX="-100.0" endY="33.0" layoutX="1041.0" layoutY="620.0" startX="-100.0" startY="1.0" stroke="#ebebeb" strokeWidth="3.0" />
-      <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
-         <children>
-            <HBox prefHeight="67.0" prefWidth="1230.0" style="-fx-background-color: #192841;">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" translateX="15.0" translateY="20.0">
-                     <image>
-                        <Image url="@../../../icons/menu.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="menuLabel" prefHeight="25.0" prefWidth="91.0" text="        Menu" textFill="WHITE" translateX="-15.0" translateY="22.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="menuBackLabel" prefHeight="25.0" prefWidth="125.0" text="        Menu" textFill="WHITE" translateX="-106.0" translateY="22.0">
-                     <font>
-                        <Font name="System Bold" size="16.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
-                           <image>
-                              <Image url="@../../../icons/user.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
-                           <image>
-                              <Image url="@../../../icons/location.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </AnchorPane>
+      <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="26.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/queue-pwt.png" />
+         </image>
+      </ImageView>
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css" translateX="-200.0">
          <children>
             <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
@@ -433,10 +391,52 @@
             </VBox>
          </children>
       </AnchorPane>
-      <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="26.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../icons/queue-pwt.png" />
-         </image>
-      </ImageView>
+      <AnchorPane fx:id="topAnchorPane" prefHeight="66.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+         <children>
+            <HBox prefHeight="67.0" prefWidth="1230.0" style="-fx-background-color: #192841;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true" scaleX="0.7" scaleY="0.7" scaleZ="0.7" translateX="15.0" translateY="20.0">
+                     <image>
+                        <Image url="@../../../icons/menu.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="menuLabel" prefHeight="25.0" prefWidth="91.0" text="        Menu" textFill="WHITE" translateX="-15.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="menuBackLabel" prefHeight="25.0" prefWidth="125.0" text="        Menu" textFill="WHITE" translateX="-106.0" translateY="22.0">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="menuUserButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="280.0" styleClass="topMenuItem" textFill="WHITE" translateX="700.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.9" scaleY="0.9">
+                           <image>
+                              <Image url="@../../../icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="menuLocationButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="66.0" prefWidth="125.0" styleClass="topMenuItem" textFill="WHITE" translateX="300.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8">
+                           <image>
+                              <Image url="@../../../icons/location.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
 </Pane>

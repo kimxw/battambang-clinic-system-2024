@@ -221,6 +221,11 @@ public class DoctorConsultController implements Initializable {
         quantityColumn.setCellFactory(new WrappedTextCellFactory<>());
         unitsColumn.setCellFactory(new WrappedTextCellFactory<>());
         dosageColumn.setCellFactory(new WrappedTextCellFactory<>());
+
+        // Create a ToggleGroup for referral radio buttons
+        ToggleGroup group = new ToggleGroup();
+        yesRadioButton.setToggleGroup(group);
+        noRadioButton.setToggleGroup(group);
     }
 
     @FXML
@@ -382,6 +387,15 @@ public class DoctorConsultController implements Initializable {
     }
 
     @FXML
+    public void radioButtonOnAction(ActionEvent e) {
+        if (yesRadioButton.isSelected()) {
+            createReferralButton.setVisible(true);
+        } else {
+            createReferralButton.setVisible(false);
+        }
+    }
+
+    @FXML
     public void createReferralButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().trim().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
@@ -481,14 +495,12 @@ public class DoctorConsultController implements Initializable {
             if (resultSet.next()) {
                 boolean referralStatus = resultSet.getBoolean("referralStatus");
                 if (referralStatus) {
-                    yesRadioButton.setSelected(true); // Select Yes if referralStatus is true
-                    noRadioButton.setSelected(false);
+                    yesRadioButton.setSelected(true);
+                    createReferralButton.setVisible(true);
                 } else {
-                    yesRadioButton.setSelected(false);
                     noRadioButton.setSelected(true); // Select No if referralStatus is false
                 }
             } else {
-                // If no result found, clear selection
                 yesRadioButton.setSelected(false);
                 noRadioButton.setSelected(false);
             }
@@ -750,6 +762,7 @@ public class DoctorConsultController implements Initializable {
         yesRadioButton.setSelected(false);
         noRadioButton.setSelected(false);
         consultCompleteCheckBox.setSelected(false);
+        createReferralButton.setVisible(false);
     }
 
 

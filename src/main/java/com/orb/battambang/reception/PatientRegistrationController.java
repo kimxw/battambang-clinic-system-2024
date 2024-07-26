@@ -54,8 +54,9 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private TableColumn<Patient, String> addressTableColumn;
     @FXML
-    private ChoiceBox<Character> inputSexChoiceBox;
-    private final Character[] choiceBoxOptions = new Character[] {'M', 'F'};
+    private RadioButton maleRadioButton;
+    @FXML
+    private RadioButton femaleRadioButton;
 
     @FXML
     private AnchorPane sliderAnchorPane;
@@ -95,7 +96,13 @@ public class PatientRegistrationController implements Initializable {
                 menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
-        inputSexChoiceBox.getItems().addAll(choiceBoxOptions);
+        // Start polling to update the TableView
+        new TableViewUpdater(patientObservableList, patientTableView);
+
+        // Create a ToggleGroup
+        ToggleGroup group = new ToggleGroup();
+        maleRadioButton.setToggleGroup(group);
+        femaleRadioButton.setToggleGroup(group);
 
         // Set cell value factories
         queueNoTableColumn.setCellValueFactory(new PropertyValueFactory<>("queueNo"));
@@ -130,8 +137,6 @@ public class PatientRegistrationController implements Initializable {
             exc.printStackTrace();
         }
 
-        // Start polling to update the TableView
-        new TableViewUpdater(patientObservableList, patientTableView);
     }
 
     @FXML
@@ -142,7 +147,7 @@ public class PatientRegistrationController implements Initializable {
         if (inputPhoneNumber.isEmpty()) {
             inputPhoneNumber = "";
         }
-        Character inputSex = inputSexChoiceBox.getValue();
+        Character inputSex = maleRadioButton.isSelected() ? Character.valueOf('M') : (femaleRadioButton.isSelected() ? 'F' : null); //interesting boxing phenomenon for ternery operator
         String inputAddress = inputAddressTextArea.getText();
 
         if (isEditOperation && selectedPatientForEdit != null) {
@@ -215,7 +220,6 @@ public class PatientRegistrationController implements Initializable {
                 }
                 clearInputFields();
             } catch (Exception exc) {
-                System.out.println(exc);
                 Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
             }
         }
@@ -226,23 +230,24 @@ public class PatientRegistrationController implements Initializable {
         inputNameTextField.setText("");
         inputAgeTextField.setText("");
         inputPhoneNumberTextField.setText("");
-        inputSexChoiceBox.getSelectionModel().clearSelection();
+        maleRadioButton.setSelected(false);
+        femaleRadioButton.setSelected(false);
         inputAddressTextArea.setText("");
     }
 
-    @FXML
-    public void searchButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("patient-search.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception exc) {
-            Labels.showMessageLabel(messageLabel1, "Unexpected error.", false);
-        }
-    }
+//    @FXML
+//    public void searchButtonOnAction(ActionEvent e) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("patient-search.fxml"));
+//            Parent root = loader.load();
+//            Scene scene = new Scene(root);
+//            Stage stage = new Stage();
+//            stage.setScene(scene);
+//            stage.show();
+//        } catch (Exception exc) {
+//            Labels.showMessageLabel(messageLabel1, "Unexpected error.", false);
+//        }
+//    }
 
     @FXML
     public void filterButtonOnAction(ActionEvent e) {
@@ -258,11 +263,20 @@ public class PatientRegistrationController implements Initializable {
             inputNameTextField.setText(selectedPatientForEdit.getName());
             inputAgeTextField.setText(String.valueOf(selectedPatientForEdit.getAge()));
             inputPhoneNumberTextField.setText(selectedPatientForEdit.getPhoneNumber());
-            inputSexChoiceBox.setValue(selectedPatientForEdit.getSex());
+            if (selectedPatientForEdit.getSex().equals('M')) {
+                maleRadioButton.setSelected(true);
+                femaleRadioButton.setSelected(false);
+            } else if (selectedPatientForEdit.getSex().equals('F')) {
+                maleRadioButton.setSelected(false);
+                femaleRadioButton.setSelected(true);
+            } else {
+                maleRadioButton.setSelected(false);
+                femaleRadioButton.setSelected(false);
+            }
             inputAddressTextArea.setText(selectedPatientForEdit.getAddress());
             isEditOperation = true;
         } else {
-            Labels.showMessageLabel(messageLabel1, "Please select a patient to edit.", false);
+            Labels.showMessageLabel(messageLabel1, "Please select a row.", false);
         }
     }
     @FXML
@@ -286,11 +300,12 @@ public class PatientRegistrationController implements Initializable {
                 }
 
                 Labels.showMessageLabel(messageLabel1, "Patient deleted successfully.", true);
+                clearInputFields();
             } catch (Exception ex) {
                 Labels.showMessageLabel(messageLabel1, "Unexpected Error.", false);
             }
         } else {
-            Labels.showMessageLabel(messageLabel1, "Please select a patient to delete.", false);
+            Labels.showMessageLabel(messageLabel1, "Please select a row.", false);
         }
     }
 
@@ -304,7 +319,6 @@ public class PatientRegistrationController implements Initializable {
             stage.setScene(scene);
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
-            System.out.println(exc);
         }
     }
 

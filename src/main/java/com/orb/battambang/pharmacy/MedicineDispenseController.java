@@ -342,6 +342,10 @@ public class MedicineDispenseController implements Initializable {
     }
 
     @FXML
+    public void updateInventoryButtonOnAction(ActionEvent e) {
+
+    }
+    @FXML
     public void lowStockButtonOnAction(ActionEvent e) {
         try {
             FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("low-stock.fxml"));
@@ -549,8 +553,10 @@ public class MedicineDispenseController implements Initializable {
                 throw new RuntimeException(ex);
             }
 
+            updateParticularsPane(selectedPatient.intValue());
             Labels.showMessageLabel(warningLabel, "Q" + queueNumber + " status updated successfully", true);
         }
+
 
     }
 

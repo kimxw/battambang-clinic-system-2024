@@ -126,7 +126,7 @@ public class MenuGallery {
         locationButton.setText(NewLoginPageController.getStaffDetails().getLocation());
         userButton.setText(NewLoginPageController.getStaffDetails().getFirstName() +
                 " " + NewLoginPageController.getStaffDetails().getLastName() +
-                " | Staff ID: " + NewLoginPageController.getStaffDetails().getStaffID());
+                " | ID: " + NewLoginPageController.getStaffDetails().getStaffID());
 
     }
 

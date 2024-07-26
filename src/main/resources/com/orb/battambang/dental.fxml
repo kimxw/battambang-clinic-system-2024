@@ -5,15 +5,15 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.DentalController">
    <children>
       <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
@@ -47,9 +47,9 @@
       <Pane layoutX="374.0" layoutY="149.0" prefHeight="469.0" prefWidth="588.0" style="-fx-background-color: #B0C4DE;">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="13.0" layoutY="10.0" stroke="#eeeeee" strokeType="INSIDE" width="562.0" />
-            <TextArea fx:id="additionalNotesTextArea" layoutX="44.0" layoutY="101.0" prefHeight="304.0" prefWidth="500.0" />
+            <TextArea fx:id="additionalNotesTextArea" layoutX="44.0" layoutY="101.0" prefHeight="304.0" prefWidth="419.0" />
             <Label layoutX="44.0" layoutY="74.0" text="Dental review :" />
-            <Button layoutX="449.0" layoutY="414.0" mnemonicParsing="false" onAction="#updateButtonOnAction" text="Update Record" />
+            <Button layoutX="367.0" layoutY="414.0" mnemonicParsing="false" onAction="#updateButtonOnAction" text="Update Record" />
             <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="51.0" layoutY="267.0" prefHeight="17.0" prefWidth="297.0" />
             <Button layoutX="41.0" layoutY="33.0" mnemonicParsing="false" onAction="#deferButtonOnAction" text="Defer patient" />
             <Label fx:id="deferLabel" layoutX="142.0" layoutY="37.0" prefHeight="17.0" prefWidth="297.0" textFill="#46a9ff" />
