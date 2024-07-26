@@ -1,7 +1,10 @@
 package com.orb.battambang.reception;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.pharmacy.Medicine;
 import com.orb.battambang.util.MenuGallery;
+import com.orb.battambang.util.PatientTableViewUpdater;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -20,8 +23,11 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -84,6 +90,7 @@ public class PatientFilterController implements Initializable{
 
 
     ObservableList<Patient> patientSearchModelObservableList = FXCollections.observableArrayList();
+    FilteredList<Patient> filteredList = new FilteredList<>(patientSearchModelObservableList);
 
 
     @Override
@@ -121,8 +128,6 @@ public class PatientFilterController implements Initializable{
             addressTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
             patientTableView.setItems(patientSearchModelObservableList);
-
-            FilteredList<Patient> filteredList = new FilteredList<>(patientSearchModelObservableList);
 
             // Filter by queue number
             queueSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -167,8 +172,69 @@ public class PatientFilterController implements Initializable{
             sortedList.comparatorProperty().bind(patientTableView.comparatorProperty());
             patientTableView.setItems(sortedList);
 
+            // Listener for row selection
+            patientTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    queueSearchTextField.setText(newValue.getQueueNo().toString());
+                    nameSearchTextField.setText(newValue.getName());
+                    phoneNumberSearchTextField.setText(newValue.getPhoneNumber());
+                }
+            });
+
+            startPolling();
+
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    private void startPolling() {
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> updateTableView());
+            }
+        }, 0, 30000); // Poll every 30 seconds
+    }
+
+    private void updateTableView() {
+        String query = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            patientSearchModelObservableList.clear(); // Clear the list before adding new items
+
+            while (resultSet.next()) {
+                Integer queueNo = resultSet.getInt("queueNumber");
+                String name = resultSet.getString("name");
+                Integer age = resultSet.getInt("age");
+                String sexString = resultSet.getString("sex");
+                Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String address = resultSet.getString("address");
+
+                patientSearchModelObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+            }
+
+            // Ensure the filter and sort are re-applied
+
+            filteredList.setPredicate(patientSearchModel -> {
+                String searchQueue = queueSearchTextField.getText().trim();
+                String searchName = nameSearchTextField.getText().trim().toLowerCase();
+                String searchPhone = phoneNumberSearchTextField.getText().trim();
+                boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                return matchQueue && matchName && matchPhone;
+            });
+
+            SortedList<Patient> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(patientTableView.comparatorProperty());
+            patientTableView.setItems(sortedList); // Update the TableView
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
