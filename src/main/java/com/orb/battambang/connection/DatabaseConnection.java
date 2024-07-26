@@ -1,6 +1,7 @@
 package com.orb.battambang.connection;
 
 import java.sql.*;
+import java.io.File;
 
 public class DatabaseConnection {
     protected static String filePath;
@@ -13,6 +14,13 @@ public class DatabaseConnection {
         location = location.equals("Kbal Koh") ? "KbalKoh" : location;
         boolean success = false;
         DatabaseConnection.filePath = "./src/main/resources/databases/" + location + "-clinicdb.db";
+
+        // Check if the file exists before attempting to connect
+        File dbFile = new File(filePath);
+        if (!dbFile.exists()) {
+            return false;
+        }
+
         try {
             Class.forName("org.sqlite.JDBC");
             String url = "jdbc:sqlite:" + filePath;
