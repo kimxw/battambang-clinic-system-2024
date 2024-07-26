@@ -232,19 +232,6 @@ public class MedicineDispenseController implements Initializable {
         }
     }
 
-//    private void updateFilter() {
-//        System.out.println("Updating filter...");
-//        filteredList.setPredicate(medicine -> {
-//            String searchId = inputIdTextField.getText().trim();
-//            String searchName = inputNameTextField.getText().trim().toLowerCase();
-//            String searchQuantity = inputQuantityTextField.getText().trim();
-//            System.out.println("Filtering: ID = " + searchId + ", Name = " + searchName + ", Quantity = " + searchQuantity);
-//            boolean matchId = searchId.isEmpty() || medicine.getId().toString().contains(searchId);
-//            boolean matchName = searchName.isEmpty() || medicine.getName().toLowerCase().contains(searchName);
-//            boolean matchQuantity = searchQuantity.isEmpty() || medicine.getQuantityInMilligrams().toString().contains(searchQuantity);
-//            return matchId && matchName && matchQuantity;
-//        });
-//    }
 
     private void startPolling() {
         Timer timer = new Timer(true);
@@ -391,7 +378,16 @@ public class MedicineDispenseController implements Initializable {
 
     @FXML
     public void updateInventoryButtonOnAction(ActionEvent e) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("update-inventory.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception exc) {
+            Labels.showMessageLabel(messageLabel1, "Unexpected error.", false);
+        }
     }
     @FXML
     public void lowStockButtonOnAction(ActionEvent e) {

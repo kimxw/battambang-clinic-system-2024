@@ -322,7 +322,6 @@ public class PatientRegistrationController implements Initializable {
         // Get the selected item from the TableView
         Patient selectedItem = patientTableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            patientObservableList.remove(selectedItem);
 
             try {
                 String deleteQuery = "DELETE FROM patientQueueTable WHERE queueNumber = " + selectedItem.getQueueNo();
@@ -330,15 +329,30 @@ public class PatientRegistrationController implements Initializable {
                 statement.executeUpdate(deleteQuery);
 
                 // Also delete the patient from the triageWaitingTable and triageProgressTable
-                String deleteWaitingQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
-                String deleteProgressQuery = "DELETE FROM triageProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteTWQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteTPQuery = "DELETE FROM triageProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteEWQuery = "DELETE FROM educationWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteEPQuery = "DELETE FROM educationProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteDWQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteDPQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePWQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePPQuery = "DELETE FROM pharmacyProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 try (Statement deleteStatement = connection.createStatement()) {
-                    deleteStatement.executeUpdate(deleteWaitingQuery);
-                    deleteStatement.executeUpdate(deleteProgressQuery);
+                    deleteStatement.executeUpdate(deleteTWQuery);
+                    deleteStatement.executeUpdate(deleteTPQuery);
+                    deleteStatement.executeUpdate(deleteEWQuery);
+                    deleteStatement.executeUpdate(deleteEPQuery);
+                    deleteStatement.executeUpdate(deleteDWQuery);
+                    deleteStatement.executeUpdate(deleteDPQuery);
+                    deleteStatement.executeUpdate(deletePWQuery);
+                    deleteStatement.executeUpdate(deletePPQuery);
                 }
 
                 Labels.showMessageLabel(messageLabel1, "Patient deleted successfully.", true);
+                patientObservableList.remove(selectedItem);
+
                 clearInputFields();
+                statement.close();
             } catch (Exception ex) {
                 Labels.showMessageLabel(messageLabel1, "Unexpected Error.", false);
             }
