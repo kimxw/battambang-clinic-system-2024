@@ -1,10 +1,9 @@
 package com.orb.battambang.pharmacy;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.MiniQueueManager;
-import com.orb.battambang.util.Rectangles;
+import com.orb.battambang.reception.Patient;
+import com.orb.battambang.util.*;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,6 +26,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -87,6 +88,7 @@ public class MedicineDispenseController implements Initializable {
     @FXML
     private TextArea allergiesTextArea;
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
+    FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList);
 
     @FXML
     private AnchorPane sliderAnchorPane;
@@ -143,10 +145,12 @@ public class MedicineDispenseController implements Initializable {
         particularsPane.setVisible(false); // Initially hide the particularsPane
 
         initialiseMedicineTable();
+        //new MedicineTableViewUpdater(medicineObservableList, medicineTableView); //initialise polling
 
     }
 
     private void initialiseMedicineTable() {
+
         String medicineViewQuery = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable;";
 
         try {
@@ -168,8 +172,6 @@ public class MedicineDispenseController implements Initializable {
             stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
 
             medicineTableView.setItems(medicineObservableList);
-
-            FilteredList<Medicine> filteredList = new FilteredList<>(medicineObservableList);
 
             //filter by id
             inputIdTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -223,8 +225,59 @@ public class MedicineDispenseController implements Initializable {
                 }
             });
 
+            startPolling();
+
         } catch (Exception exc) {
             exc.printStackTrace();
+        }
+    }
+
+
+    private void startPolling() {
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> updateTableView());
+            }
+        }, 0, 30000); // Poll every 30 seconds
+    }
+
+    private void updateTableView() {
+        String query = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            medicineObservableList.clear(); // Clear the list before adding new items
+
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                Integer quantity = resultSet.getInt("quantityInMilligrams");
+                Integer stockLeft = resultSet.getInt("stockLeft");
+
+                medicineObservableList.add(new Medicine(id, name, quantity, stockLeft));
+            }
+
+            // Ensure the filter and sort are re-applied
+            filteredList.setPredicate(medicine -> {
+                String searchId = inputIdTextField.getText().trim();
+                String searchName = inputNameTextField.getText().trim().toLowerCase();
+                String searchQuantity = inputQuantityTextField.getText().trim();
+
+                boolean matchId = searchId.isEmpty() || medicine.getId().toString().contains(searchId);
+                boolean matchName = searchName.isEmpty() || medicine.getName().toLowerCase().contains(searchName);
+                boolean matchQuantity = searchQuantity.isEmpty() || medicine.getQuantityInMilligrams().toString().contains(searchQuantity);
+
+                return matchId && matchName && matchQuantity;
+            });
+
+            SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(medicineTableView.comparatorProperty());
+            medicineTableView.setItems(sortedList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -324,26 +377,17 @@ public class MedicineDispenseController implements Initializable {
     }
 
     @FXML
-    public void switchUserButtonOnAction(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
-            Stage newUserStage = new Stage();
-            Scene scene = new Scene(fxmlLoader.load(), 520, 400);
-
-            newUserStage.setTitle("Login");
-            newUserStage.setScene(scene);
-            Stage stage = (Stage) switchUserButton.getScene().getWindow();
-            stage.close();
-            newUserStage.show();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-            exc.getCause();
-        }
-    }
-
-    @FXML
     public void updateInventoryButtonOnAction(ActionEvent e) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("update-inventory.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception exc) {
+            Labels.showMessageLabel(messageLabel1, "Unexpected error.", false);
+        }
     }
     @FXML
     public void lowStockButtonOnAction(ActionEvent e) {

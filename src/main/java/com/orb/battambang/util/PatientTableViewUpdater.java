@@ -2,7 +2,6 @@ package com.orb.battambang.util;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.scene.control.TableView;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.reception.Patient;
@@ -14,13 +13,13 @@ import java.sql.Statement;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TableViewUpdater {
+public class PatientTableViewUpdater {
 
     private final ObservableList<Patient> patientObservableList;
     private final TableView<Patient> patientTableView;
     private final Connection connection = DatabaseConnection.connection;
 
-    public TableViewUpdater(ObservableList<Patient> patientObservableList, TableView<Patient> patientTableView) {
+    public PatientTableViewUpdater(ObservableList<Patient> patientObservableList, TableView<Patient> patientTableView) {
         this.patientObservableList = patientObservableList;
         this.patientTableView = patientTableView;
         startPolling();

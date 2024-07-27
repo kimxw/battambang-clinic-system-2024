@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.LowStockController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.pharmacy.LowStockController">
     <children>
-        <TableView fx:id="medicineTableView" layoutX="59.0" layoutY="93.0" prefHeight="364.0" prefWidth="584.0">
+        <TableView fx:id="medicineTableView" layoutX="27.0" layoutY="119.0" prefHeight="435.0" prefWidth="584.0">
             <columns>
                 <TableColumn fx:id="idTableColumn" prefWidth="90.0" text="ID" />
                 <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="254.0" text="Name" />
@@ -17,26 +17,25 @@
                 <TableColumn fx:id="stockTableColumn" prefWidth="122.9998779296875" text="Stock (unit)" />
             </columns>
         </TableView>
-        <Label layoutX="59.0" layoutY="18.0" text="Find Medicine:">
+        <Label layoutX="29.0" layoutY="59.0" text="Filter">
             <font>
-                <Font size="16.0" />
+                <Font name="System Bold" size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="idSearchTextField" layoutX="172.0" layoutY="15.0" prefHeight="30.0" prefWidth="118.0" promptText="ID">
+        <TextField fx:id="idSearchTextField" alignment="CENTER" layoutX="28.0" layoutY="83.0" prefHeight="27.0" prefWidth="86.0" promptText="ID">
             <font>
-                <Font size="14.0" />
+                <Font size="13.0" />
             </font>
         </TextField>
-        <TextField fx:id="nameSearchTextField" layoutX="307.0" layoutY="16.0" prefHeight="30.0" prefWidth="150.0" promptText="Name">
+        <TextField fx:id="nameSearchTextField" alignment="CENTER" layoutX="122.0" layoutY="83.0" prefHeight="27.0" prefWidth="247.0" promptText="Name">
             <font>
-                <Font size="14.0" />
+                <Font size="13.0" />
             </font>
         </TextField>
-        <Label layoutX="295.0" layoutY="9.0" text="|" textFill="#aeaeae">
-            <font>
-                <Font size="26.0" />
-            </font>
-        </Label>
-      <Label layoutX="59.0" layoutY="68.0" text="Medications with less than 20 units stock:" />
+      <Label layoutX="28.0" layoutY="18.0" text="Medicines with low stock">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
     </children>
 </Pane>

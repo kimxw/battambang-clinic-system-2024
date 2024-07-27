@@ -3,7 +3,8 @@ package com.orb.battambang.reception;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.TableViewUpdater;
+import com.orb.battambang.util.PatientTableViewUpdater;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -96,9 +99,6 @@ public class PatientRegistrationController implements Initializable {
                 menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
-        // Start polling to update the TableView
-        new TableViewUpdater(patientObservableList, patientTableView);
-
         // Create a ToggleGroup
         ToggleGroup group = new ToggleGroup();
         maleRadioButton.setToggleGroup(group);
@@ -133,10 +133,48 @@ public class PatientRegistrationController implements Initializable {
             // Set items to the TableView
             patientTableView.setItems(patientObservableList);
 
+            startPolling();
+
         } catch (Exception exc) {
             exc.printStackTrace();
         }
 
+    }
+
+    private void startPolling() {
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> updateTableView());
+            }
+        }, 0, 30000); // Poll every 30 seconds
+    }
+
+    private void updateTableView() {
+        String query = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            patientObservableList.clear(); // Clear the list before adding new items
+
+            while (resultSet.next()) {
+                Integer queueNo = resultSet.getInt("queueNumber");
+                String name = resultSet.getString("name");
+                Integer age = resultSet.getInt("age");
+                String sexString = resultSet.getString("sex");
+                Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String address = resultSet.getString("address");
+
+                patientObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+            }
+
+            patientTableView.setItems(patientObservableList); // Update the TableView
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -284,7 +322,6 @@ public class PatientRegistrationController implements Initializable {
         // Get the selected item from the TableView
         Patient selectedItem = patientTableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            patientObservableList.remove(selectedItem);
 
             try {
                 String deleteQuery = "DELETE FROM patientQueueTable WHERE queueNumber = " + selectedItem.getQueueNo();
@@ -292,15 +329,30 @@ public class PatientRegistrationController implements Initializable {
                 statement.executeUpdate(deleteQuery);
 
                 // Also delete the patient from the triageWaitingTable and triageProgressTable
-                String deleteWaitingQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
-                String deleteProgressQuery = "DELETE FROM triageProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteTWQuery = "DELETE FROM triageWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteTPQuery = "DELETE FROM triageProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteEWQuery = "DELETE FROM educationWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteEPQuery = "DELETE FROM educationProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteDWQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteDPQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePWQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePPQuery = "DELETE FROM pharmacyProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 try (Statement deleteStatement = connection.createStatement()) {
-                    deleteStatement.executeUpdate(deleteWaitingQuery);
-                    deleteStatement.executeUpdate(deleteProgressQuery);
+                    deleteStatement.executeUpdate(deleteTWQuery);
+                    deleteStatement.executeUpdate(deleteTPQuery);
+                    deleteStatement.executeUpdate(deleteEWQuery);
+                    deleteStatement.executeUpdate(deleteEPQuery);
+                    deleteStatement.executeUpdate(deleteDWQuery);
+                    deleteStatement.executeUpdate(deleteDPQuery);
+                    deleteStatement.executeUpdate(deletePWQuery);
+                    deleteStatement.executeUpdate(deletePPQuery);
                 }
 
                 Labels.showMessageLabel(messageLabel1, "Patient deleted successfully.", true);
+                patientObservableList.remove(selectedItem);
+
                 clearInputFields();
+                statement.close();
             } catch (Exception ex) {
                 Labels.showMessageLabel(messageLabel1, "Unexpected Error.", false);
             }
