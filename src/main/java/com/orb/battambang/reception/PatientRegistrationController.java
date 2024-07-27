@@ -18,9 +18,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import java.time.LocalDate;
 
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,6 +40,9 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private TextField inputNameTextField;
     @FXML
+    private DatePicker inputDOBDatePicker;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    @FXML
     private TextField inputAgeTextField;
     @FXML
     private TextField inputPhoneNumberTextField;
@@ -48,6 +54,8 @@ public class PatientRegistrationController implements Initializable {
     private TableColumn<Patient, Integer> queueNoTableColumn;
     @FXML
     private TableColumn<Patient, String> nameTableColumn;
+    @FXML
+    private TableColumn<Patient, String> DOBTableColumn;
     @FXML
     private TableColumn<Patient, Integer> ageTableColumn;
     @FXML
@@ -107,12 +115,13 @@ public class PatientRegistrationController implements Initializable {
         // Set cell value factories
         queueNoTableColumn.setCellValueFactory(new PropertyValueFactory<>("queueNo"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        DOBTableColumn.setCellValueFactory(new PropertyValueFactory<>("DOB"));
         ageTableColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         sexTableColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
         phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         addressTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        String patientViewQuery = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable;";
+        String patientViewQuery = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable;";
 
         try (
              Statement statement = connection.createStatement();
@@ -121,13 +130,14 @@ public class PatientRegistrationController implements Initializable {
             while (resultSet.next()) {
                 Integer queueNo = resultSet.getInt("QueueNumber");
                 String name = resultSet.getString("Name");
+                String DOB = resultSet.getString("DOB");
                 Integer age = resultSet.getInt("Age");
                 String sexString = resultSet.getString("Sex");
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("PhoneNumber");
                 String address = resultSet.getString("Address");
 
-                patientObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
             }
 
             // Set items to the TableView
@@ -152,7 +162,7 @@ public class PatientRegistrationController implements Initializable {
     }
 
     private void updateTableView() {
-        String query = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable";
+        String query = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -161,13 +171,14 @@ public class PatientRegistrationController implements Initializable {
             while (resultSet.next()) {
                 Integer queueNo = resultSet.getInt("queueNumber");
                 String name = resultSet.getString("name");
+                String DOB = resultSet.getString("DOB");
                 Integer age = resultSet.getInt("age");
                 String sexString = resultSet.getString("sex");
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String address = resultSet.getString("address");
 
-                patientObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
             }
 
             patientTableView.setItems(patientObservableList); // Update the TableView
@@ -178,8 +189,23 @@ public class PatientRegistrationController implements Initializable {
     }
 
     @FXML
+    public void computeAgeButtonOnAction(ActionEvent e) {
+        if ( inputDOBDatePicker.getValue() != null ) {
+            int age = LocalDate.now().getYear() - inputDOBDatePicker.getValue().getYear();
+            inputAgeTextField.setText(String.valueOf(age));
+        }
+    }
+
+    @FXML
     public void addButtonOnAction(ActionEvent e) {
         String inputName = inputNameTextField.getText();
+        String inputDOB = null;
+        try {
+            inputDOB = inputDOBDatePicker.getValue().format(formatter);
+        } catch (NullPointerException exc) {
+            Labels.showMessageLabel(messageLabel1, "Please add all fields.", false);
+        }
+
         String inputAge = inputAgeTextField.getText();
         String inputPhoneNumber = inputPhoneNumberTextField.getText();
         if (inputPhoneNumber.isEmpty()) {
@@ -190,28 +216,21 @@ public class PatientRegistrationController implements Initializable {
 
         if (isEditOperation && selectedPatientForEdit != null) {
             // Update the existing patient record
-            String updateQuery = "UPDATE patientQueueTable SET name = ?, age = ?, sex = ?, phoneNumber = ?, address = ? WHERE queueNumber = ?";
+            String updateQuery = "UPDATE patientQueueTable SET name = ?, DOB = ?, age = ?, sex = ?, phoneNumber = ?, address = ? WHERE queueNumber = ?";
             try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
                 statement.setString(1, inputName);
-                statement.setInt(2, Integer.parseInt(inputAge));
-                statement.setString(3, String.valueOf(inputSex));
-                statement.setString(4, inputPhoneNumber);
-                statement.setString(5, inputAddress);
-                statement.setInt(6, selectedPatientForEdit.getQueueNo());
+                statement.setString(2, inputDOB);
+                statement.setInt(3, Integer.parseInt(inputAge));
+                statement.setString(4, String.valueOf(inputSex));
+                statement.setString(5, inputPhoneNumber);
+                statement.setString(6, inputAddress);
+                statement.setInt(7, selectedPatientForEdit.getQueueNo());
 
                 int affectedRows = statement.executeUpdate();
                 if (affectedRows == 1) {
                     Labels.showMessageLabel(messageLabel1, "Patient updated successfully.", true);
 
-                    // Update the patient in the ObservableList
-                    selectedPatientForEdit.setName(inputName);
-                    selectedPatientForEdit.setAge(Integer.parseInt(inputAge));
-                    selectedPatientForEdit.setSex(inputSex);
-                    selectedPatientForEdit.setPhoneNumber(inputPhoneNumber);
-                    selectedPatientForEdit.setAddress(inputAddress);
-
-                    // Refresh the TableView to show updated data
-                    patientTableView.refresh();
+                    updateTableView();
                 }
                 clearInputFields();
                 isEditOperation = false;
@@ -221,19 +240,20 @@ public class PatientRegistrationController implements Initializable {
             }
         } else {
             // Existing code to add a new patient
-            String insertFields = "INSERT INTO patientQueueTable(name, age, sex, phoneNumber, address, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertFields = "INSERT INTO patientQueueTable(name, DOB, age, sex, phoneNumber, address, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(insertFields, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, inputName);
-                statement.setInt(2, Integer.parseInt(inputAge));
-                statement.setString(3, String.valueOf(inputSex));
-                statement.setString(4, inputPhoneNumber);
-                statement.setString(5, inputAddress);
-                statement.setString(6, "Incomplete");
+                statement.setString(2, inputDOB);
+                statement.setInt(3, Integer.parseInt(inputAge));
+                statement.setString(4, String.valueOf(inputSex));
+                statement.setString(5, inputPhoneNumber);
+                statement.setString(6, inputAddress);
                 statement.setString(7, "Incomplete");
                 statement.setString(8, "Incomplete");
                 statement.setString(9, "Incomplete");
                 statement.setString(10, "Incomplete");
                 statement.setString(11, "Incomplete");
+                statement.setString(12, "Incomplete");
                 //educationStatus is by default incomplete so no need to add here
 
                 int affectedRows = statement.executeUpdate();
@@ -245,7 +265,7 @@ public class PatientRegistrationController implements Initializable {
                         Labels.showMessageLabel(messageLabel1, "Patient added successfully.", true);
 
                         // Add the new patient to the ObservableList
-                        patientObservableList.add(new Patient(queueNo, inputName, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress));
+                        patientObservableList.add(new Patient(queueNo, inputName, inputDOB, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress));
 
                         // Also add the new patient to the triageWaitingTable
                         String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber, name) VALUES (?, ?);";
@@ -266,6 +286,7 @@ public class PatientRegistrationController implements Initializable {
 
     private void clearInputFields() {
         inputNameTextField.setText("");
+        inputDOBDatePicker.setValue(null);
         inputAgeTextField.setText("");
         inputPhoneNumberTextField.setText("");
         maleRadioButton.setSelected(false);
@@ -273,19 +294,7 @@ public class PatientRegistrationController implements Initializable {
         inputAddressTextArea.setText("");
     }
 
-//    @FXML
-//    public void searchButtonOnAction(ActionEvent e) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("patient-search.fxml"));
-//            Parent root = loader.load();
-//            Scene scene = new Scene(root);
-//            Stage stage = new Stage();
-//            stage.setScene(scene);
-//            stage.show();
-//        } catch (Exception exc) {
-//            Labels.showMessageLabel(messageLabel1, "Unexpected error.", false);
-//        }
-//    }
+
 
     @FXML
     public void filterButtonOnAction(ActionEvent e) {
@@ -299,6 +308,11 @@ public class PatientRegistrationController implements Initializable {
         if (selectedPatientForEdit != null) {
             // Populate the input fields with the selected patient's details
             inputNameTextField.setText(selectedPatientForEdit.getName());
+            if (selectedPatientForEdit.getDOB() == null || selectedPatientForEdit.getDOB().equals("")) {
+                inputDOBDatePicker.setValue(null);
+            } else {
+                inputDOBDatePicker.setValue(LocalDate.parse(selectedPatientForEdit.getDOB(), formatter));
+            }
             inputAgeTextField.setText(String.valueOf(selectedPatientForEdit.getAge()));
             inputPhoneNumberTextField.setText(selectedPatientForEdit.getPhoneNumber());
             if (selectedPatientForEdit.getSex().equals('M')) {
