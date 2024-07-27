@@ -382,6 +382,7 @@ public class PatientRegistrationController implements Initializable {
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setResizable(false);
             stage.setScene(scene);
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);

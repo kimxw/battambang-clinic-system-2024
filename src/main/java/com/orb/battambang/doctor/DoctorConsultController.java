@@ -371,6 +371,8 @@ public class DoctorConsultController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Edit Prescription");
             stage.setScene(scene);
             stage.show();
 
@@ -407,6 +409,8 @@ public class DoctorConsultController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Create Referral");
             stage.setScene(scene);
 
             // Get the controller instance
@@ -776,6 +780,7 @@ public class DoctorConsultController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("history-records.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("Patient History");
                 stage.setScene(new Scene(root));
 
@@ -810,6 +815,7 @@ public class DoctorConsultController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("records-view.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("Records.txt");
                 stage.setScene(new Scene(root));
 
@@ -833,6 +839,7 @@ public class DoctorConsultController implements Initializable {
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
             //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setResizable(false);
             newUserStage.setTitle("Consultation");
             newUserStage.setScene(scene);
             Stage stage = (Stage) switchUserButton.getScene().getWindow();

@@ -383,6 +383,7 @@ public class MedicineDispenseController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (Exception exc) {
@@ -396,6 +397,7 @@ public class MedicineDispenseController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (Exception exc) {

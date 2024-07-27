@@ -186,6 +186,7 @@ public class CheckupMenuController implements Initializable {
 
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setResizable(false);
             stage.setScene(scene);
 
         } catch (Exception exc) {

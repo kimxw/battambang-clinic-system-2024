@@ -299,6 +299,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxmlFile));
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
+            stage.setResizable(false);
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.initModality(Modality.WINDOW_MODAL);

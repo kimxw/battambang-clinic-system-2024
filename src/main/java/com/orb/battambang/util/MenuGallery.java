@@ -138,6 +138,7 @@ public class MenuGallery {
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setResizable(false);
             stage.setTitle("Home");
             stage.setScene(scene);
         } catch (Exception exc) {
@@ -154,6 +155,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Reception");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -165,6 +167,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Reception");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -183,6 +186,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Triage");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -194,6 +198,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Triage");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -211,6 +216,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Education");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -222,6 +228,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Education");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -239,6 +246,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Consultation");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -250,6 +258,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Consultation");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -267,6 +276,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Pharmacy");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -278,6 +288,7 @@ public class MenuGallery {
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
                 stage.setTitle("Pharmacy");
                 stage.setScene(scene);
             } catch (Exception exc) {
@@ -293,6 +304,7 @@ public class MenuGallery {
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setResizable(false);
             stage.setTitle("Queue Manager");
             stage.setScene(scene);
         } catch (Exception exc) {
@@ -312,6 +324,7 @@ public class MenuGallery {
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
 
+            newUserStage.setResizable(false);
             newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
             Stage stage = (Stage) logoutButton.getScene().getWindow();

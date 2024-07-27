@@ -114,6 +114,7 @@ public class NewLoginPageController implements Initializable {
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
             //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setResizable(false);
             newUserStage.setTitle("New User");
             newUserStage.setScene(scene);
             newUserStage.show();
@@ -212,6 +213,7 @@ public class NewLoginPageController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("home-page.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 1230 , 650);
+            newUserStage.setResizable(false);
             newUserStage.setTitle("Home");
             //newUserStage.initStyle(StageStyle.UNDECORATED);
             newUserStage.setScene(scene);
