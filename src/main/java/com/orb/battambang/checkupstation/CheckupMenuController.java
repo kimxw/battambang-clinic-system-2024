@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -228,6 +230,13 @@ public class CheckupMenuController implements Initializable {
     @FXML
     public void historyButtonOnAction(ActionEvent e) {
         loadFXML("history.fxml", e);
+    }
+
+    @FXML
+    public void onEnterKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchButtonOnAction(new ActionEvent());
+        }
     }
 
     @FXML
