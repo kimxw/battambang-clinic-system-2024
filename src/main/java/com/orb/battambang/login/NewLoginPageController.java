@@ -84,7 +84,7 @@ public class NewLoginPageController implements Initializable {
     }
 
     @FXML
-    private void loginButtonOnAction(ActionEvent e) {
+    public void loginButtonOnAction(ActionEvent e) {
         if (!usernameTextField.getText().isBlank() && !passwordPasswordField.getText().isBlank()) {
             validateLogin(usernameTextField.getText(), passwordPasswordField.getText());
         } else {
@@ -93,7 +93,7 @@ public class NewLoginPageController implements Initializable {
     }
 
     @FXML
-    private void cancelButtonOnAction(ActionEvent e) {
+    public void cancelButtonOnAction(ActionEvent e) {
         locationChoiceBox.getItems().addAll(choiceBoxOptions);
 
         loginMessageLabel.setVisible(true);
@@ -124,7 +124,7 @@ public class NewLoginPageController implements Initializable {
         }
     }
 
-    private void validateLogin(String username, String password) {
+    public void validateLogin(String username, String password) {
         String verifyLogin = "SELECT * FROM staffTable WHERE username = '"
                 + username + "' AND password = '" + password + "';";
         try {
@@ -167,7 +167,7 @@ public class NewLoginPageController implements Initializable {
     }
 
     @FXML
-    private void goButtonOnAction(ActionEvent e) {
+    public void goButtonOnAction(ActionEvent e) {
         String location = locationChoiceBox.getValue();
         boolean success = DatabaseConnection.establishConnection(location); //check if valid connection established
 
@@ -208,7 +208,7 @@ public class NewLoginPageController implements Initializable {
         verificationImageView.setVisible(true);
         verificationLabel.setVisible(true);
     }
-    private void openHomePage() {
+    public void openHomePage() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("home-page.fxml"));
             Stage newUserStage = new Stage();

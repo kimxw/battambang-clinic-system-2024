@@ -16,43 +16,24 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-public class DatabaseConnectionTest {
+public class AuthDatabaseConnectionTest {
 
     @BeforeEach
     void setUp() {
         // Reset the connection before each test
-        DatabaseConnection.connection = null;
+        AuthDatabaseConnection.connection = null;
     }
 
     @AfterEach
     void tearDown() {
         // Ensure the connection is closed after each test
-        DatabaseConnection.closeDatabaseConnection();
+        AuthDatabaseConnection.closeDatabaseConnection();
     }
 
     @Test
-    public void testEstablishConnection_KbalKoh() {
+    public void testEstablishConnection_Success() {
         // Act
-        boolean result = DatabaseConnection.establishConnection("Kbal Koh");
-
-        // Assert
-        assertTrue(result, "Connection should be successfully established.");
-    }
-
-    @Test
-    public void testEstablishConnection_MOPK() {
-        // Act
-        boolean result = DatabaseConnection.establishConnection("MOPK");
-
-        // Assert
-        assertTrue(result, "Connection should be successfully established.");
-    }
-
-    @Test
-    public void testEstablishConnection_TNK5() {
-        // Act
-        boolean result = DatabaseConnection.establishConnection("Kbal Koh");
+        boolean result = AuthDatabaseConnection.establishConnection();
 
         // Assert
         assertTrue(result, "Connection should be successfully established.");
