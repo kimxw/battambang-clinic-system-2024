@@ -13,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -383,6 +385,13 @@ public class EducationController implements Initializable {
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
+        }
+    }
+
+    @FXML
+    public void onEnterKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchButtonOnAction(new ActionEvent());
         }
     }
 }

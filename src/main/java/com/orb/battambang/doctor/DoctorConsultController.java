@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -1015,5 +1017,12 @@ public class DoctorConsultController implements Initializable {
         alert.setTitle("Error");
         alert.setHeaderText(null); // No header text
         alert.showAndWait();
+    }
+
+    @FXML
+    public void onEnterKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchButtonOnAction(new ActionEvent());
+        }
     }
 }

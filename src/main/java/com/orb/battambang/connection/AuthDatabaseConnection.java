@@ -50,12 +50,12 @@ public class AuthDatabaseConnection {
     public static boolean establishConnection() {
         boolean success = false;
         URL location = Main.class.getProtectionDomain().getCodeSource().getLocation();
-        System.out.println(location.getPath());
+//        System.out.println(location.getPath());
         AuthDatabaseConnection.filePath = location.getPath().replace("%20", " ");
-        System.out.println(filePath);
+//        System.out.println(filePath);
         filePath = filePath.substring(0, filePath.lastIndexOf('/'));
         filePath = filePath + "/databases/auth-clinicdb.db";
-        System.out.println(filePath);
+//        System.out.println(filePath);
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -66,7 +66,7 @@ public class AuthDatabaseConnection {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
             if (resultSet.next()) {
-                //System.out.println("connected successfully");
+//                System.out.println("connected successfully");
                 success = true;
             }
             resultSet.close();
@@ -77,7 +77,9 @@ public class AuthDatabaseConnection {
         }
         return success;
     }
-    */
+
+     */
+
 
     public static void closeDatabaseConnection() {
         try {
