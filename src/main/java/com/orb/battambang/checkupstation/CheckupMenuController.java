@@ -15,10 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -142,6 +140,8 @@ public class CheckupMenuController implements Initializable {
         MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
         MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
 
+        particularsPane.setVisible(false); // Initially hide the particularsPane
+
         // Add a listener to the text property of the queueNumberTextField
         queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -153,8 +153,6 @@ public class CheckupMenuController implements Initializable {
                 }
             }
         });
-
-        particularsPane.setVisible(false); // Initially hide the particularsPane
     }
 
     public void postInitializationSetup() {
@@ -168,6 +166,14 @@ public class CheckupMenuController implements Initializable {
 
     public void setInitialisingQueueNumber(int initialisingQueueNumber) {
         this.initialisingQueueNumber = initialisingQueueNumber;
+    }
+
+    @FXML
+    public void editBlockPaneOnMouseClicked(MouseEvent e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a patient first.", ButtonType.OK);
+        alert.setTitle("Error");
+        alert.setHeaderText(null); // No header text
+        alert.showAndWait();
     }
 
     void loadFXML(String fxmlFile, ActionEvent e) {

@@ -383,5 +383,6 @@
             </HBox>
          </children>
       </AnchorPane>
+      <Pane fx:id="editBlockPane" layoutX="398.0" layoutY="167.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="431.0" prefWidth="543.0" />
    </children>
 </Pane>
