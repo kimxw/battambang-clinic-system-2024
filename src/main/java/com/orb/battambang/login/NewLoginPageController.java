@@ -69,7 +69,6 @@ public class NewLoginPageController implements Initializable {
 
         connectionSuccess = AuthDatabaseConnection.establishConnection();
 
-        locationChoiceBox.getItems().clear();
         locationChoiceBox.getItems().addAll(choiceBoxOptions);
 
         loginMessageLabel.setVisible(true);
@@ -95,7 +94,6 @@ public class NewLoginPageController implements Initializable {
 
     @FXML
     private void cancelButtonOnAction(ActionEvent e) {
-        locationChoiceBox.getItems().addAll(choiceBoxOptions);
 
         loginMessageLabel.setVisible(true);
         verificationImageView.setVisible(false);
