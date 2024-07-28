@@ -114,6 +114,9 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     @FXML
     private Button menuLocationButton;
 
+    @FXML
+    private Pane editBlockPane;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -142,6 +145,21 @@ public class HeightAndWeightController extends CheckupMenuController implements 
         });
 
         particularsPane.setVisible(false);
+
+        // EDIT BLOCK PANE, QUEUENOLABEL LISTENER
+        queueNoLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Check if the new value is empty
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    // Show the pane if the text is empty
+                    editBlockPane.setVisible(true);
+                } else {
+                    // Hide the pane if the text is not empty
+                    editBlockPane.setVisible(false);
+                }
+            }
+        });
 
     }
 

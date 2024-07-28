@@ -3,15 +3,17 @@ package com.orb.battambang.reception;
 public class Patient {
     private Integer queueNo;
     private String name;
+    private String DOB;
     private Integer age;
     private Character sex;
     private String phoneNumber;
     private String address;
 
     // Constructor
-    public Patient(Integer queueNo, String name, Integer age, Character sex, String phoneNumber, String address) {
+    public Patient(Integer queueNo, String name, String DOB, Integer age, Character sex, String phoneNumber, String address) {
         this.queueNo = queueNo;
         this.name = name;
+        this.DOB = DOB;
         this.age = age;
         this.sex = sex;
         this.phoneNumber = phoneNumber;
@@ -25,6 +27,9 @@ public class Patient {
 
     public String getName() {
         return name;
+    }
+    public String getDOB() {
+        return DOB;
     }
 
     public Integer getAge() {
@@ -49,6 +54,9 @@ public class Patient {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public void setDOB(String DOB) {
+        this.DOB = DOB;
     }
 
     public void setAge(Integer age) {

@@ -5,15 +5,15 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.layout.HBox?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.SnellensTestController">
    <children>
 
@@ -28,7 +28,7 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
+      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
       <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #B0C4DE;" text="Snellen's Test">
          <font>
             <Font size="11.0" />
@@ -388,5 +388,6 @@
             </HBox>
          </children>
       </AnchorPane>
+      <Pane fx:id="editBlockPane" layoutX="398.0" layoutY="167.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="431.0" prefWidth="543.0" />
    </children>
 </Pane>

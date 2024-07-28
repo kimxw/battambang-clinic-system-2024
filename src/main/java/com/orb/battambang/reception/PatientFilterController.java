@@ -51,6 +51,8 @@ public class PatientFilterController implements Initializable{
     @FXML
     private TableColumn<Patient, String> nameTableColumn;
     @FXML
+    private TableColumn<Patient, String> DOBTableColumn;
+    @FXML
     private TableColumn<Patient, Integer> ageTableColumn;
     @FXML
     private TableColumn<Patient, Character> sexTableColumn;
@@ -102,7 +104,7 @@ public class PatientFilterController implements Initializable{
                 menuUserButton, menuLocationButton);
 
 
-        String patientViewQuery = "SELECT QueueNumber, Name, Age, Sex, PhoneNumber, Address FROM patientQueueTable";
+        String patientViewQuery = "SELECT QueueNumber, Name, DOB, Age, Sex, PhoneNumber, Address FROM patientQueueTable";
 
         try {
             Statement statement = connection.createStatement();
@@ -111,17 +113,19 @@ public class PatientFilterController implements Initializable{
             while (queryOutput.next()) {
                 Integer queueNo = queryOutput.getInt("QueueNumber");
                 String name = queryOutput.getString("Name");
+                String DOB = queryOutput.getString("DOB");
                 Integer age = queryOutput.getInt("Age");
                 String sexString = queryOutput.getString("Sex");
                 Character sex = sexString != null && !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = queryOutput.getString("PhoneNumber");
                 String address = queryOutput.getString("Address");
 
-                patientSearchModelObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+                patientSearchModelObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
             }
 
             queueNoTableColumn.setCellValueFactory(new PropertyValueFactory<>("queueNo"));
             nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            DOBTableColumn.setCellValueFactory(new PropertyValueFactory<>("DOB"));
             ageTableColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
             sexTableColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
             phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
@@ -199,7 +203,7 @@ public class PatientFilterController implements Initializable{
     }
 
     private void updateTableView() {
-        String query = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable";
+        String query = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -208,13 +212,14 @@ public class PatientFilterController implements Initializable{
             while (resultSet.next()) {
                 Integer queueNo = resultSet.getInt("queueNumber");
                 String name = resultSet.getString("name");
+                String DOB = resultSet.getString("DOB");
                 Integer age = resultSet.getInt("age");
                 String sexString = resultSet.getString("sex");
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String address = resultSet.getString("address");
 
-                patientSearchModelObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+                patientSearchModelObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
             }
 
             // Ensure the filter and sort are re-applied
@@ -249,6 +254,7 @@ public class PatientFilterController implements Initializable{
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            stage.setResizable(false);
             stage.setScene(scene);
         } catch (Exception exc) {
             System.out.println(e);

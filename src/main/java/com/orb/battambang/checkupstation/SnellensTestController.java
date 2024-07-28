@@ -24,6 +24,7 @@ import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class SnellensTestController extends CheckupMenuController implements Initializable {
 
+    public Pane editBlockPane;
     private int initialisingQueueNumber = -1;
 
     @FXML
@@ -135,6 +136,21 @@ public class SnellensTestController extends CheckupMenuController implements Ini
         });
 
         particularsPane.setVisible(false);
+
+        // Set up a listener on the Label's text property
+        queueNoLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Check if the new value is empty
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    // Show the pane if the text is empty
+                    editBlockPane.setVisible(true);
+                } else {
+                    // Hide the pane if the text is not empty
+                    editBlockPane.setVisible(false);
+                }
+            }
+        });
 
     }
 

@@ -36,7 +36,7 @@ public class PatientTableViewUpdater {
     }
 
     private void updateTableView() {
-        String query = "SELECT queueNumber, name, age, sex, phoneNumber, address FROM patientQueueTable";
+        String query = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -45,13 +45,14 @@ public class PatientTableViewUpdater {
             while (resultSet.next()) {
                 Integer queueNo = resultSet.getInt("queueNumber");
                 String name = resultSet.getString("name");
+                String DOB = resultSet.getString("DOB");
                 Integer age = resultSet.getInt("age");
                 String sexString = resultSet.getString("sex");
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String address = resultSet.getString("address");
 
-                patientObservableList.add(new Patient(queueNo, name, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
             }
 
             patientTableView.setItems(patientObservableList); // Update the TableView

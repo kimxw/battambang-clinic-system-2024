@@ -26,7 +26,7 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
+      <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
       <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
          <font>
             <Font size="11.0" />

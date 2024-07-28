@@ -13,7 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -171,6 +173,9 @@ public class DoctorConsultController implements Initializable {
     @FXML
     private Button menuLocationButton;
 
+    @FXML
+    private Pane editBlockPane;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -205,6 +210,21 @@ public class DoctorConsultController implements Initializable {
                     clearDentalFields();
                     clearHistoryFields();
                     clearConsultFields();
+                }
+            }
+        });
+
+        // EDIT BLOCK PANE, QUEUENOLABEL LISTENER
+        queueNoLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Check if the new value is empty
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    // Show the pane if the text is empty
+                    editBlockPane.setVisible(true);
+                } else {
+                    // Hide the pane if the text is not empty
+                    editBlockPane.setVisible(false);
                 }
             }
         });
@@ -371,6 +391,8 @@ public class DoctorConsultController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Edit Prescription");
             stage.setScene(scene);
             stage.show();
 
@@ -407,6 +429,8 @@ public class DoctorConsultController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Create Referral");
             stage.setScene(scene);
 
             // Get the controller instance
@@ -776,6 +800,7 @@ public class DoctorConsultController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("history-records.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("Patient History");
                 stage.setScene(new Scene(root));
 
@@ -810,6 +835,7 @@ public class DoctorConsultController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("records-view.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("Records.txt");
                 stage.setScene(new Scene(root));
 
@@ -833,6 +859,7 @@ public class DoctorConsultController implements Initializable {
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
             //newUserStage.initStyle(StageStyle.UNDECORATED);
+            newUserStage.setResizable(false);
             newUserStage.setTitle("Consultation");
             newUserStage.setScene(scene);
             Stage stage = (Stage) switchUserButton.getScene().getWindow();
@@ -980,5 +1007,13 @@ public class DoctorConsultController implements Initializable {
                 System.out.println(ex);
             }
         }
+    }
+
+    @FXML
+    public void editBlockPaneOnMouseClicked(MouseEvent e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a patient first.", ButtonType.OK);
+        alert.setTitle("Error");
+        alert.setHeaderText(null); // No header text
+        alert.showAndWait();
     }
 }

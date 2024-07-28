@@ -57,6 +57,7 @@ public class PromptConnectController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+            newUserStage.setResizable(false);
             newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
             newUserStage.show();
