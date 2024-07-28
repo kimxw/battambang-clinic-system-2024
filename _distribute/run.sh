@@ -20,23 +20,14 @@ if [ -d "$targetDir" ]; then
   echo "Clinic system is setup in $targetDir location"
   echo "Running Battambang CLinic System ..."
 
-  jarFile="$targetDir/app/battambang-cms-v1.jar"
+  jarFile="$targetDir/app/battambang-cms.jar"
 
   cmd="java --module-path $targetDir/$javaFxLib --add-modules javafx.controls,javafx.fxml  -jar $jarFile"
   echo "Executing command $cmd"
   $cmd &
 
 else
-  if [ -f "$targetDir" ]; then
-    echo "A file exists at $targetDir location"
-    mv "$targetDir" "$targetDir.bak"
-  fi
-
-  echo "Setting up Clinic system at $targetDir location"
-  parentDir="$(dirname "$0")"
-  rootDir="$(dirname "$parentDir")"
-  echo "Copying files from $rootDir/Battambang_Clinic_System to $targetDir ..."
-  cp -r "$rootDir/Battambang_Clinic_System"  $targetDir
-
-  bash "$targetDir/run.sh"
+  echo "Battambang Clinic System is not installed."
+  echo "Please execute install.sh script present in the zip file."
+  echo ""
 fi
