@@ -1,9 +1,5 @@
 package com.orb.battambang.connection;
 
-import com.orb.battambang.Main;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.sql.*;
 
 public class AuthDatabaseConnection {
@@ -81,6 +77,17 @@ public class AuthDatabaseConnection {
             }
         } catch (SQLException e) {
             System.out.println(e);
+        }
+    }
+
+    public static boolean isConnectionOpen() {
+        if (connection == null) {
+            return false;
+        }
+        try {
+            return !AuthDatabaseConnection.connection.isClosed();
+        } catch (SQLException e) {
+            return false;
         }
     }
 

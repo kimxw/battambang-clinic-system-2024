@@ -159,7 +159,7 @@ public class QueueManagerController implements Initializable {
             slide.setToY(0);
             slide.play();
 
-            sliderAnchorPane.setTranslateY(44);
+            actionsPane.setTranslateY(44);
 
             slide.setOnFinished((ActionEvent e) -> {
                 moreActionsOpenButton.setVisible(false);
