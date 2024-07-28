@@ -23,7 +23,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="519.0" layoutX="14.0" layoutY="90.0" stroke="#ebebeb00" strokeType="INSIDE" width="284.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="467.0" layoutX="28.0" layoutY="131.0" stroke="#eeeeee" strokeType="INSIDE" width="257.0" />
       <Label layoutX="33.0" layoutY="104.0" text="Select Patient :" />
-      <TextField fx:id="queueNumberTextField" layoutX="121.0" layoutY="101.0" prefHeight="25.0" prefWidth="90.0" promptText="Queue no." />
+      <TextField fx:id="queueNumberTextField" layoutX="121.0" layoutY="101.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="90.0" promptText="Queue no." />
       <Button fx:id="searchButton" layoutX="217.0" layoutY="102.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
 
       <Pane fx:id="particularsPane" layoutX="44.0" layoutY="154.0" prefHeight="476.0" prefWidth="252.0">

@@ -12,43 +12,43 @@ public class AuthDatabaseConnection {
 
     //USE THIS ONE FOR INTELLIJ DEVELOPMENT
 
-    public static boolean establishConnection() {
-        boolean success = false;
-
-        AuthDatabaseConnection.filePath = "./src/main/resources/databases/auth-clinicdb.db";
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:" + filePath;
-            connection = DriverManager.getConnection(url);
-
-            //executing a simple query to see if connection is legitimate
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
-            if (resultSet.next()) {
-                success = true;
-            }
-            resultSet.close();
-            statement.close();
-        } catch (Exception exc) {
-            exc.printStackTrace();
-            return false;
-        }
-        return success;
-    }
+//    public static boolean establishConnection() {
+//        boolean success = false;
+//
+//        AuthDatabaseConnection.filePath = "./src/main/resources/databases/auth-clinicdb.db";
+//
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//            String url = "jdbc:sqlite:" + filePath;
+//            connection = DriverManager.getConnection(url);
+//
+//            //executing a simple query to see if connection is legitimate
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
+//            if (resultSet.next()) {
+//                success = true;
+//            }
+//            resultSet.close();
+//            statement.close();
+//        } catch (Exception exc) {
+//            exc.printStackTrace();
+//            return false;
+//        }
+//        return success;
+//    }
 
 
     //WARNING: USE THE ONE BELOW ONLY WHEN EXPORTING TO JAR
-    /*
+
     public static boolean establishConnection() {
         boolean success = false;
         URL location = Main.class.getProtectionDomain().getCodeSource().getLocation();
-        System.out.println(location.getPath());
+//        System.out.println(location.getPath());
         AuthDatabaseConnection.filePath = location.getPath().replace("%20", " ");
-        System.out.println(filePath);
+//        System.out.println(filePath);
         filePath = filePath.substring(0, filePath.lastIndexOf('/'));
         filePath = filePath + "/databases/auth-clinicdb.db";
-        System.out.println(filePath);
+//        System.out.println(filePath);
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -59,7 +59,7 @@ public class AuthDatabaseConnection {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
             if (resultSet.next()) {
-                //System.out.println("connected successfully");
+//                System.out.println("connected successfully");
                 success = true;
             }
             resultSet.close();
@@ -70,7 +70,7 @@ public class AuthDatabaseConnection {
         }
         return success;
     }
-    */
+
 
     public static void closeDatabaseConnection() {
         try {
