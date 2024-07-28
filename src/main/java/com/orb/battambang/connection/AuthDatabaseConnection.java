@@ -12,34 +12,34 @@ public class AuthDatabaseConnection {
 
     //USE THIS ONE FOR INTELLIJ DEVELOPMENT
 
-//    public static boolean establishConnection() {
-//        boolean success = false;
-//
-//        AuthDatabaseConnection.filePath = "./src/main/resources/databases/auth-clinicdb.db";
-//
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//            String url = "jdbc:sqlite:" + filePath;
-//            connection = DriverManager.getConnection(url);
-//
-//            //executing a simple query to see if connection is legitimate
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
-//            if (resultSet.next()) {
-//                success = true;
-//            }
-//            resultSet.close();
-//            statement.close();
-//        } catch (Exception exc) {
-//            exc.printStackTrace();
-//            return false;
-//        }
-//        return success;
-//    }
+    public static boolean establishConnection() {
+        boolean success = false;
+
+        AuthDatabaseConnection.filePath = "./src/main/resources/databases/auth-clinicdb.db";
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:" + filePath;
+            connection = DriverManager.getConnection(url);
+
+            //executing a simple query to see if connection is legitimate
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM staffTable;");
+            if (resultSet.next()) {
+                success = true;
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            return false;
+        }
+        return success;
+    }
 
 
     //WARNING: USE THE ONE BELOW ONLY WHEN EXPORTING TO JAR
-
+    /*
     public static boolean establishConnection() {
         boolean success = false;
         URL location = Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -70,6 +70,8 @@ public class AuthDatabaseConnection {
         }
         return success;
     }
+
+     */
 
 
     public static void closeDatabaseConnection() {
