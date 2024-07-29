@@ -184,7 +184,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Button alignment="CENTER" layoutX="121.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="User Guide" />
+                  <Button alignment="CENTER" layoutX="121.0" layoutY="104.0" mnemonicParsing="false" onAction="#userGuideButtonOnAction" prefHeight="25.0" prefWidth="77.0" text="User Guide" />
                </children>
             </Pane>
          </children>

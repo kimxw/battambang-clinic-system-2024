@@ -9,7 +9,7 @@ if [ -d "$targetDir" ]; then
     javaFxLib="sdk/arm64/javafx-sdk-21.0.3/lib"
   elif [[ $HOSTTYPE == "x86_64" ]]; then
     # echo "Setting Environment for macOS Intel arch"
-    javaFxLib="sdk/arm64/javafx-sdk-21.0.3/lib"
+    javaFxLib="sdk/x64/javafx-sdk-21.0.3/lib"
   else
     echo "Unsupported Architecture $HOSTTYPE"
     echo "Unable to launch Battambang CLinic System Application"
