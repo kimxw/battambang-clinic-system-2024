@@ -171,52 +171,6 @@ public class ReferralController implements Initializable {
         }
     }
 
-//    @FXML
-//    public void printButtonOnAction(ActionEvent e) {
-//        PrinterJob printerJob = PrinterJob.createPrinterJob();
-//
-//        if (printerJob != null) {
-//            // Get the content of pane1 for printing
-//            Node contentToPrint = pane1;
-//
-//            // Show the print dialog
-//            boolean proceed = printerJob.showPrintDialog(pane1.getScene().getWindow());
-//
-//            if (proceed) {
-//                // Configure the page layout
-//                PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
-//                double width = pageLayout.getPrintableWidth();
-//                double height = pageLayout.getPrintableHeight();
-//
-//                // Create a snapshot of the content
-//                Bounds bounds = contentToPrint.getBoundsInLocal();
-//                double scaleX = width / bounds.getWidth();
-//                double scaleY = height / bounds.getHeight();
-//                double scale = Math.min(scaleX, scaleY);
-//
-//                Scale scaleTransform = new Scale(scale, scale);
-//                contentToPrint.getTransforms().add(scaleTransform);
-//
-//                // Take a snapshot of the node
-//                WritableImage writableImage = new WritableImage((int) (bounds.getWidth() * scale), (int) (bounds.getHeight() * scale));
-//                SnapshotParameters snapshotParameters = new SnapshotParameters();
-//                snapshotParameters.setFill(Color.WHITE);
-//                contentToPrint.snapshot(snapshotParameters, writableImage);
-//
-//                // Print the content
-//                boolean printed = printerJob.printPage(contentToPrint);
-//                if (printed) {
-//                    printerJob.endJob();
-//                } else {
-//                    System.out.println("Printing failed.");
-//                }
-//
-//                // Reset scale transformation
-//                contentToPrint.getTransforms().remove(scaleTransform);
-//            }
-//        }
-//    }
-
     @FXML
     public void printButtonOnAction(ActionEvent e) {
         PrinterJob printerJob = PrinterJob.createPrinterJob();
