@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -209,7 +210,7 @@ public class EducationController implements Initializable {
     }
 
     @FXML
-    private void updateButtonOnAction(ActionEvent e) {
+    public void updateButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
             Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
         } else {
@@ -250,7 +251,7 @@ public class EducationController implements Initializable {
 
 
     @FXML
-    private void addButtonOnAction() {
+    public void addButtonOnAction() {
         Integer selectedPatient = waitingListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!waitingListView.getItems().isEmpty()) {
@@ -320,7 +321,7 @@ public class EducationController implements Initializable {
     }
 
     @FXML
-    private void sendButtonOnAction() {
+    public void sendButtonOnAction() {
         Integer selectedPatient = inProgressListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!inProgressListView.getItems().isEmpty()) {

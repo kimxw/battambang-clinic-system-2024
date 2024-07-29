@@ -246,7 +246,7 @@ public class PrescriptionController implements Initializable {
     }
 
     @FXML
-    private void addUpdateButtonOnAction(ActionEvent event) {
+    public void addUpdateButtonOnAction(ActionEvent event) {
         // Get the input values
         String name = inputNameTextField.getText().trim();
         String quantity = inputQuantityTextField.getText().trim();
@@ -296,13 +296,13 @@ public class PrescriptionController implements Initializable {
     }
 
     @FXML
-    private void clearButtonOnAction(ActionEvent e) {
+    public void clearButtonOnAction(ActionEvent e) {
         clearInputFields();
     }
 
 
     @FXML
-    private void deleteButtonOnAction(ActionEvent event) {
+    public void deleteButtonOnAction(ActionEvent event) {
         // Get the selected PrescriptionEntry
         Prescription.PrescriptionEntry selectedEntry = prescriptionTableView.getSelectionModel().getSelectedItem();
 
@@ -322,14 +322,14 @@ public class PrescriptionController implements Initializable {
 
 
     @FXML
-    private void exitButtonOnAction(ActionEvent event) {
+    public void exitButtonOnAction(ActionEvent event) {
 
         doctorConsultController.displayPrescription(prescriptionObservableList);
 
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
     }
-    private void updatePrescriptionInDatabase(int queueNumber, String prescriptionString) {
+    public void updatePrescriptionInDatabase(int queueNumber, String prescriptionString) {
         String updateQuery = "UPDATE doctorConsultTable SET prescription = ? WHERE queueNumber = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
