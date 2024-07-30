@@ -58,7 +58,7 @@ public class LowStockController implements Initializable {
         stockTableColumn.setCellValueFactory(new PropertyValueFactory<>("stockLeft"));
     }
 
-    private void initializeMedicineList() {
+    public void initializeMedicineList() {
         String medicineViewQuery = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable;";
 
         try (Statement statement = connection.createStatement();
@@ -110,7 +110,7 @@ public class LowStockController implements Initializable {
         }, 0, 30000); // Poll every 30 seconds
     }
 
-    private void updateTableView() {
+    public void updateTableView() {
         String query = "SELECT id, name, quantityInMilligrams, stockLeft FROM medicineTable";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {

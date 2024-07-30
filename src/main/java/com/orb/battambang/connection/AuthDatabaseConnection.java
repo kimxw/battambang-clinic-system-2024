@@ -2,6 +2,8 @@ package com.orb.battambang.connection;
 
 import com.orb.battambang.Main;
 
+import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
 
@@ -15,6 +17,12 @@ public class AuthDatabaseConnection {
         boolean success = false;
 
         AuthDatabaseConnection.filePath = "./src/main/resources/databases/auth-clinicdb.db";
+
+        // Check if the file exists before attempting to connect
+        File dbFile = new File(filePath);
+        if (!dbFile.exists()) {
+            return false;
+        }
 
         try {
             Class.forName("org.sqlite.JDBC");
