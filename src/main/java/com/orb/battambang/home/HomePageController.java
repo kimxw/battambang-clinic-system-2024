@@ -4,6 +4,7 @@ import com.orb.battambang.login.Staff;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.login.NewLoginPageController;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -118,5 +119,28 @@ public class HomePageController implements Initializable {
         updatePermissionRectangle(consultationPermRectangle, consultationPermLabel, consultation, false);
         updatePermissionRectangle(pharmacyPermRectangle, pharmacyPermLabel, pharmacy, false);
 
+    }
+
+
+
+    @FXML
+    private void userGuideButtonOnAction(ActionEvent e) {
+        // Create an Alert dialog
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("User Guide");
+        alert.setHeaderText("We are working on integrating a user guide into the application.");
+
+        // Create a TextArea to hold the message and link
+        TextArea textArea = new TextArea("In the meantime, you may visit our online guide at:\n\n" +
+                "https://drive.google.com/file/d/1znNSwU-5RtC5KTj1wFu_RhAcCc8ft3oC/view?usp=sharing");
+        textArea.setWrapText(true);
+        textArea.setEditable(false);
+        textArea.setPrefSize(400, 200);
+
+        // Add the TextArea to the Alert dialog
+        alert.getDialogPane().setContent(textArea);
+
+        // Show the Alert dialog
+        alert.showAndWait();
     }
 }

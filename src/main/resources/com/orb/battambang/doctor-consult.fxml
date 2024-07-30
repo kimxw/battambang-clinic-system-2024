@@ -331,7 +331,7 @@
       <TableView fx:id="prescriptionTableView" layoutX="623.0" layoutY="312.0" prefHeight="172.0" prefWidth="388.0">
         <columns>
           <TableColumn fx:id="nameColumn" prefWidth="85.0" text="Name" />
-          <TableColumn fx:id="quantityColumn" prefWidth="56.5" text="Qty(mg)" />
+          <TableColumn fx:id="quantityColumn" prefWidth="56.5" text="Dsg (mg)" />
             <TableColumn fx:id="unitsColumn" prefWidth="64.0" text="Units" />
             <TableColumn fx:id="dosageColumn" prefWidth="181.5" text="Dosage Instructions" />
         </columns>
@@ -523,6 +523,6 @@
             </HBox>
          </children>
       </AnchorPane>
-      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="73.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="558.0" prefWidth="397.0" />
+      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="73.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="558.0" prefWidth="404.0" />
    </children>
 </Pane>

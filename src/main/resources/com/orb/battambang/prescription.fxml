@@ -28,9 +28,9 @@
         <TableView fx:id="prescriptionTableView" layoutX="24.0" layoutY="135.0" prefHeight="501.0" prefWidth="651.0">
             <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="162.88886833190918" text="Name" />
-                <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="64.4444580078125" text="Qty (mg)" />
-                <TableColumn fx:id="unitsColumn" minWidth="5.0" prefWidth="55.444488525390625" text="Units" />
-                <TableColumn fx:id="dosageColumn" prefWidth="367.55548095703125" text="Dosage Instructions" />
+                <TableColumn fx:id="quantityColumn" minWidth="0.0" prefWidth="83.5" text="Dosage (mg)" />
+                <TableColumn fx:id="unitsColumn" minWidth="5.0" prefWidth="49.5" text="Units" />
+                <TableColumn fx:id="dosageColumn" prefWidth="355.0" text="Dosage Instructions" />
             </columns>
         </TableView>
         <Label layoutX="717.0" layoutY="392.0" text="Choose/Enter Medication:">
@@ -42,12 +42,12 @@
                 <Font size="11.0" />
             </font>
         </Label>
-        <Label layoutX="869.0" layoutY="420.0" text="Name">
+        <Label layoutX="858.0" layoutY="421.0" text="Name">
             <font>
                 <Font size="11.0" />
             </font>
         </Label>
-        <Label layoutX="856.0" layoutY="448.0" text="Qty (mg)">
+        <Label layoutX="858.0" layoutY="448.0" text="Dosage (mg)">
             <font>
                 <Font size="11.0" />
             </font>
@@ -58,13 +58,13 @@
             </font>
         </Label>
         <TextField fx:id="inputIdTextField" layoutX="739.0" layoutY="429.0" prefHeight="25.0" prefWidth="78.0" />
-        <TextField fx:id="inputNameTextField" layoutX="913.0" layoutY="414.0" prefHeight="25.0" prefWidth="140.0" />
+        <TextField fx:id="inputNameTextField" layoutX="936.0" layoutY="414.0" prefHeight="25.0" prefWidth="117.0" />
         <TextField fx:id="inputUnitsTextField" layoutX="833.0" layoutY="516.0" prefHeight="26.0" prefWidth="152.0">
             <font>
                 <Font size="10.0" />
             </font></TextField>
         <Button fx:id="addUpdateButton" layoutX="1097.0" layoutY="556.0" mnemonicParsing="false" onAction="#addUpdateButtonOnAction" prefHeight="31.0" prefWidth="89.0" style="-fx-background-color: #192841;" text="Add/Update" textFill="WHITE" />
-        <TextField fx:id="inputQuantityTextField" layoutX="913.0" layoutY="444.0" prefHeight="25.0" prefWidth="140.0" />
+        <TextField fx:id="inputQuantityTextField" layoutX="936.0" layoutY="444.0" prefHeight="25.0" prefWidth="117.0" />
         <Line endX="904.0" endY="221.0" layoutX="161.0" layoutY="255.0" startX="545.0" startY="221.0" stroke="#e8e8e8" />
         <Label layoutX="826.0" layoutY="434.0" text="OR">
          <font>
@@ -76,7 +76,7 @@
         <columns>
           <TableColumn fx:id="idTableColumn" prefWidth="80.6666259765625" text="ID" />
           <TableColumn fx:id="medicineNameTableColumn" prefWidth="244.66656494140625" text="Name" />
-            <TableColumn fx:id="medicineQuantityTableColumn" prefWidth="96.333251953125" text="Quantity (mg)" />
+            <TableColumn fx:id="medicineQuantityTableColumn" prefWidth="96.333251953125" text="Dosage (mg)" />
             <TableColumn fx:id="stockTableColumn" prefWidth="91.0" text="Stock Left" />
         </columns>
       </TableView>

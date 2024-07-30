@@ -16,7 +16,7 @@
             <columns>
                 <TableColumn fx:id="idTableColumn" prefWidth="90.0" text="ID" />
                 <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="254.0" text="Name" />
-                <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="116.3333740234375" text="Quantity (mg)" />
+                <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="116.3333740234375" text="Dosage (mg)" />
                 <TableColumn fx:id="stockTableColumn" prefWidth="122.9998779296875" text="Stock (unit)" />
             </columns>
         </TableView>

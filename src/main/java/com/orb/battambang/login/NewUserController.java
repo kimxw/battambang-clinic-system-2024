@@ -71,9 +71,6 @@ public class NewUserController implements Initializable {
 
         //give receptionist access to triage for height and weight
         String givePerms = "UPDATE staffTable SET " + primaryRole.toLowerCase() + " = 1 WHERE username = '" + username + "'";
-        if (primaryRole.equalsIgnoreCase("reception")) {
-            givePerms = "UPDATE staffTable SET reception = 1, triage = 1 WHERE username = '" + username + "'";
-        }
 
         if (primaryRole.equalsIgnoreCase("admin")) {
             givePerms = "UPDATE staffTable SET admin = 1, reception = 1, triage = 1, education = 1, consult = 1, pharmacy = 1 WHERE username = '" + username + "'";

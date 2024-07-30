@@ -12,7 +12,7 @@ public class AuthDatabaseConnection {
     public static Connection connection = null;
 
     //USE THIS ONE FOR INTELLIJ DEVELOPMENT
-
+/*
     public static boolean establishConnection() {
         boolean success = false;
 
@@ -44,9 +44,11 @@ public class AuthDatabaseConnection {
         return success;
     }
 
+ */
+
 
     //WARNING: USE THE ONE BELOW ONLY WHEN EXPORTING TO JAR
-    /*
+
     public static boolean establishConnection() {
         boolean success = false;
         URL location = Main.class.getProtectionDomain().getCodeSource().getLocation();
@@ -78,7 +80,7 @@ public class AuthDatabaseConnection {
         return success;
     }
 
-     */
+
 
 
     public static void closeDatabaseConnection() {
@@ -88,6 +90,17 @@ public class AuthDatabaseConnection {
             }
         } catch (SQLException e) {
             System.out.println(e);
+        }
+    }
+
+    public static boolean isConnectionOpen() {
+        if (connection == null) {
+            return false;
+        }
+        try {
+            return !AuthDatabaseConnection.connection.isClosed();
+        } catch (SQLException e) {
+            return false;
         }
     }
 

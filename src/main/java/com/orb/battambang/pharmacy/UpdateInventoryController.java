@@ -242,7 +242,6 @@ public class UpdateInventoryController implements Initializable {
             }
 
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             Labels.showMessageLabel(warningLabel1, "Ensure all fields are filled correctly", false);
         }
     }
@@ -277,7 +276,6 @@ public class UpdateInventoryController implements Initializable {
             }
 
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             Labels.showMessageLabel(warningLabel2, "Ensure all fields are filled correctly.", false);
         }
     }

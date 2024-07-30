@@ -1,6 +1,8 @@
 package com.orb.battambang.util;
 
 import com.orb.battambang.MainApp;
+import com.orb.battambang.connection.AuthDatabaseConnection;
+import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.login.NewLoginPageController;
 
 import com.orb.battambang.login.Staff;
@@ -14,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -133,6 +134,9 @@ public class MenuGallery {
 
     @FXML
     public void homeButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("home-page.fxml"));
             Parent root = fxmlLoader.load();
@@ -148,6 +152,9 @@ public class MenuGallery {
 
     @FXML
     public void receptionButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         boolean isReception = staff.isReception();
         if (isReception) {
             try {
@@ -179,6 +186,9 @@ public class MenuGallery {
 
     @FXML
     private void triageButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         boolean isTriage = staff.isTriage();
         if (isTriage) {
             try {
@@ -209,6 +219,9 @@ public class MenuGallery {
 
     @FXML
     public void educationButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         boolean isEducation = staff.isEducation();
         if (isEducation) {
             try {
@@ -239,6 +252,9 @@ public class MenuGallery {
 
     @FXML
     public void consultButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         boolean isConsultation = staff.isConsultation();
         if (isConsultation) {
             try {
@@ -269,6 +285,9 @@ public class MenuGallery {
 
     @FXML
     public void pharmacyButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
         boolean isPharmacy = staff.isPharmacy();
         if (isPharmacy) {
             try {
@@ -299,6 +318,10 @@ public class MenuGallery {
 
     @FXML
     public void queueManagerButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("queue-manager.fxml"));
             Parent root = fxmlLoader.load();
@@ -314,11 +337,43 @@ public class MenuGallery {
 
     @FXML
     public void adminButtonOnAction(ActionEvent e) {
-
+        if (!AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
+        boolean isAdmin = staff.isAdmin();
+        if (isAdmin) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("admin.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Admin");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-admin.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Admin");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
     }
 
     @FXML
     public void logoutButtonOnAction(ActionEvent e) {
+        if (!AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();

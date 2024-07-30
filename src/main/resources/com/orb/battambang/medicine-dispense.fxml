@@ -125,7 +125,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="756.0" layoutY="200.0" text="Quantity (mg)">
+      <Label layoutX="756.0" layoutY="200.0" text="Dosage (mg)">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -152,7 +152,7 @@
          <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="53.0" text="ID" />
             <TableColumn fx:id="nameTableColumn" minWidth="0.0" prefWidth="198.5" text="Name" />
-            <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="88.5" text="Quantity (mg)" />
+            <TableColumn fx:id="quantityTableColumn" minWidth="5.0" prefWidth="88.5" text="Dosage (mg)" />
             <TableColumn fx:id="stockTableColumn" prefWidth="82.0" text="Stock (unit)" />
          </columns>
       </TableView>

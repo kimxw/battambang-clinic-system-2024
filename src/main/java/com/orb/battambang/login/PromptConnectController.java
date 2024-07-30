@@ -13,8 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,7 +27,7 @@ public class PromptConnectController implements Initializable {
 //    private final String[] choiceBoxOptions = new String[] {"MOPK", "TNK5", "Kbal Koh"};
 
     @FXML
-    private Button goButton;
+    private Pane goPane;
 
 
     @Override
@@ -48,7 +50,7 @@ public class PromptConnectController implements Initializable {
 //    }
 
     @FXML
-    private void goButtonOnAction() {
+    private void goOnMouseClicked(MouseEvent e) {
         openLoginPage();
     }
 
@@ -69,7 +71,8 @@ public class PromptConnectController implements Initializable {
     }
 
     private void close() {
-        Stage stage = (Stage) goButton.getScene().getWindow();
+        Stage stage = (Stage) goPane.getScene().getWindow();
         stage.close();
     }
+
 }
