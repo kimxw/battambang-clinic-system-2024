@@ -10,6 +10,7 @@ public class DatabaseConnection {
     public static Connection connection = null;
 
     //USE THIS FOR INTELLIJ DEVELOPMENT
+    /*
     public static boolean establishConnection(String location) {
         if (location == null || location.isEmpty()) {
             return false;
@@ -38,8 +39,10 @@ public class DatabaseConnection {
         return success;
     }
 
+     */
+
     //WARNING: USE THE ONE BELOW ONLY WHEN EXPORTING TO JAR
-    /*
+
     public static boolean establishConnection(String location) {
         if (location == null || location.isEmpty()) {
             return false;
@@ -75,7 +78,7 @@ public class DatabaseConnection {
         return success;
     }
 
-     */
+
 
     public static void closeDatabaseConnection() {
         try {
