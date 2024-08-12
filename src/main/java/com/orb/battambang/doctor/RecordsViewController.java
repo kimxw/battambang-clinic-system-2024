@@ -52,6 +52,7 @@ public class RecordsViewController {
         String sh = "";
         String sr = "";
         String drugAllergies = "";
+        String historyNotes = "";
 
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
@@ -125,6 +126,7 @@ public class RecordsViewController {
                 sh = defaultIfNull(historyResultSet.getString("SH"));
                 sr = defaultIfNull(historyResultSet.getString("SR"));
                 drugAllergies = defaultIfNull(historyResultSet.getString("drugAllergies"));
+                historyNotes = defaultIfNull(historyResultSet.getString("additionalNotes"));
             }
             historyResultSet.close();
 
@@ -138,55 +140,63 @@ public class RecordsViewController {
         RecordsViewController.queueNumber = -1;
 
         String formattedText = String.format(
-                "- Patient Particulars -%n" +
-                        "  ID : %d%n" +
-                        "  Name : %s%n" +
-                        "  Age : %d%n" +
-                        "  Sex : %s%n" +
-                        "  Phone No. : %s%n%n" +
+                "Patient Particulars%n" +
+                        "ID : %d%n" +
+                        "Name : %s%n" +
+                        "Age : %d%n" +
+                        "Sex : %s%n" +
+                        "Phone No. : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- Height and Weight -%n" +
-                        "  Height : %.1f cm%n" +
-                        "  Weight : %.1f kg%n" +
-                        "  BMI : %.1f kg/m2%n" +
-                        "  BMI Category : %s%n%n" +
-                        "  Notes : %s%n%n" +
+                        "Height and Weight%n" +
+                        "Height : %.1f cm%n" +
+                        "Weight : %.1f kg%n" +
+                        "BMI : %.1f kg/m2%n" +
+                        "BMI Category : %s%n%n" +
+                        "Notes : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- Snellen's Test -%n" +
-                        "  Visual Acuity    Right Eye (OD)    Left Eye (OS)%n" +
-                        "  With pinhole          %s            %s%n" +
-                        "  Without pinhole       %s            %s%n%n" +
-                        "  Notes: %s%n%n" +
+                        "Snellen's Test%n" +
+                        "Visual Acuity    Right Eye (OD)    Left Eye (OS)%n" +
+                        "With pinhole          %s            %s%n" +
+                        "Without pinhole       %s            %s%n%n" +
+                        "Notes : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- Hearing Test -%n" +
-                        "  Hearing problems reported : %s%n" +
-                        "  Notes: %s%n%n" +
+                        "Hearing Test%n" +
+                        "Hearing problems reported : %s%n" +
+                        "Notes : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- Head Lice Screening -%n" +
-                        "  Head Lice problems reported : %s%n" +
-                        "  Notes: %s%n%n" +
+                        "Head Lice Screening%n" +
+                        "Head Lice problems reported : %s%n" +
+                        "Notes : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- Dental Checkup -%n" +
-                        "  Notes : %s%n%n" +
+                        "Dental Checkup%n" +
+                        "Notes : %s%n" +
+                        "__________________________________________________________________________________________%n%n" +
 
-                        "- History -%n" +
-                        "  System : %s%n" +
-                        "  Presenting : %s%n" +
-                        "  Duration : %s%n" +
-                        "  History of Presenting Illness (HPI) : %s%n" +
-                        "  Drug and Treatment History (DH) : %s%n" +
-                        "  Social History (SH) : %s%n" +
-                        "  Past History (PH) : %s%n" +
-                        "  Family History (FH) : %s%n" +
-                        "  Systems Review (SR) : %s%n" +
-                        "  Drug Allergies : %s%n",
+                        "History%n%n" +
+                        "System : %n%s%n%n" +
+                        "Presenting : %n%s%n%n" +
+                        "Duration : %n%s%n%n" +
+                        "History of Presenting Illness (HPI) : %n%s%n%n" +
+                        "Drug and Treatment History (DH) : %n%s%n%n" +
+                        "Social History (SH) : %n%s%n%n" +
+                        "Past History (PH) : %n%s%n%n" +
+                        "Family History (FH) : %n%s%n%n" +
+                        "Systems Review (SR) : %n%s%n%n" +
+                        "Drug Allergies : %n%s%n%n"+
+                        "Notes : %n%s%n" +
+                        "__________________________________________________________________________________________%n%n",
                 id, name, age, sex, phoneNumber,
                 height, weight, bmi, bmiCategory, bmiNotes,
                 wpRight, wpLeft, npRight, npLeft, snellensNotes,
                 hearingProblem ? "Yes" : "No", hearingNotes,
                 liceProblem ? "Yes" : "No", liceNotes,
                 dentalNotes,
-                system, ps, duration, hpi, dh, sh, ph, fh, sr, drugAllergies
+                system, ps, duration, hpi, dh, sh, ph, fh, sr, drugAllergies, historyNotes
         );
 
         textView.setText(formattedText);

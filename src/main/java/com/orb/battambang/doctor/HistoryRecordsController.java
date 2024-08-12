@@ -3,6 +3,7 @@ package com.orb.battambang.doctor;
 import com.orb.battambang.connection.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -19,19 +20,19 @@ public class HistoryRecordsController implements Initializable {
     @FXML
     private Text durationText;
     @FXML
-    private Text hpiText;
+    private TextArea hpiTextArea;
     @FXML
-    private Text dhText;
+    private TextArea dhTextArea;
     @FXML
-    private Text phText;
+    private TextArea phTextArea;
     @FXML
-    private Text shText;
+    private TextArea shTextArea;
     @FXML
-    private Text fhText;
+    private TextArea fhTextArea;
     @FXML
-    private Text srText;
+    private TextArea srTextArea;
     @FXML
-    private Text allergiesText;
+    private TextArea allergiesTextArea;
 
     protected static int queueNumber = -1;
 
@@ -49,13 +50,13 @@ public class HistoryRecordsController implements Initializable {
                 systemText.setText(historyResultSet.getString("bodySystem"));
                 psText.setText(historyResultSet.getString("PS"));
                 durationText.setText(historyResultSet.getString("duration"));
-                hpiText.setText(historyResultSet.getString("HPI"));
-                fhText.setText(historyResultSet.getString("FH"));
-                dhText.setText(historyResultSet.getString("DH"));
-                phText.setText(historyResultSet.getString("PH"));
-                shText.setText(historyResultSet.getString("SH"));
-                srText.setText(historyResultSet.getString("SR"));
-                allergiesText.setText(historyResultSet.getString("drugAllergies"));
+                hpiTextArea.setText(historyResultSet.getString("HPI"));
+                fhTextArea.setText(historyResultSet.getString("FH"));
+                dhTextArea.setText(historyResultSet.getString("DH"));
+                phTextArea.setText(historyResultSet.getString("PH"));
+                shTextArea.setText(historyResultSet.getString("SH"));
+                srTextArea.setText(historyResultSet.getString("SR"));
+                allergiesTextArea.setText(historyResultSet.getString("drugAllergies"));
             }
             historyResultSet.close();
 
@@ -63,13 +64,13 @@ public class HistoryRecordsController implements Initializable {
             systemText.setText("");
             psText.setText("");
             durationText.setText("");
-            hpiText.setText("");
-            fhText.setText("");
-            dhText.setText("");
-            phText.setText("");
-            shText.setText("");
-            srText.setText("");
-            allergiesText.setText("");
+            hpiTextArea.setText("");
+            fhTextArea.setText("");
+            dhTextArea.setText("");
+            phTextArea.setText("");
+            shTextArea.setText("");
+            srTextArea.setText("");
+            allergiesTextArea.setText("");
         } finally {
             queueNumber = -1;
         }
