@@ -8,23 +8,23 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.ReferralController">
+<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.ReferralController">
    <children>
-      <Pane fx:id="pane1" layoutX="14.0" layoutY="2.0" prefHeight="393.0" prefWidth="497.0">
+      <Pane fx:id="pane1" layoutX="-8.0" layoutY="8.0" prefHeight="585.0" prefWidth="410.0">
          <children>
-            <Pane layoutX="21.0" layoutY="207.0" prefHeight="135.0" prefWidth="550.0" style="-fx-background-color: #D1EEFC;">
+            <Pane layoutX="21.0" layoutY="207.0" prefHeight="310.0" prefWidth="443.0" style="-fx-background-color: #D1EEFC;">
                <children>
-                  <TextField fx:id="diagnosisTextField" layoutX="4.0" layoutY="2.0" prefHeight="25.0" prefWidth="291.0" promptText="enter patient diagnosis.">
+                  <TextField fx:id="diagnosisTextField" layoutX="4.0" layoutY="2.0" prefHeight="25.0" prefWidth="216.0" promptText="enter patient diagnosis.">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextField>
-                  <Label layoutX="302.0" layoutY="6.0" text="for">
+                  <Label layoutX="224.0" layoutY="6.0" text="for">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="durationTextField" layoutX="323.0" layoutY="2.0" prefHeight="25.0" prefWidth="216.0" promptText="enter duration.">
+                  <TextField fx:id="durationTextField" layoutX="239.0" layoutY="2.0" prefHeight="25.0" prefWidth="198.0" promptText="enter duration.">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -34,29 +34,29 @@
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <Label layoutX="6.0" layoutY="59.0" text="Reason for referral:">
+                  <Label layoutX="6.0" layoutY="209.0" text="Reason for referral:">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="notesTextArea" layoutX="5.0" layoutY="75.0" prefHeight="57.0" prefWidth="532.0" promptText="enter notes." wrapText="true">
+                  <TextArea fx:id="notesTextArea" layoutX="105.0" layoutY="193.0" prefHeight="112.0" prefWidth="332.0" promptText="enter notes." wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextArea>
-                  <Label layoutX="6.0" layoutY="37.0" text="He/She has been prescribed:">
+                  <Label layoutX="6.0" layoutY="47.0" prefHeight="37.0" prefWidth="94.0" text="He/She has been prescribed:" wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="medicationTextArea" layoutX="136.0" layoutY="31.0" prefHeight="38.0" prefWidth="402.0" wrapText="true">
+                  <TextArea fx:id="medicationTextArea" layoutX="106.0" layoutY="41.0" prefHeight="143.0" prefWidth="332.0" wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextArea>
                </children>
             </Pane>
-            <Label layoutX="260.0" layoutY="6.0" text="REFERRAL" underline="true" />
+            <Label layoutX="226.0" layoutY="14.0" text="REFERRAL" underline="true" />
             <Label layoutX="21.0" layoutY="56.0" text="Date:">
                <font>
                   <Font size="10.0" />
@@ -72,12 +72,12 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="21.0" layoutY="117.0" text="Patient Name:">
+            <Label layoutX="25.0" layoutY="118.0" text="Patient Name:">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField fx:id="nameTextField" layoutX="101.0" layoutY="113.0" prefHeight="25.0" prefWidth="184.0">
+            <TextField fx:id="nameTextField" layoutX="101.0" layoutY="113.0" prefHeight="25.0" prefWidth="165.0">
                <font>
                   <Font size="10.0" />
                </font>
@@ -87,27 +87,27 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField fx:id="genderTextField" layoutX="101.0" layoutY="145.0" prefHeight="25.0" prefWidth="94.0">
+            <TextField fx:id="genderTextField" layoutX="101.0" layoutY="145.0" prefHeight="25.0" prefWidth="165.0">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
-            <Label layoutX="301.0" layoutY="117.0" text="Patient Age:">
+            <Label layoutX="271.0" layoutY="117.0" text="Patient Age:">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="302.0" layoutY="151.0" text="Patient Address:">
+            <Label layoutX="270.0" layoutY="151.0" text="Patient Address:">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextArea fx:id="addressTextArea" layoutX="382.0" layoutY="146.0" prefHeight="38.0" prefWidth="175.0" wrapText="true">
+            <TextArea fx:id="addressTextArea" layoutX="350.0" layoutY="146.0" prefHeight="55.0" prefWidth="107.0" wrapText="true">
                <font>
                   <Font size="10.0" />
                </font>
             </TextArea>
-            <TextField fx:id="ageTextField" layoutX="381.0" layoutY="114.0" prefHeight="25.0" prefWidth="94.0">
+            <TextField fx:id="ageTextField" layoutX="352.0" layoutY="114.0" prefHeight="25.0" prefWidth="107.0">
                <font>
                   <Font size="10.0" />
                </font>
@@ -117,29 +117,29 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="349.0" text="Thank you.">
+            <Label layoutX="25.0" layoutY="530.0" text="Thank you.">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <TextField fx:id="docNameTextField" layoutX="26.0" layoutY="363.0" prefHeight="25.0" prefWidth="184.0">
+            <TextField fx:id="docNameTextField" layoutX="26.0" layoutY="552.0" prefHeight="25.0" prefWidth="184.0">
                <font>
                   <Font size="10.0" />
                </font>
             </TextField>
          </children>
       </Pane>
-      <Button fx:id="exitButton" layoutX="560.0" layoutY="7.0" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Exit">
+      <Button fx:id="exitButton" layoutX="425.0" layoutY="17.0" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Exit">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <Button fx:id="updateButton" layoutX="524.0" layoutY="372.0" mnemonicParsing="false" onAction="#updateButtonOnAction" prefHeight="22.0" prefWidth="71.0" text="Update">
+      <Button fx:id="updateButton" layoutX="388.0" layoutY="536.0" mnemonicParsing="false" onAction="#updateButtonOnAction" prefHeight="22.0" prefWidth="71.0" text="Update">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
-      <Button fx:id="printButton" layoutX="522.0" layoutY="7.0" mnemonicParsing="false" onAction="#printButtonOnAction" prefHeight="22.0" prefWidth="34.0" text="Print">
+      <Button fx:id="printButton" layoutX="388.0" layoutY="564.0" mnemonicParsing="false" onAction="#printButtonOnAction" prefHeight="22.0" prefWidth="71.0" text="Print">
          <font>
             <Font size="10.0" />
          </font>
