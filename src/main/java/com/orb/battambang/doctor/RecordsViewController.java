@@ -2,7 +2,8 @@ package com.orb.battambang.doctor;
 
 import com.orb.battambang.connection.DatabaseConnection;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,8 @@ import java.sql.Statement;
 
 public class RecordsViewController {
     @FXML
-    private TextArea textView;
+    private TextFlow textFlow;
+
     protected static int queueNumber = -1;
 
     @FXML
@@ -18,10 +20,10 @@ public class RecordsViewController {
         if (queueNumber != -1) {
             addData(queueNumber);
         }
+
     }
 
     private void addData(int queueNumber) {
-        // Initialize default values
         int id = queueNumber;
         String name = "";
         int age = 0;
@@ -134,72 +136,74 @@ public class RecordsViewController {
 
         } catch (SQLException exc) {
             exc.printStackTrace();
-            // Handle exception
         }
 
         RecordsViewController.queueNumber = -1;
 
-        String formattedText = String.format(
-                "Patient Particulars%n" +
-                        "ID : %d%n" +
-                        "Name : %s%n" +
-                        "Age : %d%n" +
-                        "Sex : %s%n" +
-                        "Phone No. : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "Height and Weight%n" +
-                        "Height : %.1f cm%n" +
-                        "Weight : %.1f kg%n" +
-                        "BMI : %.1f kg/m2%n" +
-                        "BMI Category : %s%n%n" +
-                        "Notes : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "Snellen's Test%n" +
-                        "Visual Acuity    Right Eye (OD)    Left Eye (OS)%n" +
-                        "With pinhole          %s            %s%n" +
-                        "Without pinhole       %s            %s%n%n" +
-                        "Notes : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "Hearing Test%n" +
-                        "Hearing problems reported : %s%n" +
-                        "Notes : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "Head Lice Screening%n" +
-                        "Head Lice problems reported : %s%n" +
-                        "Notes : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "Dental Checkup%n" +
-                        "Notes : %s%n" +
-                        "__________________________________________________________________________________________%n%n" +
-
-                        "History%n%n" +
-                        "System : %n%s%n%n" +
-                        "Presenting : %n%s%n%n" +
-                        "Duration : %n%s%n%n" +
-                        "History of Presenting Illness (HPI) : %n%s%n%n" +
-                        "Drug and Treatment History (DH) : %n%s%n%n" +
-                        "Social History (SH) : %n%s%n%n" +
-                        "Past History (PH) : %n%s%n%n" +
-                        "Family History (FH) : %n%s%n%n" +
-                        "Systems Review (SR) : %n%s%n%n" +
-                        "Drug Allergies : %n%s%n%n"+
-                        "Notes : %n%s%n" +
-                        "__________________________________________________________________________________________%n%n",
-                id, name, age, sex, phoneNumber,
-                height, weight, bmi, bmiCategory, bmiNotes,
-                wpRight, wpLeft, npRight, npLeft, snellensNotes,
-                hearingProblem ? "Yes" : "No", hearingNotes,
-                liceProblem ? "Yes" : "No", liceNotes,
-                dentalNotes,
-                system, ps, duration, hpi, dh, sh, ph, fh, sr, drugAllergies, historyNotes
+        textFlow.getChildren().clear();
+        textFlow.getChildren().addAll(
+                createStyledText("PATIENT RECORDS\n", "header"),
+                createStyledText("\nPatient Particulars\n\n", "header"),
+                createStyledText(String.format(
+                        "ID : %d\nName : %s\nAge : %d\nSex : %s\nPhone No. : %s\n\n",
+                        id, name, age, sex, phoneNumber
+                ), "content"),
+                createStyledText("Height and Weight\n\n", "header"),
+                createStyledText(String.format(
+                        "Height : %.1f cm\nWeight : %.1f kg\nBMI : %.1f kg/m2\nBMI Category : %s\nNotes : %s\n\n",
+                        height, weight, bmi, bmiCategory, bmiNotes
+                ), "content"),
+                createStyledText("Snellen's Test\n\n", "header"),
+                createStyledText(String.format(
+                        "Visual Acuity    Right Eye (OD)    Left Eye (OS)\nWith pinhole            %s            %s\nWithout pinhole       %s            %s\nNotes : %s\n\n",
+                        wpRight, wpLeft, npRight, npLeft, snellensNotes
+                ), "content"),
+                createStyledText("Hearing Test\n\n", "header"),
+                createStyledText(String.format(
+                        "Hearing problems reported : %s\nNotes : %s\n\n",
+                        hearingProblem ? "Yes" : "No", hearingNotes
+                ), "content"),
+                createStyledText("Head Lice Screening\n\n", "header"),
+                createStyledText(String.format(
+                        "Head Lice problems reported : %s\nNotes : %s\n\n",
+                        liceProblem ? "Yes" : "No", liceNotes
+                ), "content"),
+                createStyledText("Dental Checkup\n\n", "header"),
+                createStyledText(String.format(
+                        "Notes : %s\n\n",
+                        dentalNotes
+                ), "content"),
+                createStyledText("History\n\n", "header"),
+                createStyledText("System\n", "header"),
+                createStyledText(system + "\n\n", "content"),
+                createStyledText("Presenting Symptoms\n", "header"),
+                createStyledText(ps + "\n\n", "content"),
+                createStyledText("Duration\n", "header"),
+                createStyledText(duration + "\n\n", "content"),
+                createStyledText("History of Presenting Illness (HPI)\n", "header"),
+                createStyledText(hpi + "\n\n", "content"),
+                createStyledText("Drug and Treatment History (DH)\n", "header"),
+                createStyledText(dh + "\n\n", "content"),
+                createStyledText("Social History (SH)\n", "header"),
+                createStyledText(sh + "\n\n", "content"),
+                createStyledText("Past History (PH)\n", "header"),
+                createStyledText(ph + "\n\n", "content"),
+                createStyledText("Family History (FH)\n", "header"),
+                createStyledText(fh + "\n\n", "content"),
+                createStyledText("Systems Review (SR)\n", "header"),
+                createStyledText(sr + "\n\n", "content"),
+                createStyledText("Notes\n", "header"),
+                createStyledText(historyNotes + "\n\n", "content"),
+                createStyledText("Drug Allergies\n", "header"),
+                createStyledText(drugAllergies + "\n\n", "content")
         );
 
-        textView.setText(formattedText);
+    }
+
+    private Text createStyledText(String content, String styleClass) {
+        Text text = new Text(content);
+        text.getStyleClass().add(styleClass);
+        return text;
     }
 
     private String defaultIfNull(String value) {
