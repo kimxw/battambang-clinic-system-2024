@@ -1,4 +1,4 @@
-# VESNA: Clinic Management System for Project Battambang
+# VEASNA: Clinic Management System for Project Battambang
 
 https://github.com/kimxw/battambang-clinic-system/assets/156186556/719c9df8-8234-46b8-abf6-388681af5a4c
 
