@@ -1,0 +1,10 @@
+.header {
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.content {
+    -fx-font-size: 11pt;
+    -fx-fill: #000000;
+}

@@ -799,7 +799,7 @@ public class DoctorConsultController implements Initializable {
         } else {
             HistoryRecordsController.queueNumber = Integer.parseInt(queueNoLabel.getText());
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("history-records.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("history-records-view.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setResizable(false);
@@ -834,12 +834,13 @@ public class DoctorConsultController implements Initializable {
         } else {
             RecordsViewController.queueNumber = Integer.parseInt(queueNoLabel.getText());
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("records-view.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("full-records-view.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setResizable(false);
                 stage.setTitle("Records.txt");
                 stage.setScene(new Scene(root));
+
 
                 // Set the new window's owner to the primary stage
                 Stage primaryStage = (Stage) queueNumberTextField.getScene().getWindow(); // Assuming you have a reference to a node in the primary stage

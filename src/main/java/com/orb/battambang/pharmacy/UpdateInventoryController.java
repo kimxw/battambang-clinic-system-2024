@@ -41,7 +41,7 @@ public class UpdateInventoryController implements Initializable {
     private TextField stockAddTextField;
 
     @FXML
-    private TextField idUpdateTextField;
+    private Label idUpdateLabel;
     @FXML
     private TextField nameUpdateTextField;
     @FXML
@@ -122,7 +122,7 @@ public class UpdateInventoryController implements Initializable {
         // Listener for row selection
         medicineTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                idUpdateTextField.setText(newValue.getId().toString());
+                idUpdateLabel.setText(newValue.getId().toString());
                 nameUpdateTextField.setText(newValue.getName());
                 quantityUpdateTextField.setText(newValue.getQuantityInMilligrams().toString());
                 stockUpdateTextField.setText(newValue.getStockLeft().toString());
@@ -178,11 +178,15 @@ public class UpdateInventoryController implements Initializable {
     }
 
     private void clearUpdateFields() {
-        idUpdateTextField.setText("");
-        idUpdateTextField.setEditable(false);
+        idUpdateLabel.setText("");
         nameUpdateTextField.setText("");
         quantityUpdateTextField.setText("");
         stockUpdateTextField.setText("");
+    }
+
+    private void clearSearchFields() {
+        idSearchTextField.setText("");
+        nameSearchTextField.setText("");
     }
 
     // Getters for testing purposes
@@ -249,7 +253,7 @@ public class UpdateInventoryController implements Initializable {
     @FXML
     private void updateButtonOnAction(ActionEvent E) {
         try {
-            int id = Integer.parseInt(idUpdateTextField.getText());
+            int id = Integer.parseInt(idUpdateLabel.getText());
             String name = nameUpdateTextField.getText();
             int quantity = Integer.parseInt(quantityUpdateTextField.getText());
             int stock = Integer.parseInt(stockUpdateTextField.getText());
@@ -265,8 +269,9 @@ public class UpdateInventoryController implements Initializable {
 
                 if (affectedRows == 1) {
                     Labels.showMessageLabel(warningLabel2, "Entry with ID " + id + " updated successfully.", true);
-                    updateTableView();
+                    clearSearchFields();
                     clearUpdateFields();
+                    updateTableView();
                 } else {
                     Labels.showMessageLabel(warningLabel2, "ID may not exit. Add a new entry.", false);
                 }
@@ -295,6 +300,7 @@ public class UpdateInventoryController implements Initializable {
                 medicineObservableList.remove(selectedEntry);
 
                 clearUpdateFields();
+                clearSearchFields();
                 statement.close();
 
             } catch (Exception e) {
