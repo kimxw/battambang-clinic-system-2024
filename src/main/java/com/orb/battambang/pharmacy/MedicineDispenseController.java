@@ -218,19 +218,26 @@ public class MedicineDispenseController implements Initializable {
             sortedList.comparatorProperty().bind(medicineTableView.comparatorProperty());
             medicineTableView.setItems(sortedList);
 
-            // Listener for row selection
             medicineTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
-                    inputIdTextField.setText(newValue.getId().toString());
-                    inputNameTextField.setText(newValue.getName());
-                    inputQuantityTextField.setText(newValue.getQuantityInMilligrams().toString());
+                    try {
+//                        inputIdTextField.clear();
+//                        inputNameTextField.clear();
+//                        inputQuantityTextField.clear();
+//                        inputUnitTextField.clear();
+                        inputIdTextField.setText(newValue.getId().toString());
+                        inputNameTextField.setText(newValue.getName());
+                        inputQuantityTextField.setText(newValue.getQuantityInMilligrams().toString());
+                    } catch (Exception e) {
+                        System.out.println("here!");
+                    }
                 }
             });
 
             startPolling();
 
         } catch (Exception exc) {
-            exc.printStackTrace();
+            exc.getCause();
         }
     }
 
@@ -504,6 +511,7 @@ public class MedicineDispenseController implements Initializable {
     }
 
     @FXML public void clearButtonOnAction(ActionEvent e) {
+        medicineTableView.getSelectionModel().clearSelection();
         inputIdTextField.clear();
         inputNameTextField.clear();
         inputQuantityTextField.clear();
