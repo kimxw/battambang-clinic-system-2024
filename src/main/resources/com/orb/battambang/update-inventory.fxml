@@ -75,11 +75,10 @@
                </font>
             </Label>
             <Button layoutX="125.0" layoutY="376.0" mnemonicParsing="false" onAction="#deleteButtonOnAction" prefHeight="22.0" prefWidth="74.0" styleClass="button-clearfields" stylesheets="@button-style.css" text="Delete" />
-            <TextField fx:id="idUpdateTextField" layoutX="90.0" layoutY="266.0" prefHeight="25.0" prefWidth="74.0" />
             <TextField fx:id="nameUpdateTextField" layoutX="89.0" layoutY="301.0" prefHeight="25.0" prefWidth="104.0" />
             <TextField fx:id="quantityUpdateTextField" layoutX="202.0" layoutY="301.0" prefHeight="25.0" prefWidth="49.0" />
             <TextField fx:id="stockUpdateTextField" layoutX="90.0" layoutY="336.0" prefHeight="25.0" prefWidth="74.0" />
-            <Label layoutX="17.0" layoutY="269.0" text="ID">
+            <Label layoutX="17.0" layoutY="269.0" prefHeight="19.0" prefWidth="61.0" text="ID (fixed)">
                <font>
                   <Font size="13.0" />
                </font>
@@ -101,6 +100,7 @@
             </Label>
             <Label fx:id="warningLabel1" alignment="CENTER_RIGHT" layoutX="21.0" layoutY="194.0" prefHeight="17.0" prefWidth="263.0" />
             <Label fx:id="warningLabel2" alignment="CENTER_RIGHT" layoutX="21.0" layoutY="421.0" prefHeight="17.0" prefWidth="263.0" />
+            <Label fx:id="idUpdateLabel" layoutX="97.0" layoutY="270.0" prefHeight="17.0" prefWidth="74.0" />
          </children>
       </AnchorPane>
     </children>
