@@ -3,7 +3,6 @@ package com.orb.battambang.doctor;
 import com.orb.battambang.connection.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 

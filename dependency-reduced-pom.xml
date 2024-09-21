@@ -22,14 +22,11 @@
         <executions>
           <execution>
             <id>default-cli</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
             <configuration>
-              <mainClass>com.orb.battambang/com.orb.battambang.Main</mainClass>
-              <launcher>app</launcher>
-              <jlinkZipName>app</jlinkZipName>
-              <jlinkImageName>app</jlinkImageName>
-              <noManPages>true</noManPages>
-              <stripDebug>true</stripDebug>
-              <noHeaderFiles>true</noHeaderFiles>
+              <mainClass>com.orb.battambang.Main</mainClass>
             </configuration>
           </execution>
         </executions>
@@ -52,6 +49,13 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version>
+        <configuration>
+          <argLine>--add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -125,20 +129,33 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>RELEASE</version>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-core</artifactId>
+      <version>4.0.16-alpha</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
           <artifactId>hamcrest-core</artifactId>
           <groupId>org.hamcrest</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>assertj-core</artifactId>
+          <groupId>org.assertj</groupId>
+        </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.testfx</groupId>
+      <artifactId>testfx-junit5</artifactId>
+      <version>4.0.16-alpha</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javafx.version>19.0.2</javafx.version>
     <junit.version>5.9.2</junit.version>
+    <mockito.version>4.5.1</mockito.version>
+    <testfx.version>4.0.16-alpha</testfx.version>
   </properties>
 </project>

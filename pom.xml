@@ -57,6 +57,13 @@
       <version>3.39.2.0</version>
     </dependency>
 
+    <!-- mySQL JDBC dependency -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.4.0</version>
+    </dependency>
+
     <!-- Mockito dependencies -->
     <dependency>
       <groupId>org.mockito</groupId>

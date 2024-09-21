@@ -1,7 +1,6 @@
 package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.doctor.ReferralController;
 import com.orb.battambang.util.Labels;
 
 import com.orb.battambang.util.MenuGallery;

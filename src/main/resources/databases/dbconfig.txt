@@ -1,0 +1,7 @@
+root
+Star!2024
+localhost:3306
+
+admin
+btb!2024
+192.168.0.102:3306

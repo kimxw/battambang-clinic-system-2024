@@ -1,21 +1,12 @@
 package com.orb.battambang.login;
 
-import com.orb.battambang.connection.DatabaseConnection;
-import com.orb.battambang.util.Labels;
 import com.orb.battambang.MainApp;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;

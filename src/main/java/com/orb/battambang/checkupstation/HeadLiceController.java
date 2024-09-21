@@ -229,7 +229,8 @@ public class HeadLiceController extends CheckupMenuController implements Initial
             Boolean headLice = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
             String notes = additionalNotesTextArea.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO headLiceTable (queueNumber, headLice, additionalNotes) VALUES (?, ?, ?)";
+//            String insertToCreate = "INSERT OR REPLACE INTO headLiceTable (queueNumber, headLice, additionalNotes) VALUES (?, ?, ?)";
+            String insertToCreate = "INSERT INTO headLiceTable (queueNumber, headLice, additionalNotes) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE headLice = VALUES(headLice), additionalNotes = VALUES(additionalNotes)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);

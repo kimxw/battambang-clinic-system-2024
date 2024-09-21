@@ -8,8 +8,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 

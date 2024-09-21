@@ -240,12 +240,10 @@ public class EducationController implements Initializable {
                 Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " as " + newEducationStatus, true);
             } catch (SQLException e1) {
                 Labels.showMessageLabel(warningLabel, "Error.", false);
-                System.out.println("e1: " + e1);
             }
 
         } catch (Exception e2) {
             Labels.showMessageLabel(warningLabel, "Error.", false);
-            System.out.println("e2: " + e2);
         }
     }
 

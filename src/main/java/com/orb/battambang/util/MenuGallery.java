@@ -2,7 +2,6 @@ package com.orb.battambang.util;
 
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.AuthDatabaseConnection;
-import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.login.NewLoginPageController;
 
 import com.orb.battambang.login.Staff;
@@ -337,9 +336,6 @@ public class MenuGallery {
 
     @FXML
     public void adminButtonOnAction(ActionEvent e) {
-        if (!AuthDatabaseConnection.isConnectionOpen()) {
-            AuthDatabaseConnection.closeDatabaseConnection();
-        }
         boolean isAdmin = staff.isAdmin();
         if (isAdmin) {
             try {

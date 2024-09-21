@@ -3,7 +3,6 @@ package com.orb.battambang.reception;
 import com.orb.battambang.MainApp;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.PatientTableViewUpdater;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +21,6 @@ import java.time.LocalDate;
 
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -41,7 +39,7 @@ public class PatientRegistrationController implements Initializable {
     private TextField inputNameTextField;
     @FXML
     private DatePicker inputDOBDatePicker;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @FXML
     private TextField inputAgeTextField;
     @FXML

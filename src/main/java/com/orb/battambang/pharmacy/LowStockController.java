@@ -1,6 +1,5 @@
 package com.orb.battambang.pharmacy;
 
-import com.orb.battambang.connection.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
