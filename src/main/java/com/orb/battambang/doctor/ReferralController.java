@@ -75,7 +75,7 @@ public class ReferralController implements Initializable {
             fillDoctorNotes(queueNumber);
         } else {
             // handle the case where queueNumber is not set
-            System.out.println("Queue number is not set. Data initialization skipped.");
+            //System.out.println("Queue number is not set. Data initialization skipped.");
         }
     }
 
@@ -188,7 +188,7 @@ public class ReferralController implements Initializable {
                 if (printed) {
                     printerJob.endJob();
                 } else {
-                    System.out.println("Printing failed.");
+                    //System.out.println("Printing failed.");
                 }
             }
         }

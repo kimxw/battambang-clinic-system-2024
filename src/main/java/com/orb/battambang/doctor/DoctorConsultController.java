@@ -290,7 +290,7 @@ public class DoctorConsultController implements Initializable {
             }
         } catch (SQLException ex) {
             System.out.println(ex); // Handle the exception appropriately
-            System.out.println("updateButtonOnAction");
+            //System.out.println("updateButtonOnAction");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
             return;
         }
@@ -316,7 +316,7 @@ public class DoctorConsultController implements Initializable {
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, condition = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, `condition` = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setString(1, consultNotes);
                     doctorConsultTableStmt.setString(2, condition);
@@ -328,7 +328,7 @@ public class DoctorConsultController implements Initializable {
                 }
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, condition, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, `condition`, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setInt(1, queueNumber);
                     doctorConsultTableStmt.setString(2, consultNotes);
@@ -352,7 +352,7 @@ public class DoctorConsultController implements Initializable {
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
         } catch (SQLException ex) {
             System.out.println(ex);
-            System.out.println("updateButtonOnAction2");
+            //System.out.println("updateButtonOnAction2");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
         }
     }
@@ -502,7 +502,7 @@ public class DoctorConsultController implements Initializable {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                String condition = resultSet.getString("condition");
+                String condition = resultSet.getString("`condition`");
                 conditionChoiceBox.setValue(condition); // Set the selected value in the ChoiceBox
             } else {
                 conditionChoiceBox.setValue(""); // Set an empty value if no condition is found
@@ -614,7 +614,7 @@ public class DoctorConsultController implements Initializable {
             statement.close();
         } catch (SQLException exc) {
             System.out.println(exc);
-            System.out.println("updateParticularsPane");
+            //System.out.println("updateParticularsPane");
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);
         }
     }
@@ -651,6 +651,7 @@ public class DoctorConsultController implements Initializable {
         } catch (SQLException ex) {
             Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
             clearBMIFields();
+            ex.printStackTrace();
         }
     }
 

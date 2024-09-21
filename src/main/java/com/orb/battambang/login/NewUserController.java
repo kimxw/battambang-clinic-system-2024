@@ -2,21 +2,16 @@ package com.orb.battambang.login;
 import com.orb.battambang.connection.AuthDatabaseConnection;
 import com.orb.battambang.util.Labels;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-
-import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class NewUserController implements Initializable {
     private String[] roles = {"Admin", "Reception", "Triage", "Education", "Consultation", "Pharmacy"};
@@ -73,7 +68,7 @@ public class NewUserController implements Initializable {
         String givePerms = "UPDATE staffTable SET " + primaryRole.toLowerCase() + " = 1 WHERE username = '" + username + "'";
 
         if (primaryRole.equalsIgnoreCase("admin")) {
-            givePerms = "UPDATE staffTable SET admin = 1, reception = 1, triage = 1, education = 1, consult = 1, pharmacy = 1 WHERE username = '" + username + "'";
+            givePerms = "UPDATE staffTable SET admin = 1, reception = 1, triage = 1, education = 1, consultation = 1, pharmacy = 1 WHERE username = '" + username + "'";
         }
 
         try {

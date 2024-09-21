@@ -2,7 +2,6 @@ package com.orb.battambang.util;
 
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.pharmacy.Medicine;
-import com.orb.battambang.reception.Patient;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;

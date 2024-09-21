@@ -1,9 +1,7 @@
 package com.orb.battambang.reception;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.pharmacy.Medicine;
 import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.PatientTableViewUpdater;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,14 +1,10 @@
 package com.orb.battambang.admin;
 
-import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.AuthDatabaseConnection;
 import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.login.Staff;
-import com.orb.battambang.pharmacy.UpdateInventoryController;
-import com.orb.battambang.reception.Patient;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.Labels;
-import com.orb.battambang.util.PatientTableViewUpdater;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -17,11 +13,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -32,7 +25,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 
 import java.net.URL;
 import java.sql.*;

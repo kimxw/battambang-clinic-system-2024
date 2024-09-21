@@ -230,7 +230,8 @@ public class HearingTestController extends CheckupMenuController implements Init
             Boolean hearingProblems = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
             String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?)";
+//            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?)";
+            String insertToCreate = "INSERT INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE hearingProblems = VALUES(hearingProblems), additionalNotes = VALUES(additionalNotes)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);

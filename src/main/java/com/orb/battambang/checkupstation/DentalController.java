@@ -209,7 +209,9 @@ public class DentalController extends CheckupMenuController implements Initializ
         try {
             String notes = additionalNotesTextArea.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO dentalTable (queueNumber, additionalNotes) VALUES (?, ?)";
+            //String insertToCreate = "INSERT OR REPLACE INTO dentalTable (queueNumber, additionalNotes) VALUES (?, ?)";
+            String insertToCreate = "INSERT INTO dentalTable (queueNumber, additionalNotes) VALUES (?, ?) ON DUPLICATE KEY UPDATE additionalNotes = VALUES(additionalNotes)";
+
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);

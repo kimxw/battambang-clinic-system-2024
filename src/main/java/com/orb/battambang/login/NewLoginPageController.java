@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,12 +17,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class NewLoginPageController implements Initializable {
@@ -172,11 +169,12 @@ public class NewLoginPageController implements Initializable {
         boolean success = DatabaseConnection.establishConnection(location); //check if valid connection established
 
         if (!success) {
-            Labels.showMessageLabel(locationWarningLabel, "Please select a location.", false);
+            Labels.showMessageLabel(locationWarningLabel, "Connection failed.", false);
         } else {
             staff.setLocation(location);
             Labels.showMessageLabel(locationWarningLabel, "Connecting to database . . .", "green", 3);
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {AuthDatabaseConnection.closeDatabaseConnection(); openHomePage(); close();}));
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                AuthDatabaseConnection.closeDatabaseConnection(); openHomePage(); close();}));
             timeline.setCycleCount(1);
             timeline.play();
         }

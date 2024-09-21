@@ -227,7 +227,9 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             String npLeft = npLeftTextField.getText().isEmpty() ? null : npLeftTextField.getText();
             String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
 
-            String insertToCreate = "INSERT OR REPLACE INTO snellensTestTable (queueNumber, wpRight, wpLeft, npRight, npLeft, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+//            String insertToCreate = "INSERT OR REPLACE INTO snellensTestTable (queueNumber, wpRight, wpLeft, npRight, npLeft, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+            String insertToCreate = "INSERT INTO snellensTestTable (queueNumber, wpRight, wpLeft, npRight, npLeft, additionalNotes) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE wpRight = VALUES(wpRight), wpLeft = VALUES(wpLeft), npRight = VALUES(npRight), npLeft = VALUES(npLeft), additionalNotes = VALUES(additionalNotes)";
+
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
                 preparedStatement.setInt(1, queueNumber);

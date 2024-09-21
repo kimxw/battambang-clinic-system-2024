@@ -1,7 +1,6 @@
 package com.orb.battambang.pharmacy;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.reception.Patient;
 import com.orb.battambang.util.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -229,7 +228,7 @@ public class MedicineDispenseController implements Initializable {
                         inputNameTextField.setText(newValue.getName());
                         inputQuantityTextField.setText(newValue.getQuantityInMilligrams().toString());
                     } catch (Exception e) {
-                        System.out.println("here!");
+                        //System.out.println("here!");
                     }
                 }
             });

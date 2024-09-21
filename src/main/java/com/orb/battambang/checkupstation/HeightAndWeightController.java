@@ -241,7 +241,11 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             double bmi = Double.parseDouble(bmiLabel.getText());
             String bmiCategory = categoryLabel.getText();
 
-            String insertOrUpdateQuery = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+            //for sqlite
+            //String insertOrUpdateQuery = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
+
+            //for mySQL
+            String insertOrUpdateQuery = "INSERT INTO heightAndWeightTable (queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE height = VALUES(height), weight = VALUES(weight), bmi = VALUES(bmi), bmiCategory = VALUES(bmiCategory), additionalNotes = VALUES(additionalNotes)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
 
