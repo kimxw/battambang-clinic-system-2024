@@ -132,7 +132,7 @@ public class DoctorConsultController implements Initializable {
     private TableColumn<Prescription.PrescriptionEntry, String> dosageColumn;
     @FXML
     private ChoiceBox<String> conditionChoiceBox;
-    private String[] condition = {"None", "Acute", "Chronic", "Acute and Chronic"};
+    private String[] conditionType = {"None", "Acute", "Chronic", "Acute and Chronic"};
     @FXML
     private Button updateButton;
     @FXML
@@ -231,7 +231,7 @@ public class DoctorConsultController implements Initializable {
             }
         });
 
-        conditionChoiceBox.getItems().addAll(condition);
+        conditionChoiceBox.getItems().addAll(conditionType);
 
         // Initialize columns
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -258,7 +258,7 @@ public class DoctorConsultController implements Initializable {
         }
 
         String consultNotes = inputConsultNotesTextArea.getText();
-        String condition = conditionChoiceBox.getValue();
+        String conditionType = conditionChoiceBox.getValue();
         String prescriptionString = Prescription.convertToString(prescriptionTableView.getItems());
         boolean referralStatus = yesRadioButton.isSelected();
         String doctorConsultStatus = consultCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
@@ -316,10 +316,10 @@ public class DoctorConsultController implements Initializable {
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, `condition` = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, `conditionType` = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setString(1, consultNotes);
-                    doctorConsultTableStmt.setString(2, condition);
+                    doctorConsultTableStmt.setString(2, conditionType);
                     doctorConsultTableStmt.setString(3, prescriptionString);
                     doctorConsultTableStmt.setBoolean(4, referralStatus);
                     doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Update doctor column with doctorLabel text
@@ -328,11 +328,11 @@ public class DoctorConsultController implements Initializable {
                 }
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, `condition`, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, `conditionType`, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setInt(1, queueNumber);
                     doctorConsultTableStmt.setString(2, consultNotes);
-                    doctorConsultTableStmt.setString(3, condition);
+                    doctorConsultTableStmt.setString(3, conditionType);
                     doctorConsultTableStmt.setString(4, prescriptionString);
                     doctorConsultTableStmt.setBoolean(5, referralStatus);
                     doctorConsultTableStmt.setString(6, menuUserButton.getText()); // Set doctor column with doctorLabel text
