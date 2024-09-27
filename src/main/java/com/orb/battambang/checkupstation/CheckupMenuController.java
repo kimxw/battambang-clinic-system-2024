@@ -1,11 +1,8 @@
 package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.*;
 
-import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.MiniQueueManager;
-import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -29,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
@@ -73,6 +72,30 @@ public class CheckupMenuController implements Initializable {
     private Rectangle status5Rectangle;
     @FXML
     private Rectangle status6Rectangle;
+
+    @FXML
+    private Rectangle TtagRectangle;
+    @FXML
+    private Rectangle OtagRectangle;
+    @FXML
+    private Rectangle HtagRectangle;
+    @FXML
+    private Rectangle StagRectangle;
+    @FXML
+    private Rectangle PtagRectangle;
+
+    @FXML
+    private Label TtagLabel;
+    @FXML
+    private Label OtagLabel;
+    @FXML
+    private Label HtagLabel;
+    @FXML
+    private Label StagLabel;
+    @FXML
+    private Label PtagLabel;
+
+
     @FXML
     private Button switchUserButton;
     @FXML
@@ -124,10 +147,13 @@ public class CheckupMenuController implements Initializable {
     private Button menuLocationButton;
 
 
+    protected List<Tag> tagList = new ArrayList<>();
     private FXMLLoader fxmlLoader;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        initialiseTags();
 
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
@@ -168,6 +194,21 @@ public class CheckupMenuController implements Initializable {
     public void setInitialisingQueueNumber(int initialisingQueueNumber) {
         this.initialisingQueueNumber = initialisingQueueNumber;
     }
+
+    private void initialiseTags() {
+        Tag Ttag = new Tag(TtagLabel, TtagRectangle, "#b2ebf2", "#005d79");
+        Tag Otag = new Tag(OtagLabel, OtagRectangle, "#e1a5e8", "#8b1191");
+        Tag Htag = new Tag(HtagLabel, HtagRectangle, "#c0e3ba", "#278a2c");
+        Tag Stag = new Tag(StagLabel, StagRectangle, "#fff9d9", "#d99c1a");
+        Tag Ptag = new Tag(PtagLabel, PtagRectangle, "#ffc9e5", "#941c34");
+
+        tagList.add(Ttag);
+        tagList.add(Otag);
+        tagList.add(Htag);
+        tagList.add(Stag);
+        tagList.add(Ptag);
+    }
+
 
     @FXML
     public void editBlockPaneOnMouseClicked(MouseEvent e) {
@@ -250,6 +291,7 @@ public class CheckupMenuController implements Initializable {
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+        String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
 
         try {
             Statement statement = connection.createStatement();
@@ -296,8 +338,22 @@ public class CheckupMenuController implements Initializable {
                 Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
-                return;
             }
+
+            patientResultSet.close();
+
+            ResultSet tagResultSet = statement.executeQuery(tagQuery);
+            String tagSequence = "";
+            if (tagResultSet.next()) {
+               tagSequence = tagResultSet.getString("tag");
+
+            }
+
+            for(Tag t : tagList) {
+                t.updateTag(tagSequence);
+            }
+
+            tagResultSet.close();
 
             // Close the statement
             statement.close();
