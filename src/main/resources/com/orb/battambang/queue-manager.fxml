@@ -195,7 +195,7 @@
       </AnchorPane>
       <Pane fx:id="actionsPane" layoutX="47.0" layoutY="66.0" prefHeight="44.0" prefWidth="1188.0">
          <children>
-            <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1176.0" />
+            <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1008.0" />
             <Label layoutX="11.0" layoutY="12.0" prefHeight="19.0" prefWidth="38.0" text="Add:" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -207,7 +207,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="addChoiceBox" layoutX="142.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
+            <ChoiceBox fx:id="addTargetChoiceBox" layoutX="142.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
             <Button layoutX="277.0" layoutY="9.0" mnemonicParsing="false" onAction="#addButtonOnAction" text="Add" />
             <Label layoutX="340.0" layoutY="12.0" prefHeight="19.0" prefWidth="49.0" text="Move:" textAlignment="CENTER">
                <font>
@@ -215,27 +215,21 @@
                </font>
             </Label>
             <TextField fx:id="moveQueueNumberTextField" layoutX="389.0" layoutY="9.0" prefHeight="25.0" prefWidth="61.0" promptText="Queue #" />
-            <Button layoutX="790.0" layoutY="9.0" mnemonicParsing="false" onAction="#moveButtonOnAction" prefHeight="25.0" prefWidth="61.0" text="Move" />
+            <Button layoutX="615.0" layoutY="9.0" mnemonicParsing="false" onAction="#moveButtonOnAction" prefHeight="25.0" prefWidth="61.0" text="Move" />
             <Line endX="-172.0" endY="-162.5" layoutX="499.0" layoutY="200.0" startX="-172.0" startY="-192.0" stroke="#ebebeb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
-            <Label layoutX="459.0" layoutY="12.0" prefHeight="19.0" prefWidth="36.0" text="from" textAlignment="CENTER">
+            <Label layoutX="457.0" layoutY="12.0" prefHeight="19.0" prefWidth="24.0" text="to" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="currentChoiceBox" layoutX="497.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
-            <Label layoutX="632.0" layoutY="12.0" prefHeight="19.0" prefWidth="24.0" text="to" textAlignment="CENTER">
+            <ChoiceBox fx:id="moveTargetChoiceBox" layoutX="480.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
+            <Line endX="-172.0" endY="-162.5" layoutX="862.0" layoutY="199.0" startX="-172.0" startY="-192.0" stroke="#ebebeb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
+            <Label layoutX="705.0" layoutY="12.0" prefHeight="19.0" prefWidth="73.0" text="Re-order:" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="targetChoiceBox" layoutX="655.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
-            <Line endX="-172.0" endY="-162.5" layoutX="1037.0" layoutY="199.0" startX="-172.0" startY="-192.0" stroke="#ebebeb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
-            <Label layoutX="880.0" layoutY="12.0" prefHeight="19.0" prefWidth="73.0" text="Re-order:" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Button fx:id="moveUpButton" layoutX="1081.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
+            <Button fx:id="moveUpButton" layoutX="906.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -244,7 +238,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="moveDownButton" layoutX="1123.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
+            <Button fx:id="moveDownButton" layoutX="948.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -253,15 +247,12 @@
                   </ImageView>
                </graphic>
             </Button>
-            <ChoiceBox fx:id="reorderChoiceBox" layoutX="947.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
+            <ChoiceBox fx:id="reorderChoiceBox" layoutX="772.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d8d8d8" height="33.0" layoutY="620.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1230.0" />
-      <Label fx:id="warningLabel" layoutX="984.0" layoutY="625.0" prefHeight="17.0" prefWidth="230.0">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <ImageView fx:id="warningImageView" fitHeight="24.0" fitWidth="24.0" layoutX="958.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
+      <Label fx:id="warningLabel" layoutX="970.0" layoutY="627.0" prefHeight="17.0" prefWidth="230.0" />
+      <ImageView fx:id="warningImageView" fitHeight="21.0" fitWidth="24.0" layoutX="948.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
       <Line endX="-100.0" endY="33.0" layoutX="1041.0" layoutY="620.0" startX="-100.0" startY="1.0" stroke="#ebebeb" strokeWidth="3.0" />
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css" translateX="-200.0">
          <children>

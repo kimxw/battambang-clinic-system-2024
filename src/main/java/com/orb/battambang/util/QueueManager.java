@@ -74,6 +74,15 @@ public class QueueManager {
         }
     }
 
+    public boolean search(int queueNumber) {
+        String query = String.format("SELECT 1 FROM %s WHERE queueNumber = %d", this.currentTable, queueNumber);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void addNew(int queueNumber, ListView<String> targetListView, String targetTable) throws SQLException {
         String nameFromWaitingListQuery = "SELECT name FROM patientQueueTable WHERE queueNumber = ?";
@@ -128,6 +137,7 @@ public class QueueManager {
             }
         }
     }
+
     public static void move(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
@@ -257,7 +267,7 @@ public class QueueManager {
             }
         }
     }
-    public static void remove( ListView<String> currentListView, String currentTable) {
+    public static void remove(ListView<String> currentListView, String currentTable) {
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -364,6 +374,7 @@ public class QueueManager {
             }
         }
     }
+
     public void moveToNext() throws RuntimeException {
         if(this.targetListView == null && this.targetTable == null) {
             QueueManager.remove( this.currentListView, this.currentTable);
@@ -482,6 +493,5 @@ public class QueueManager {
             }
         }
     }
-
 
 }
