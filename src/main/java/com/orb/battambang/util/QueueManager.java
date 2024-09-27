@@ -17,16 +17,16 @@ public class QueueManager {
 
     private final String currentTable;
     private final ListView<String> currentListView;
-    private final ListView<Character> currentTagListView;
+    private final ListView<String> currentTagListView;
     private final ObservableList<String> queueList;
-    private final ObservableList<Character> tagList;
+    private final ObservableList<String> tagList;
 
     private QueueManager nextQM;
     //private final String targetTable;
     //private final ListView<String> targetListView;
     private static final Connection connection = DatabaseConnection.connection;
 
-    public QueueManager(ListView<String> currentListView, String currentTable, ListView<Character> currentTagListView, QueueManager nextQM) {
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView, QueueManager nextQM) {
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);
@@ -37,33 +37,33 @@ public class QueueManager {
         this.tagList = FXCollections.observableArrayList();
         this.currentTagListView.setItems(tagList);
 
-        currentTagListView.setCellFactory(param -> new ListCell<Character>() {
+        currentTagListView.setCellFactory(param -> new ListCell<String>() {
             @Override
-            protected void updateItem(Character item, boolean empty) {
+            protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                     getStyleClass().removeAll("tuberculosis", "optometry", "hearing", "social-worker", "physiotherapist");
                 } else {
                     setText(item.toString());
-                    // Apply style based on the character
+                    // Apply style based on the String
                     switch (item) {
-                        case 'T':
+                        case "T":
                             getStyleClass().add("tuberculosis");
                             break;
-                        case 'O':
+                        case "O":
                             getStyleClass().add("optometry");
                             break;
-                        case 'H':
+                        case "H":
                             getStyleClass().add("hearing");
                             break;
-                        case 'S':
+                        case "S":
                             getStyleClass().add("social-worker");
                             break;
-                        case 'P':
+                        case "P":
                             getStyleClass().add("physiotherapist");
                             break;
-                        case '?':
+                        case "?":
                             getStyleClass().add("unknown");
                             break;
                         default:
@@ -85,7 +85,7 @@ public class QueueManager {
     public ListView<String> getCurrentListView() {
         return currentListView;
     }
-    public ListView<Character> getCurrentTagListView() {
+    public ListView<String> getCurrentTagListView() {
         return this.currentTagListView;
     }
     public QueueManager getNextQueueManager() {
@@ -131,11 +131,11 @@ public class QueueManager {
             String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(tagQuery)) {
-                 char tag;
+                 String tag;
                  if (resultSet.next()) {
-                     tag = resultSet.getString("tag").charAt(0);
+                     tag = resultSet.getString("tag");
                  } else {
-                     tag = '?';
+                     tag = "";
                  }
                  tagList.add(tag);
             } catch (SQLException e) {
