@@ -1,6 +1,5 @@
 package com.orb.battambang.queue;
 
-import com.orb.battambang.login.NewLoginPageController;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.QueueManager;
@@ -12,13 +11,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.controlsfx.control.action.Action;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Queue;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 public class QueueManagerController implements Initializable {
@@ -76,6 +73,7 @@ public class QueueManagerController implements Initializable {
     @FXML
     private Button moreActionsCloseButton;
 
+    /*
     @FXML
     private Button triageWaitingToProgressButton;
     @FXML
@@ -92,6 +90,7 @@ public class QueueManagerController implements Initializable {
     private Button pharmacyWaitingToProgressButton;
     @FXML
     private Button pharmacyProgressToCheckoutButton;
+    */
 
     private final HashMap<String, QueueManager> buttonQueueManagerMap = new HashMap<>();
     private final HashMap<String, QueueManager> choiceQueueManagerMap = new HashMap<>();
@@ -103,11 +102,9 @@ public class QueueManagerController implements Initializable {
     private TextField moveQueueNumberTextField;
 
     @FXML
-    private ChoiceBox<String> addChoiceBox;
+    private ChoiceBox<String> addTargetChoiceBox;
     @FXML
-    private ChoiceBox<String> currentChoiceBox;
-    @FXML
-    private ChoiceBox<String> targetChoiceBox;
+    private ChoiceBox<String> moveTargetChoiceBox;
     @FXML
     private ChoiceBox<String> reorderChoiceBox;
 
@@ -121,6 +118,8 @@ public class QueueManagerController implements Initializable {
     @FXML
     private ImageView warningImageView;
 
+    QueueManager lastSelectedQM = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //initialising MenuGallery
@@ -133,15 +132,23 @@ public class QueueManagerController implements Initializable {
         setUpQueuePane();
 
         String[] choiceBoxItems = new String[]{"Triage: Waiting", "Triage: In-Progress",
-                                                "Education: Waiting", "Education: In-Progress",
-                                                "Consultation: Waiting", "Consultation: In-Progress",
-                                                "Pharmacy: Waiting", "Pharmacy: In-Progress"};
-        addChoiceBox.getItems().addAll(choiceBoxItems);
-        currentChoiceBox.getItems().addAll(choiceBoxItems);
+                "Education: Waiting", "Education: In-Progress",
+                "Consultation: Waiting", "Consultation: In-Progress",
+                "Pharmacy: Waiting", "Pharmacy: In-Progress"};
+        addTargetChoiceBox.getItems().addAll(choiceBoxItems);
         reorderChoiceBox.getItems().addAll(choiceBoxItems);
-        targetChoiceBox.getItems().addAll(choiceBoxItems);
-        targetChoiceBox.getItems().add("Remove");
+        moveTargetChoiceBox.getItems().addAll(choiceBoxItems);
+        moveTargetChoiceBox.getItems().add("Remove");
 
+        for(QueueManager qm : buttonQueueManagerMap.values()) {
+            qm.getCurrentListView().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    lastSelectedQM = qm; // Update the most recently selected ListView
+                } else {
+                    lastSelectedQM = null;
+                }
+            });
+        }
 
     }
 
@@ -233,14 +240,25 @@ public class QueueManagerController implements Initializable {
 
             int queueNumber = Integer.parseInt(addQueueNumberTextField.getText());
 
-            String target = addChoiceBox.getSelectionModel().getSelectedItem();
+            String current = searchQueueNumber(queueNumber);
+            String target = addTargetChoiceBox.getSelectionModel().getSelectedItem();
+            if (current != null) {
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient already exists in " + current, "#bf1b15", "/icons/cross.png");
+                clearAddFields();
+                return; //patient already exists in queue
+            }
             if (target == null || target.isBlank()) {
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a target queue", "#bf1b15", "/icons/cross.png");
-            } else {
-                QueueManager qm1 = choiceQueueManagerMap.get(target);
-                QueueManager.addNew(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
-                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully added", "#5f8b07", "/icons/tick.png");
+                clearAddFields();
+                return;
             }
+
+            QueueManager qm1 = choiceQueueManagerMap.get(target);
+            QueueManager.addNew(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
+            clearAddFields();
+
+            Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully added", "#5f8b07", "/icons/tick.png");
+
         } catch (Exception e) {
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
         }
@@ -257,23 +275,33 @@ public class QueueManagerController implements Initializable {
 
             int queueNumber = Integer.parseInt(moveQueueNumberTextField.getText());
 
-            String current = currentChoiceBox.getSelectionModel().getSelectedItem();
-            String target = targetChoiceBox.getSelectionModel().getSelectedItem();
-            if (current == null || target == null) {
-                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select an origin and target queue", "#bf1b15", "/icons/cross.png");
-            } else {
-                QueueManager qm1 = choiceQueueManagerMap.get(current);
-                if (target.equals("Remove")) {
-                    QueueManager.remove(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
-                    Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully removed", "#5f8b07", "/icons/tick.png");
-                } else{
-                    QueueManager qm2 = choiceQueueManagerMap.get(target);
-                    QueueManager.move(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable(), qm2.getCurrentListView(), qm2.getCurrentTable());
-                    Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully moved", "#5f8b07", "/icons/tick.png");
-                }
-
+            String current = searchQueueNumber(queueNumber); //currentChoiceBox.getSelectionModel().getSelectedItem();
+            String target = moveTargetChoiceBox.getSelectionModel().getSelectedItem();
+            if (current == null) {
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Queue number needs to be added first", "#bf1b15", "/icons/cross.png");
+                clearMoveFields();
+                return;
             }
+            if (target == null) {
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a target queue", "#bf1b15", "/icons/cross.png");
+                clearMoveFields();
+                return;
+            }
+
+            QueueManager qm1 = choiceQueueManagerMap.get(current);
+            if (target.equals("Remove")) {
+                QueueManager.remove(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully removed", "#5f8b07", "/icons/tick.png");
+            } else {
+                QueueManager qm2 = choiceQueueManagerMap.get(target);
+                QueueManager.move(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable(), qm2.getCurrentListView(), qm2.getCurrentTable());
+                Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully moved", "#5f8b07", "/icons/tick.png");
+            }
+
+            clearMoveFields();
+
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             //Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#5f8b07", "/icons/tick.png");
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
         }
@@ -284,8 +312,8 @@ public class QueueManagerController implements Initializable {
     @FXML
     private void reorderButtonOnAction(ActionEvent event) {
         try {
-            String current = reorderChoiceBox.getSelectionModel().getSelectedItem();
-            if (current == null) {
+
+            if (this.lastSelectedQM == null) {
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a queue", "#bf1b15", "/icons/cross.png");
                 return;
             }
@@ -294,13 +322,32 @@ public class QueueManagerController implements Initializable {
             String buttonId = button.getId();
 
             if (buttonId.equals("moveUpButton")) {
-                choiceQueueManagerMap.get(current).swapPosition(true);
+                this.lastSelectedQM.swapPosition(true);
             } else {
-                choiceQueueManagerMap.get(current).swapPosition(false);
+                this.lastSelectedQM.swapPosition(false);
             }
         } catch (Exception e) {
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
         }
+    }
+
+    private String searchQueueNumber(int queueNumber) {
+        for (Entry entry : choiceQueueManagerMap.entrySet()) {
+            if (((QueueManager)entry.getValue()).search(queueNumber)) {
+                return (String) entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    private void clearAddFields() {
+        addQueueNumberTextField.setText("");
+        addTargetChoiceBox.setValue(null);
+    }
+
+    private void clearMoveFields() {
+        moveQueueNumberTextField.setText("");
+        moveTargetChoiceBox.setValue(null);
     }
 
 }

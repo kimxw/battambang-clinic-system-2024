@@ -55,7 +55,7 @@ public class QueueManager {
     public void updateWaitingList() {
         SelectionModel<String> selectionModel = this.getCurrentListView().getSelectionModel();
         String selected = selectionModel.getSelectedItem();
-        String query = "SELECT queueNumber, name FROM " + currentTable;
+        String query = "SELECT queueNumber, name FROM " + currentTable + " ORDER BY createdAt;";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -74,6 +74,15 @@ public class QueueManager {
         }
     }
 
+    public boolean search(int queueNumber) {
+        String query = String.format("SELECT 1 FROM %s WHERE queueNumber = %d", this.currentTable, queueNumber);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void addNew(int queueNumber, ListView<String> targetListView, String targetTable) throws SQLException {
         String nameFromWaitingListQuery = "SELECT name FROM patientQueueTable WHERE queueNumber = ?";
@@ -128,6 +137,7 @@ public class QueueManager {
             }
         }
     }
+
     public static void move(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
@@ -257,7 +267,7 @@ public class QueueManager {
             }
         }
     }
-    public static void remove( ListView<String> currentListView, String currentTable) {
+    public static void remove(ListView<String> currentListView, String currentTable) {
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -364,6 +374,7 @@ public class QueueManager {
             }
         }
     }
+
     public void moveToNext() throws RuntimeException {
         if(this.targetListView == null && this.targetTable == null) {
             QueueManager.remove( this.currentListView, this.currentTable);
@@ -385,6 +396,7 @@ public class QueueManager {
             selectionModel.selectPrevious();
             String prevEntry = selectionModel.getSelectedItem();
             selectionModel.clearSelection();
+
             if (currentEntry.equals(prevEntry)) {
                 return;
             }
@@ -395,13 +407,14 @@ public class QueueManager {
             selectionModel.selectNext();
             String nextEntry = selectionModel.getSelectedItem();
             selectionModel.clearSelection();
+
             if (currentEntry.equals(nextEntry)) {
                 return;
             }
-
             int queueNumberB = Integer.parseInt(nextEntry.substring(0, nextEntry.indexOf(':')));
             swapHelper(queueNumberA, queueNumberB);
         }
+        this.currentListView.refresh();
         selectionModel.select(currentEntry);
     }
 
@@ -424,23 +437,25 @@ public class QueueManager {
 
             nameAStatement.setInt(1, queueNumberA);
             ResultSet rsA = nameAStatement.executeQuery();
-            if (rsA.next()) {
-                nameA = rsA.getString("name");
+            if (!rsA.next()) {
+                System.out.println("rsA no next");
             }
+            nameA = rsA.getString("name");
             rsA.close();
 
             nameBStatement.setInt(1, queueNumberB);
             ResultSet rsB = nameBStatement.executeQuery();
-            if (rsB.next()) {
-                nameB = rsB.getString("name");
+            if (!rsB.next()) {
+                System.out.println("rsB no next");
             }
+            nameB = rsB.getString("name");
             rsB.close();
 
             if (nameA.equals("") || nameB.equals("")) {
                 return;
             }
 
-            // perform swap (-1 and temp patient due to unique constraint which makes copying not possible)
+//            // perform swap (-1 and temp patient due to unique constraint which makes copying not possible)
             updateStatement.setInt(1, -1);
             updateStatement.setString(2, "TEMPORARY PATIENT");
             updateStatement.setInt(3, queueNumberB);
@@ -463,6 +478,7 @@ public class QueueManager {
 
             // Update the ListViews
             updateWaitingList();
+
         } catch (SQLException e) {
             //add my exception handling here
             try {
@@ -482,6 +498,5 @@ public class QueueManager {
             }
         }
     }
-
 
 }
