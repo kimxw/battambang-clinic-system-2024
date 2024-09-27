@@ -4,8 +4,10 @@ import com.orb.battambang.connection.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
+import javafx.util.Callback;
 
 import java.sql.*;
 import java.util.Timer;
@@ -34,6 +36,42 @@ public class QueueManager {
         this.currentTagListView = currentTagListView;
         this.tagList = FXCollections.observableArrayList();
         this.currentTagListView.setItems(tagList);
+
+        currentTagListView.setCellFactory(param -> new ListCell<Character>() {
+            @Override
+            protected void updateItem(Character item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    getStyleClass().removeAll("tuberculosis", "optometry", "hearing", "social-worker", "physiotherapist");
+                } else {
+                    setText(item.toString());
+                    // Apply style based on the character
+                    switch (item) {
+                        case 'T':
+                            getStyleClass().add("tuberculosis");
+                            break;
+                        case 'O':
+                            getStyleClass().add("optometry");
+                            break;
+                        case 'H':
+                            getStyleClass().add("hearing");
+                            break;
+                        case 'S':
+                            getStyleClass().add("social-worker");
+                            break;
+                        case 'P':
+                            getStyleClass().add("physiotherapist");
+                            break;
+                        case '?':
+                            getStyleClass().add("unknown");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
 
         this.nextQM = nextQM;
 
@@ -93,7 +131,7 @@ public class QueueManager {
             String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(tagQuery)) {
-                char tag;
+                 char tag;
                  if (resultSet.next()) {
                      tag = resultSet.getString("tag").charAt(0);
                  } else {

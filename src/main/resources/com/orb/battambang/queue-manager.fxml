@@ -180,8 +180,8 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="triageWaitingTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="triageWaitingListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="triageWaitingTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" styleClass="tuberculosis" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="triageWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
               </content>
@@ -190,8 +190,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="triageProgressTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="triageProgressListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="triageProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="triageProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
@@ -200,8 +200,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="educationWaitingTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="educationWaitingListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="educationWaitingTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="educationWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
@@ -210,8 +210,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="educationProgressTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="educationProgressListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="educationProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="educationProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
@@ -220,8 +220,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="doctorWaitingTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="doctorWaitingListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="doctorWaitingTagListView" focusTraversable="false" layoutX="107.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="doctorWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
@@ -230,28 +230,28 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="doctorProgressTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="doctorProgressListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="doctorProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="doctorProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fitToWidth="true" layoutX="903.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+            <ScrollPane fitToWidth="true" layoutX="905.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="pharmacyWaitingTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="pharmacyWaitingListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="pharmacyWaitingTagListView" focusTraversable="false" layoutX="107.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="pharmacyWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fitToWidth="true" layoutX="1054.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+            <ScrollPane fitToWidth="true" layoutX="1056.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView fx:id="pharmacyProgressTagListView" focusTraversable="false" prefHeight="1500.0" prefWidth="26.0" />
-                        <ListView fx:id="pharmacyProgressListView" focusTraversable="false" layoutX="26.0" prefHeight="1500.0" prefWidth="108.0" />
+                        <ListView fx:id="pharmacyProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="pharmacyProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
                      </children>
                   </AnchorPane>
                </content>
