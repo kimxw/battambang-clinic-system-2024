@@ -118,6 +118,8 @@ public class QueueManagerController implements Initializable {
     @FXML
     private ImageView warningImageView;
 
+    QueueManager lastSelectedQM = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //initialising MenuGallery
@@ -138,6 +140,15 @@ public class QueueManagerController implements Initializable {
         moveTargetChoiceBox.getItems().addAll(choiceBoxItems);
         moveTargetChoiceBox.getItems().add("Remove");
 
+        for(QueueManager qm : buttonQueueManagerMap.values()) {
+            qm.getCurrentListView().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    lastSelectedQM = qm; // Update the most recently selected ListView
+                } else {
+                    lastSelectedQM = null;
+                }
+            });
+        }
 
     }
 
@@ -301,8 +312,8 @@ public class QueueManagerController implements Initializable {
     @FXML
     private void reorderButtonOnAction(ActionEvent event) {
         try {
-            String current = reorderChoiceBox.getSelectionModel().getSelectedItem();
-            if (current == null) {
+
+            if (this.lastSelectedQM == null) {
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Select a queue", "#bf1b15", "/icons/cross.png");
                 return;
             }
@@ -311,9 +322,9 @@ public class QueueManagerController implements Initializable {
             String buttonId = button.getId();
 
             if (buttonId.equals("moveUpButton")) {
-                choiceQueueManagerMap.get(current).swapPosition(true);
+                this.lastSelectedQM.swapPosition(true);
             } else {
-                choiceQueueManagerMap.get(current).swapPosition(false);
+                this.lastSelectedQM.swapPosition(false);
             }
         } catch (Exception e) {
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
