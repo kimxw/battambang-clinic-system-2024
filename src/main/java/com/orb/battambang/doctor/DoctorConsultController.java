@@ -65,6 +65,8 @@ public class DoctorConsultController implements Initializable {
     @FXML
     private Label bmiCategoryLabel;
     @FXML
+    private Label historySystemLabel;
+    @FXML
     private Rectangle bmiCategoryRectangle;
     @FXML
     private TextArea heightAndWeightTextArea;
@@ -370,6 +372,7 @@ public class DoctorConsultController implements Initializable {
             displayHearingRecords(queueNumber);
             displaySnellensRecords(queueNumber);
             displayDentalRecords(queueNumber);
+            displayHistorySystem(queueNumber);
             displayConsultationNotes(queueNumber);
             displayPrescription(queueNumber);
             displayCondition(queueNumber);
@@ -735,6 +738,22 @@ public class DoctorConsultController implements Initializable {
         }
     }
 
+    private void displayHistorySystem(int queueNumber) {
+        String patientQuery = "SELECT bodySystem FROM historyTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                historySystemLabel.setText(resultSet.getString("bodySystem"));
+            } else {
+                clearHistoryFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearHistoryFields();
+        }
+    }
+
     private void clearParticularsFields() {
         queueNoLabel.setText("");
         nameLabel.setText("");
@@ -779,6 +798,7 @@ public class DoctorConsultController implements Initializable {
     }
 
     private void clearHistoryFields() {
+        historySystemLabel.setText("");
         Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
     }
 
