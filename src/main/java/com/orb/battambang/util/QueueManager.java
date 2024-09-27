@@ -15,21 +15,27 @@ public class QueueManager {
 
     private final String currentTable;
     private final ListView<String> currentListView;
+    private final ListView<Character> currentTagListView;
     private final ObservableList<String> queueList;
-    private final String targetTable;
-    private final ListView<String> targetListView;
+    private final ObservableList<Character> tagList;
+
+    private QueueManager nextQM;
+    //private final String targetTable;
+    //private final ListView<String> targetListView;
     private static final Connection connection = DatabaseConnection.connection;
 
-    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<Character> currentTagListView, QueueManager nextQM) {
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);
 
         this.currentTable = currentTable;
 
-        this.targetListView = targetListView;
+        this.currentTagListView = currentTagListView;
+        this.tagList = FXCollections.observableArrayList();
+        this.currentTagListView.setItems(tagList);
 
-        this.targetTable = targetTable;
+        this.nextQM = nextQM;
 
         startPolling();
     }
@@ -41,18 +47,25 @@ public class QueueManager {
     public ListView<String> getCurrentListView() {
         return currentListView;
     }
+    public ListView<Character> getCurrentTagListView() {
+        return this.currentTagListView;
+    }
+    public QueueManager getNextQueueManager() {
+        return this.nextQM;
+    }
 
     private void startPolling() {
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> updateWaitingList());
+                Platform.runLater(() -> updateListView());
             }
         }, 0, 5000); // Poll every 5 seconds
     }
 
-    public void updateWaitingList() {
+    public void updateListView() {
+        //update queueNumber + name
         SelectionModel<String> selectionModel = this.getCurrentListView().getSelectionModel();
         String selected = selectionModel.getSelectedItem();
         String query = "SELECT queueNumber, name FROM " + currentTable + " ORDER BY createdAt;";
@@ -72,6 +85,26 @@ public class QueueManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //update tags
+        tagList.clear();
+        for (String queueItem : queueList) {
+            int queueNumber = Integer.parseInt(queueItem.substring(0, queueItem.indexOf(':')));
+            String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(tagQuery)) {
+                char tag;
+                 if (resultSet.next()) {
+                     tag = resultSet.getString("tag").charAt(0);
+                 } else {
+                     tag = '?';
+                 }
+                 tagList.add(tag);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     public boolean search(int queueNumber) {
@@ -84,7 +117,9 @@ public class QueueManager {
         }
     }
 
-    public static void addNew(int queueNumber, ListView<String> targetListView, String targetTable) throws SQLException {
+    public static void addNew(int queueNumber, QueueManager queueManager) {
+        ListView<String> targetListView = queueManager.getCurrentListView();
+        String targetTable = queueManager.getCurrentTable();
         String nameFromWaitingListQuery = "SELECT name FROM patientQueueTable WHERE queueNumber = ?";
         String insertIntoProgressListQuery = "INSERT INTO " + targetTable + " (queueNumber, name) VALUES (?, ?)";
 
@@ -118,7 +153,7 @@ public class QueueManager {
             // Commit the transaction
             connection.commit();
 
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
 
         } catch (Exception exc) {
             try {
@@ -138,7 +173,12 @@ public class QueueManager {
         }
     }
 
-    public static void move(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
+    public static void move(QueueManager sourceQueueManager, QueueManager targetQueueManager) {
+        ListView<String> currentListView = sourceQueueManager.getCurrentListView();
+        String currentTable = sourceQueueManager.getCurrentTable();
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
+
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -185,8 +225,8 @@ public class QueueManager {
             // Update the ListViews
 
             currentListView.getSelectionModel().clearSelection();
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            sourceQueueManager.updateListView();
+            targetQueueManager.updateListView();
         } catch (SQLException e) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -205,7 +245,12 @@ public class QueueManager {
         }
     }
 
-    public static void move(int queueNumber, ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable){
+    public static void move(int queueNumber, QueueManager sourceQueueManager, QueueManager targetQueueManager){
+
+        ListView<String> currentListView = sourceQueueManager.getCurrentListView();
+        String currentTable = sourceQueueManager.getCurrentTable();
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM " + currentTable + " WHERE queueNumber = ?";
@@ -248,8 +293,8 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            sourceQueueManager.updateListView();
+            targetQueueManager.updateListView();
         } catch (Exception exc) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -267,7 +312,10 @@ public class QueueManager {
             }
         }
     }
-    public static void remove(ListView<String> currentListView, String currentTable) {
+    public static void remove(QueueManager queueManager) {
+        ListView<String> currentListView = queueManager.getCurrentListView();
+        String currentTable = queueManager.getCurrentTable();
+
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -306,7 +354,7 @@ public class QueueManager {
 
             // Update the ListViews
             currentListView.getSelectionModel().clearSelection();
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
         } catch (SQLException e) {
             //add my exception handling here
             try {
@@ -327,7 +375,9 @@ public class QueueManager {
         }
     }
 
-    public static void remove(int queueNumber, ListView<String> currentListView, String currentTable) {
+    public static void remove(int queueNumber, QueueManager queueManager) {
+        ListView<String> currentListView = queueManager.getCurrentListView();
+        String currentTable = queueManager.getCurrentTable();
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM " + currentTable + " WHERE queueNumber = ?";
@@ -356,7 +406,7 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
         } catch (SQLException e) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -376,12 +426,14 @@ public class QueueManager {
     }
 
     public void moveToNext() throws RuntimeException {
-        if(this.targetListView == null && this.targetTable == null) {
-            QueueManager.remove( this.currentListView, this.currentTable);
-        } else if (this.targetListView == null || this.targetTable == null) {
+        ListView<String> targetListView = this.nextQM.getCurrentListView();
+        String targetTable = this.nextQM.getCurrentTable();
+        if(targetListView == null && targetTable == null) {
+            QueueManager.remove(this);
+        } else if (targetListView == null || targetTable == null) {
             //internal error
         } else {
-            QueueManager.move( this.currentListView, this.currentTable, this.targetListView, this.targetTable);
+            QueueManager.move(this, this.nextQM);
         }
     }
 
@@ -477,7 +529,7 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            updateWaitingList();
+            updateListView();
 
         } catch (SQLException e) {
             //add my exception handling here

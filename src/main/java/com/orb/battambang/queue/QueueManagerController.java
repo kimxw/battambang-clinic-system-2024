@@ -4,6 +4,8 @@ import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.QueueManager;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +18,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.ResourceBundle;
 
 public class QueueManagerController implements Initializable {
@@ -36,6 +39,23 @@ public class QueueManagerController implements Initializable {
     private ListView<String> pharmacyWaitingListView;
     @FXML
     private ListView<String> pharmacyProgressListView;
+
+    @FXML
+    private ListView<Character> triageWaitingTagListView; //not used yet
+    @FXML
+    private ListView<Character> triageProgressTagListView; //not used yet
+    @FXML
+    private ListView<Character> educationWaitingTagListView; //not used yet
+    @FXML
+    private ListView<Character> educationProgressTagListView; //not used yet
+    @FXML
+    private ListView<Character> doctorWaitingTagListView; //not used yet
+    @FXML
+    private ListView<Character> doctorProgressTagListView; //not used yet
+    @FXML
+    private ListView<Character> pharmacyWaitingTagListView; //not used yet
+    @FXML
+    private ListView<Character> pharmacyProgressTagListView; //not used yet
 
     @FXML
     private AnchorPane sliderAnchorPane;
@@ -105,8 +125,6 @@ public class QueueManagerController implements Initializable {
     private ChoiceBox<String> addTargetChoiceBox;
     @FXML
     private ChoiceBox<String> moveTargetChoiceBox;
-    @FXML
-    private ChoiceBox<String> reorderChoiceBox;
 
     @FXML
     private Button moveUpButton;
@@ -136,7 +154,6 @@ public class QueueManagerController implements Initializable {
                 "Consultation: Waiting", "Consultation: In-Progress",
                 "Pharmacy: Waiting", "Pharmacy: In-Progress"};
         addTargetChoiceBox.getItems().addAll(choiceBoxItems);
-        reorderChoiceBox.getItems().addAll(choiceBoxItems);
         moveTargetChoiceBox.getItems().addAll(choiceBoxItems);
         moveTargetChoiceBox.getItems().add("Remove");
 
@@ -149,7 +166,6 @@ public class QueueManagerController implements Initializable {
                 }
             });
         }
-
     }
 
     private void setUpActionsPane() {
@@ -194,14 +210,15 @@ public class QueueManagerController implements Initializable {
     }
 
     private void setUpQueuePane() {
-        QueueManager triageWaiting = new QueueManager(triageWaitingListView, "triageWaitingTable", triageProgressListView, "triageProgressTable");
-        QueueManager triageProgress = new QueueManager(triageProgressListView, "triageProgressTable", educationWaitingListView, "educationWaitingTable");
-        QueueManager educationWaiting = new QueueManager(educationWaitingListView, "educationWaitingTable", educationProgressListView, "educationProgressTable");
-        QueueManager educationProgress = new QueueManager(educationProgressListView, "educationProgressTable", doctorWaitingListView, "doctorWaitingTable");
-        QueueManager doctorWaiting = new QueueManager(doctorWaitingListView, "doctorWaitingTable", doctorProgressListView, "doctorProgressTable");
-        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", pharmacyWaitingListView, "pharmacyWaitingTable");
-        QueueManager pharmacyWaiting = new QueueManager(pharmacyWaitingListView, "pharmacyWaitingTable", pharmacyProgressListView, "pharmacyProgressTable");
-        QueueManager pharmacyProgress = new QueueManager(pharmacyProgressListView, "pharmacyProgressTable", null, null);
+
+        QueueManager pharmacyProgress = new QueueManager(pharmacyProgressListView, "pharmacyProgressTable", pharmacyProgressTagListView,null);
+        QueueManager pharmacyWaiting = new QueueManager(pharmacyWaitingListView, "pharmacyWaitingTable", pharmacyWaitingTagListView, pharmacyProgress);
+        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", doctorProgressTagListView, pharmacyWaiting);
+        QueueManager doctorWaiting = new QueueManager(doctorWaitingListView, "doctorWaitingTable", doctorWaitingTagListView, doctorProgress);
+        QueueManager educationProgress = new QueueManager(educationProgressListView, "educationProgressTable", educationProgressTagListView, doctorWaiting);
+        QueueManager educationWaiting = new QueueManager(educationWaitingListView, "educationWaitingTable", educationWaitingTagListView, educationProgress);
+        QueueManager triageProgress = new QueueManager(triageProgressListView, "triageProgressTable", triageProgressTagListView, educationWaiting);
+        QueueManager triageWaiting = new QueueManager(triageWaitingListView, "triageWaitingTable", triageWaitingTagListView, triageProgress);
 
         buttonQueueManagerMap.put("triageWaitingToProgressButton", triageWaiting);
         buttonQueueManagerMap.put("triageProgressToEducationButton", triageProgress);
@@ -254,7 +271,8 @@ public class QueueManagerController implements Initializable {
             }
 
             QueueManager qm1 = choiceQueueManagerMap.get(target);
-            QueueManager.addNew(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
+            QueueManager.addNew(queueNumber, qm1);
+
             clearAddFields();
 
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully added", "#5f8b07", "/icons/tick.png");
@@ -267,6 +285,8 @@ public class QueueManagerController implements Initializable {
     @FXML
     private void moveButtonOnAction(ActionEvent event) {
 
+        QueueManager sourceQM;
+        QueueManager targetQM;
         try {
             if (moveQueueNumberTextField.getText().isEmpty() || !moveQueueNumberTextField.getText().matches("\\d+")) {
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Input a queue number", "#bf1b15", "/icons/cross.png");
@@ -288,13 +308,13 @@ public class QueueManagerController implements Initializable {
                 return;
             }
 
-            QueueManager qm1 = choiceQueueManagerMap.get(current);
+            sourceQM = choiceQueueManagerMap.get(current);
             if (target.equals("Remove")) {
-                QueueManager.remove(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable());
+                QueueManager.remove(queueNumber, sourceQM);
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully removed", "#5f8b07", "/icons/tick.png");
             } else {
-                QueueManager qm2 = choiceQueueManagerMap.get(target);
-                QueueManager.move(queueNumber, qm1.getCurrentListView(), qm1.getCurrentTable(), qm2.getCurrentListView(), qm2.getCurrentTable());
+                targetQM = choiceQueueManagerMap.get(target);
+                QueueManager.move(queueNumber, sourceQM, targetQM);
                 Labels.iconWithMessageDisplay(warningLabel, warningImageView, "Patient successfully moved", "#5f8b07", "/icons/tick.png");
             }
 
@@ -305,8 +325,6 @@ public class QueueManagerController implements Initializable {
             //Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#5f8b07", "/icons/tick.png");
             Labels.iconWithMessageDisplay(warningLabel, warningImageView, e.getMessage(), "#bf1b15", "/icons/cross.png");
         }
-
-
     }
 
     @FXML
