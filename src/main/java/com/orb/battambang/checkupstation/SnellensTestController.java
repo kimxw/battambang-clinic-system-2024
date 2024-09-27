@@ -3,6 +3,8 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.MiniQueueManager;
+import com.orb.battambang.util.Tag;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.List;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
@@ -55,6 +58,29 @@ public class SnellensTestController extends CheckupMenuController implements Ini
     private Rectangle status6Rectangle;
     @FXML
     private Button searchButton;
+
+    @FXML
+    private Rectangle TtagRectangle;
+    @FXML
+    private Rectangle OtagRectangle;
+    @FXML
+    private Rectangle HtagRectangle;
+    @FXML
+    private Rectangle StagRectangle;
+    @FXML
+    private Rectangle PtagRectangle;
+
+    @FXML
+    private Label TtagLabel;
+    @FXML
+    private Label OtagLabel;
+    @FXML
+    private Label HtagLabel;
+    @FXML
+    private Label StagLabel;
+    @FXML
+    private Label PtagLabel;
+
     @FXML
     private TextField queueNumberTextField;
     @FXML
@@ -109,8 +135,11 @@ public class SnellensTestController extends CheckupMenuController implements Ini
     @FXML
     private Button menuLocationButton;
 
+    private List<Tag> tagList = super.tagList;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initialiseTags();
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
@@ -166,6 +195,21 @@ public class SnellensTestController extends CheckupMenuController implements Ini
     public void setInitialisingQueueNumber(int initialisingQueueNumber) {
         this.initialisingQueueNumber = initialisingQueueNumber;
     }
+
+    private void initialiseTags() {
+        Tag Ttag = new Tag(TtagLabel, TtagRectangle, "#b2ebf2", "#005d79");
+        Tag Otag = new Tag(OtagLabel, OtagRectangle, "#e1a5e8", "#8b1191");
+        Tag Htag = new Tag(HtagLabel, HtagRectangle, "#c0e3ba", "#278a2c");
+        Tag Stag = new Tag(StagLabel, StagRectangle, "#fff9d9", "#d99c1a");
+        Tag Ptag = new Tag(PtagLabel, PtagRectangle, "#ffc9e5", "#941c34");
+
+        tagList.add(Ttag);
+        tagList.add(Otag);
+        tagList.add(Htag);
+        tagList.add(Stag);
+        tagList.add(Ptag);
+    }
+
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {

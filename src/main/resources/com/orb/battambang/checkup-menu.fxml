@@ -43,7 +43,7 @@
          </font>
       </Button>
       <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Pane fx:id="particularsPane" layoutX="64.0" layoutY="182.0" prefHeight="412.0" prefWidth="255.0">
+      <Pane fx:id="particularsPane" layoutX="64.0" layoutY="171.0" prefHeight="412.0" prefWidth="255.0">
          <children>
             <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
             <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
@@ -82,10 +82,40 @@
             <Label fx:id="status4Label" alignment="CENTER" layoutX="141.0" layoutY="307.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="status5Label" alignment="CENTER" layoutX="141.0" layoutY="338.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
             <Label fx:id="status6Label" alignment="CENTER" layoutX="141.0" layoutY="367.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Rectangle fx:id="TtagRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="57.0" layoutY="399.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+            <Rectangle fx:id="OtagRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="91.0" layoutY="399.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+            <Rectangle fx:id="HtagRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="126.0" layoutY="399.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+            <Rectangle fx:id="StagRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="160.0" layoutY="399.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+            <Rectangle fx:id="PtagRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="194.0" layoutY="399.0" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+            <Label fx:id="TtagLabel" layoutX="66.0" layoutY="401.0" text="T">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="OtagLabel" layoutX="98.0" layoutY="401.0" text="O">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="HtagLabel" layoutX="134.0" layoutY="402.0" text="H">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="StagLabel" layoutX="169.0" layoutY="402.0" text="S">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="PtagLabel" layoutX="203.0" layoutY="402.0" text="P">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Label fx:id="queueSelectLabel" layoutX="146.0" layoutY="101.0" prefHeight="17.0" prefWidth="140.0" />
-      <Pane fx:id="fixedPane" layoutX="63.0" layoutY="183.0" prefHeight="412.0" prefWidth="120.0">
+      <Pane fx:id="fixedPane" layoutX="63.0" layoutY="172.0" prefHeight="412.0" prefWidth="120.0">
          <children>
             <Label layoutX="1.0" layoutY="56.0" text="Name :">
                <font>
@@ -152,6 +182,11 @@
                   <Font size="13.0" />
                </font>
             </Label>
+            <Label layoutY="400.0" text="Tags">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <Button fx:id="dentalButton" layoutX="766.0" layoutY="118.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Dental">
@@ -201,9 +236,9 @@
             </Button>
          </children>
       </Pane>
-      <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
+      <AnchorPane fx:id="sliderAnchorPane" layoutX="-202.0" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
          <children>
-            <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
+            <VBox layoutX="202.0" layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
                <children>
                   <ImageView fitHeight="15.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
                   <Pane prefHeight="4.0" prefWidth="200.0" />
