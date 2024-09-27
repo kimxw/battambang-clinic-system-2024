@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -43,16 +44,8 @@
       </Button>
       <AnchorPane fx:id="queuePane" layoutX="12.0" layoutY="115.0" prefHeight="501.0" prefWidth="1178.0">
          <children>
-            <Line endX="-100.0" endY="350.0" layoutX="287.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-            <Line endX="-100.0" endY="345.0" layoutX="150.0" layoutY="140.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-            <Line endX="-100.0" endY="345.0" layoutX="424.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-            <Line endX="-100.0" endY="350.0" layoutX="561.0" layoutY="141.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-            <Line endX="-100.0" endY="345.0" layoutX="698.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-            <Line endX="-100.0" endY="350.0" layoutX="835.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-            <Line endX="-100.0" endY="345.0" layoutX="972.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-            <Line endX="-100.0" endY="350.0" layoutX="1109.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
-            <Line endX="-100.0" endY="345.0" layoutX="1246.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" />
-            <Button fx:id="triageWaitingToProgressButton" layoutX="169.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Line endX="-100.0" endY="350.0" layoutX="1142.0" layoutY="142.0" startX="-100.0" startY="-69.0" stroke="#666666" style="-fx-stroke-dash-array: 7;" />
+            <Button fx:id="triageWaitingToProgressButton" layoutX="122.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -60,7 +53,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="triageProgressToEducationButton" layoutX="306.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="triageProgressToEducationButton" layoutX="273.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -69,7 +62,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="educationWaitingToProgressButton" layoutX="443.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="educationWaitingToProgressButton" layoutX="424.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -78,7 +71,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="educationProgressToDoctorButton" layoutX="580.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="educationProgressToDoctorButton" layoutX="575.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -87,7 +80,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="doctorWaitingToProgressButton" layoutX="717.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="doctorWaitingToProgressButton" layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -96,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="doctorProgressToPharmacyButton" layoutX="854.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="doctorProgressToPharmacyButton" layoutX="876.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -105,7 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="pharmacyWaitingToProgressButton" layoutX="991.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="pharmacyWaitingToProgressButton" layoutX="1026.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -114,7 +107,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="pharmacyProgressToCheckoutButton" layoutX="1128.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="pharmacyProgressToCheckoutButton" layoutX="1176.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -123,42 +116,42 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label alignment="CENTER" layoutX="120.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Triage" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="80.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Triage" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="394.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Education" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="375.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Education" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="669.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Consultation" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="676.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Consultation" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="943.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Pharmacy" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="977.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Pharmacy" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="92.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="39.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="221.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="191.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="368.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="343.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="497.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="483.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -168,34 +161,106 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="772.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="787.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="918.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="945.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="1047.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="1082.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <ListView fx:id="triageWaitingListView" layoutX="56.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="triageProgressListView" layoutX="193.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="educationWaitingListView" layoutX="330.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="educationProgressListView" layoutX="467.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="doctorWaitingListView" layoutX="604.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="doctorProgressListView" layoutX="741.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="pharmacyWaitingListView" layoutX="878.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
-            <ListView fx:id="pharmacyProgressListView" layoutX="1015.0" layoutY="73.0" prefHeight="413.0" prefWidth="125.0" />
+            <ScrollPane fitToWidth="true" layoutX="-1.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="triageWaitingTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" styleClass="tuberculosis" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="triageWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="150.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="triageProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="triageProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="301.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="educationWaitingTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="educationWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="452.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="educationProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="educationProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="603.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="doctorWaitingTagListView" focusTraversable="false" layoutX="107.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="doctorWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="754.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="doctorProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="doctorProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="905.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="pharmacyWaitingTagListView" focusTraversable="false" layoutX="107.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="pharmacyWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="1056.0" layoutY="73.0" prefHeight="416.0" prefWidth="149.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="pharmacyProgressTagListView" focusTraversable="false" layoutX="108.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="26.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="pharmacyProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="110.0" stylesheets="@qm-queue-style.css" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
       <Pane fx:id="actionsPane" layoutX="47.0" layoutY="66.0" prefHeight="44.0" prefWidth="1188.0">
          <children>
-            <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1008.0" />
+            <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#d8d8d8" height="50.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" width="861.0" />
             <Label layoutX="11.0" layoutY="12.0" prefHeight="19.0" prefWidth="38.0" text="Add:" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -229,7 +294,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Button fx:id="moveUpButton" layoutX="906.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
+            <Button fx:id="moveUpButton" layoutX="770.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -238,7 +303,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="moveDownButton" layoutX="948.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
+            <Button fx:id="moveDownButton" layoutX="812.0" layoutY="6.0" mnemonicParsing="false" onAction="#reorderButtonOnAction" prefHeight="26.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -247,13 +312,12 @@
                   </ImageView>
                </graphic>
             </Button>
-            <ChoiceBox fx:id="reorderChoiceBox" layoutX="772.0" layoutY="9.0" prefHeight="25.0" prefWidth="125.0" />
          </children>
       </Pane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d8d8d8" height="33.0" layoutY="620.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1230.0" />
-      <Label fx:id="warningLabel" layoutX="970.0" layoutY="627.0" prefHeight="17.0" prefWidth="230.0" />
-      <ImageView fx:id="warningImageView" fitHeight="21.0" fitWidth="24.0" layoutX="948.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
-      <Line endX="-100.0" endY="33.0" layoutX="1041.0" layoutY="620.0" startX="-100.0" startY="1.0" stroke="#ebebeb" strokeWidth="3.0" />
+      <Label fx:id="warningLabel" layoutX="868.0" layoutY="627.0" prefHeight="17.0" prefWidth="347.0" />
+      <ImageView fx:id="warningImageView" fitHeight="21.0" fitWidth="24.0" layoutX="846.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" scaleX="0.8" scaleY="0.8" />
+      <Line endX="-100.0" endY="33.0" layoutX="934.0" layoutY="620.0" startX="-100.0" startY="1.0" stroke="#ebebeb" strokeWidth="3.0" />
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css" translateX="-200.0">
          <children>
             <VBox layoutY="64.0" prefHeight="586.0" prefWidth="200.0" style="-fx-background-color: #192841;">
