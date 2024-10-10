@@ -128,12 +128,12 @@ public class QueueManager {
         tagList.clear();
         for (String queueItem : queueList) {
             int queueNumber = Integer.parseInt(queueItem.substring(0, queueItem.indexOf(':')));
-            String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
+            String tagQuery = "SELECT tagSequence FROM patientTagTable WHERE queueNumber = " + queueNumber;
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(tagQuery)) {
                  String tag;
                  if (resultSet.next()) {
-                     tag = resultSet.getString("tag");
+                     tag = resultSet.getString("tagSequence");
                  } else {
                      tag = "";
                  }

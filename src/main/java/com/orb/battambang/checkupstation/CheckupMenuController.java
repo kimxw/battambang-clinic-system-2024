@@ -291,7 +291,7 @@ public class CheckupMenuController implements Initializable {
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        String tagQuery = "SELECT tag FROM patientTagTable WHERE queueNumber = " + queueNumber;
+        String tagQuery = "SELECT tagSequence FROM patientTagTable WHERE queueNumber = " + queueNumber;
 
         try {
             Statement statement = connection.createStatement();
@@ -345,7 +345,7 @@ public class CheckupMenuController implements Initializable {
             ResultSet tagResultSet = statement.executeQuery(tagQuery);
             String tagSequence = "";
             if (tagResultSet.next()) {
-               tagSequence = tagResultSet.getString("tag");
+               tagSequence = tagResultSet.getString("tagSequence");
 
             }
 

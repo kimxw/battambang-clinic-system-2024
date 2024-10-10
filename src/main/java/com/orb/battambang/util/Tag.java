@@ -15,8 +15,12 @@ public class Tag {
         this.colourDark = colourDark;
     }
 
+//    public static String getTagString() {
+//
+//    }
+
     public void updateTag(String tagSequence) {
-        if (tagSequence.contains(label.getText())) {
+        if (tagSequence.contains(label.getText().substring(0, 1))) {
             rectangle.setStyle("-fx-fill: " + colourLight + "; -fx-stroke: " + colourDark);
             label.setStyle("-fx-text-fill: " + colourDark);
         } else {
