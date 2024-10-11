@@ -74,26 +74,15 @@ public class CheckupMenuController implements Initializable {
     private Rectangle status6Rectangle;
 
     @FXML
-    private Rectangle TtagRectangle;
+    private ToggleButton tbToggleButton;
     @FXML
-    private Rectangle OtagRectangle;
+    private ToggleButton optometryToggleButton;
     @FXML
-    private Rectangle HtagRectangle;
+    private ToggleButton hearingToggleButton;
     @FXML
-    private Rectangle StagRectangle;
+    private ToggleButton socialToggleButton;
     @FXML
-    private Rectangle PtagRectangle;
-
-    @FXML
-    private Label TtagLabel;
-    @FXML
-    private Label OtagLabel;
-    @FXML
-    private Label HtagLabel;
-    @FXML
-    private Label StagLabel;
-    @FXML
-    private Label PtagLabel;
+    private ToggleButton physioToggleButton;
 
 
     @FXML
@@ -196,11 +185,11 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void initialiseTags() {
-        Tag Ttag = new Tag(TtagLabel, TtagRectangle, "#b2ebf2", "#005d79");
-        Tag Otag = new Tag(OtagLabel, OtagRectangle, "#e1a5e8", "#8b1191");
-        Tag Htag = new Tag(HtagLabel, HtagRectangle, "#c0e3ba", "#278a2c");
-        Tag Stag = new Tag(StagLabel, StagRectangle, "#fff9d9", "#d99c1a");
-        Tag Ptag = new Tag(PtagLabel, PtagRectangle, "#ffc9e5", "#941c34");
+        Tag Ttag = new Tag(tbToggleButton, "#b2ebf2", "#005d79");
+        Tag Otag = new Tag(optometryToggleButton, "#e1a5e8", "#8b1191");
+        Tag Htag = new Tag(hearingToggleButton, "#c0e3ba", "#278a2c");
+        Tag Stag = new Tag(socialToggleButton, "#fff9d9", "#d99c1a");
+        Tag Ptag = new Tag(physioToggleButton, "#ffc9e5", "#941c34");
 
         tagList.add(Ttag);
         tagList.add(Otag);
