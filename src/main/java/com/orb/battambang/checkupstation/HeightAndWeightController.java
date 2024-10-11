@@ -19,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -206,11 +205,11 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     }
 
     private void initialiseTags() {
-        Tag Ttag = new Tag(TtagLabel, TtagRectangle, "#b2ebf2", "#005d79");
-        Tag Otag = new Tag(OtagLabel, OtagRectangle, "#e1a5e8", "#8b1191");
-        Tag Htag = new Tag(HtagLabel, HtagRectangle, "#c0e3ba", "#278a2c");
-        Tag Stag = new Tag(StagLabel, StagRectangle, "#fff9d9", "#d99c1a");
-        Tag Ptag = new Tag(PtagLabel, PtagRectangle, "#ffc9e5", "#941c34");
+        Tag Ttag = new Tag(tbToggleButton);
+        Tag Otag = new Tag(optometryToggleButton);
+        Tag Htag = new Tag(hearingToggleButton);
+        Tag Stag = new Tag(socialToggleButton);
+        Tag Ptag = new Tag(physioToggleButton);
 
         tagList.add(Ttag);
         tagList.add(Otag);

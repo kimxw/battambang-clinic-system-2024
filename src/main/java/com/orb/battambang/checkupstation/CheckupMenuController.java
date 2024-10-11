@@ -74,15 +74,15 @@ public class CheckupMenuController implements Initializable {
     private Rectangle status6Rectangle;
 
     @FXML
-    private ToggleButton tbToggleButton;
+    protected ToggleButton tbToggleButton;
     @FXML
-    private ToggleButton optometryToggleButton;
+    protected ToggleButton optometryToggleButton;
     @FXML
-    private ToggleButton hearingToggleButton;
+    protected ToggleButton hearingToggleButton;
     @FXML
-    private ToggleButton socialToggleButton;
+    protected ToggleButton socialToggleButton;
     @FXML
-    private ToggleButton physioToggleButton;
+    protected ToggleButton physioToggleButton;
 
 
     @FXML
@@ -185,11 +185,11 @@ public class CheckupMenuController implements Initializable {
     }
 
     private void initialiseTags() {
-        Tag Ttag = new Tag(tbToggleButton, "#b2ebf2", "#005d79");
-        Tag Otag = new Tag(optometryToggleButton, "#e1a5e8", "#8b1191");
-        Tag Htag = new Tag(hearingToggleButton, "#c0e3ba", "#278a2c");
-        Tag Stag = new Tag(socialToggleButton, "#fff9d9", "#d99c1a");
-        Tag Ptag = new Tag(physioToggleButton, "#ffc9e5", "#941c34");
+        Tag Ttag = new Tag(tbToggleButton);
+        Tag Otag = new Tag(optometryToggleButton);
+        Tag Htag = new Tag(hearingToggleButton);
+        Tag Stag = new Tag(socialToggleButton);
+        Tag Ptag = new Tag(physioToggleButton);
 
         tagList.add(Ttag);
         tagList.add(Otag);

@@ -16,10 +16,8 @@ public class Tag {
         this.colourDark = colourDark;
     }
 
-    public Tag(ToggleButton toggleButton, String colourLight, String colourDark) {
+    public Tag(ToggleButton toggleButton) {
         //initialise toggle button reference
-        this.colourLight = colourLight;
-        this.colourDark = colourDark;
     }
 
 //    public static String getTagString() {
