@@ -259,6 +259,7 @@ public class DoctorConsultController implements Initializable {
             return;
         }
 
+
         String consultNotes = inputConsultNotesTextArea.getText();
         String conditionType = conditionChoiceBox.getValue();
         String prescriptionString = Prescription.convertToString(prescriptionTableView.getItems());
@@ -292,11 +293,9 @@ public class DoctorConsultController implements Initializable {
             }
         } catch (SQLException ex) {
             System.out.println(ex); // Handle the exception appropriately
-            //System.out.println("updateButtonOnAction");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
             return;
         }
-
 
         if (conditionChoiceBox.getValue().equals("")) {
             Labels.showMessageLabel(warningLabel, "Please choose a condition.", false);
@@ -318,7 +317,7 @@ public class DoctorConsultController implements Initializable {
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, `conditionType` = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, conditionType = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setString(1, consultNotes);
                     doctorConsultTableStmt.setString(2, conditionType);
@@ -354,7 +353,7 @@ public class DoctorConsultController implements Initializable {
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
         } catch (SQLException ex) {
             System.out.println(ex);
-            //System.out.println("updateButtonOnAction2");
+            System.out.println("UPDATE RECORD - updateButtonOnAction");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
         }
     }
@@ -505,7 +504,7 @@ public class DoctorConsultController implements Initializable {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                String condition = resultSet.getString("`condition`");
+                String condition = resultSet.getString("conditionType");
                 conditionChoiceBox.setValue(condition); // Set the selected value in the ChoiceBox
             } else {
                 conditionChoiceBox.setValue(""); // Set an empty value if no condition is found
