@@ -97,6 +97,7 @@ public class CheckupMenuController implements Initializable {
     private Button historyButton;
     @FXML
     private Button searchButton;
+
     @FXML
     private TextField queueNumberTextField;
     @FXML
@@ -198,6 +199,69 @@ public class CheckupMenuController implements Initializable {
         tagList.add(Ptag);
     }
 
+    @FXML
+    protected void tagToggleOnAction(ActionEvent e) {
+        updatePostToggle(Integer.parseInt(queueNoLabel.getText()));
+    }
+
+    protected void updatePreToggle(int queueNumber) {
+        boolean tb = false;
+        boolean opto = false;
+        boolean hearing = false;
+        boolean social = false;
+        boolean physio = false;
+
+        String updateQuery = "SELECT * FROM patientTagTable WHERE queueNumber = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, queueNumber); // Set the queueNumber parameter
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    tb = resultSet.getBoolean("tag_T");
+                    opto = resultSet.getBoolean("tag_O");
+                    hearing = resultSet.getBoolean("tag_H");
+                    social = resultSet.getBoolean("tag_S");
+                    physio = resultSet.getBoolean("tag_P");
+                } else {
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                }
+            }
+        } catch (SQLException e) {
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            throw new RuntimeException(e);
+        }
+
+        tbToggleButton.setSelected(tb);
+        optometryToggleButton.setSelected(opto);
+        hearingToggleButton.setSelected(hearing);
+        socialToggleButton.setSelected(social);
+        physioToggleButton.setSelected(physio);
+
+    }
+
+    private void updatePostToggle(int queueNumber) {
+        boolean tb = tbToggleButton.isSelected();
+        boolean opto = optometryToggleButton.isSelected();
+        boolean hearing = hearingToggleButton.isSelected();
+        boolean social = socialToggleButton.isSelected();
+        boolean physio = physioToggleButton.isSelected();
+
+        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_P = ?, tag_S = ? WHERE queueNumber = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setBoolean(1, tb);
+            updateStatement.setBoolean(2, opto);
+            updateStatement.setBoolean(3, hearing);
+            updateStatement.setBoolean(4, social);
+            updateStatement.setBoolean(5, physio);
+            updateStatement.setInt(6, queueNumber);
+
+            updateStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     public void editBlockPaneOnMouseClicked(MouseEvent e) {
@@ -273,7 +337,9 @@ public class CheckupMenuController implements Initializable {
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            updateParticularsPane(queueNumber);
+            updatePreToggle(queueNumber);
             particularsPane.setVisible(true);
         }
     }

@@ -224,6 +224,7 @@ public class HearingTestController extends CheckupMenuController implements Init
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displayHearingRecords(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 

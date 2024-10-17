@@ -224,6 +224,7 @@ public class HeadLiceController extends CheckupMenuController implements Initial
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displayHeadLiceRecords(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 

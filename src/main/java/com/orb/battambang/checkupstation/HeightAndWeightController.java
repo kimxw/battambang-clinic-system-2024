@@ -227,6 +227,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displayHeightAndWeight(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 

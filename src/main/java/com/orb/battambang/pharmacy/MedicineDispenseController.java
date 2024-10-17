@@ -240,15 +240,14 @@ public class MedicineDispenseController implements Initializable {
         }
     }
 
-
     private void startPolling() {
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> updateTableView());
+                Platform.runLater(MedicineDispenseController.this::updateTableView);
             }
-        }, 0, 30000); // Poll every 30 seconds
+        }, 0, 10000); // Poll every 10 seconds
     }
 
     private void updateTableView() {

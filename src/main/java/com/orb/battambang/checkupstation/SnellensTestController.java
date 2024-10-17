@@ -221,6 +221,7 @@ public class SnellensTestController extends CheckupMenuController implements Ini
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displaySnellensRecords(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 

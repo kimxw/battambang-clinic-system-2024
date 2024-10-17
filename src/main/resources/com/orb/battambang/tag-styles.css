@@ -9,9 +9,9 @@
 
 /* Default style for the ToggleButton (unselected state) */
 .toggle-button {
-    -fx-background-color: #d3d3d3; /* Light grey background */
-    -fx-text-fill: #808080; /* Black text */
-    -fx-border-color: #a9a9a9; /* Darker grey border */
+    -fx-background-color: #dedede; /* Light grey background */
+    -fx-text-fill: #8f8f8f; /* Black text */
+    -fx-border-color: #b5b5b5; /* Darker grey border */
     -fx-padding: 2px 2px;
 }
 

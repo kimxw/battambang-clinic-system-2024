@@ -251,6 +251,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
                 //System.out.println(ex);
                 clearFields();
             }
+            updatePreToggle(queueNumber);
         }
     }
 

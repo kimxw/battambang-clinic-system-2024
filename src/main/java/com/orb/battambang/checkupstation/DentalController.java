@@ -215,6 +215,7 @@ public class DentalController extends CheckupMenuController implements Initializ
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displayDentalRecords(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 
