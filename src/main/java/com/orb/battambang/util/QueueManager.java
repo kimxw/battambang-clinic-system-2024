@@ -22,11 +22,16 @@ public class QueueManager {
     private final ObservableList<String> tagList;
 
     private QueueManager nextQM;
+    private QueueManager altNextQM;
+    private String altTag;
+
     //private final String targetTable;
     //private final ListView<String> targetListView;
     private static final Connection connection = DatabaseConnection.connection;
 
-    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView, QueueManager nextQM) {
+
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
+                        QueueManager nextQM) {
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);
@@ -74,6 +79,61 @@ public class QueueManager {
         });
 
         this.nextQM = nextQM;
+
+        startPolling();
+    }
+
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
+                        QueueManager nextQM, QueueManager altNextQM, String altTag) {
+        this.currentListView = currentListView;
+        this.queueList = FXCollections.observableArrayList();
+        this.currentListView.setItems(queueList);
+
+        this.currentTable = currentTable;
+
+        this.currentTagListView = currentTagListView;
+        this.tagList = FXCollections.observableArrayList();
+        this.currentTagListView.setItems(tagList);
+
+        currentTagListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    getStyleClass().removeAll("tuberculosis", "optometry", "hearing", "social-worker", "physiotherapist");
+                } else {
+                    setText(item.toString());
+                    // Apply style based on the String
+                    switch (item) {
+                        case "T":
+                            getStyleClass().add("tuberculosis");
+                            break;
+                        case "O":
+                            getStyleClass().add("optometry");
+                            break;
+                        case "H":
+                            getStyleClass().add("hearing");
+                            break;
+                        case "S":
+                            getStyleClass().add("social-worker");
+                            break;
+                        case "P":
+                            getStyleClass().add("physiotherapist");
+                            break;
+                        case "?":
+                            getStyleClass().add("unknown");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+
+        this.nextQM = nextQM;
+        this.altNextQM = altNextQM;
+        this.altTag = altTag;
 
         startPolling();
     }
@@ -227,6 +287,7 @@ public class QueueManager {
         if (selectedPatient == null) {
             return;
         }
+
         int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
@@ -464,14 +525,21 @@ public class QueueManager {
     }
 
     public void moveToNext() throws RuntimeException {
-        ListView<String> targetListView = this.nextQM.getCurrentListView();
-        String targetTable = this.nextQM.getCurrentTable();
+        QueueManager targetQueueManager = this.nextQM;
+        if(this.altNextQM != null) {
+            if (shouldGoToAlt()) {
+                targetQueueManager = this.altNextQM;
+            }
+        }
+
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
         if(targetListView == null && targetTable == null) {
             QueueManager.remove(this);
         } else if (targetListView == null || targetTable == null) {
-            //internal error
+            //internal error - not supposed to reach here
         } else {
-            QueueManager.move(this, this.nextQM);
+            QueueManager.move(this, targetQueueManager);
         }
     }
 
@@ -586,6 +654,30 @@ public class QueueManager {
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
+        }
+    }
+
+    private boolean shouldGoToAlt() {
+        String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
+        if (selectedPatient == null) {
+            if (!currentListView.getItems().isEmpty()) {
+                selectedPatient = currentListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient == null) {
+            return false;
+        }
+
+        int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
+        String tagColumn = "tag_" + altTag.charAt(0);
+        String query = String.format("SELECT %s FROM patientTagTable WHERE queueNumber = %d", tagColumn, queueNumber);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            resultSet.next();
+            return resultSet.getBoolean(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

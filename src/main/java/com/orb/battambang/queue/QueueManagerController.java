@@ -36,6 +36,10 @@ public class QueueManagerController implements Initializable {
     @FXML
     private ListView<String> doctorProgressListView;
     @FXML
+    private ListView<String> physioWaitingListView;
+    @FXML
+    private ListView<String> physioProgressListView;
+    @FXML
     private ListView<String> pharmacyWaitingListView;
     @FXML
     private ListView<String> pharmacyProgressListView;
@@ -52,6 +56,10 @@ public class QueueManagerController implements Initializable {
     private ListView<String> doctorWaitingTagListView; //not used yet
     @FXML
     private ListView<String> doctorProgressTagListView; //not used yet
+    @FXML
+    private ListView<String> physioWaitingTagListView; //not used yet
+    @FXML
+    private ListView<String> physioProgressTagListView; //not used yet
     @FXML
     private ListView<String> pharmacyWaitingTagListView; //not used yet
     @FXML
@@ -107,6 +115,10 @@ public class QueueManagerController implements Initializable {
     @FXML
     private Button doctorProgressToPharmacyButton;
     @FXML
+    private Button physioWaitingToProgressButton;
+    @FXML
+    private Button physioProgressToPharmacyButton;
+    @FXML
     private Button pharmacyWaitingToProgressButton;
     @FXML
     private Button pharmacyProgressToCheckoutButton;
@@ -152,6 +164,7 @@ public class QueueManagerController implements Initializable {
         String[] choiceBoxItems = new String[]{"Triage: Waiting", "Triage: In-Progress",
                 "Education: Waiting", "Education: In-Progress",
                 "Consultation: Waiting", "Consultation: In-Progress",
+                "Physiotherapy: Waiting", "Physiotherapy: In-Progress",
                 "Pharmacy: Waiting", "Pharmacy: In-Progress"};
         addTargetChoiceBox.getItems().addAll(choiceBoxItems);
         moveTargetChoiceBox.getItems().addAll(choiceBoxItems);
@@ -213,7 +226,9 @@ public class QueueManagerController implements Initializable {
 
         QueueManager pharmacyProgress = new QueueManager(pharmacyProgressListView, "pharmacyProgressTable", pharmacyProgressTagListView,null);
         QueueManager pharmacyWaiting = new QueueManager(pharmacyWaitingListView, "pharmacyWaitingTable", pharmacyWaitingTagListView, pharmacyProgress);
-        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", doctorProgressTagListView, pharmacyWaiting);
+        QueueManager physioProgress = new QueueManager(physioProgressListView, "physioProgressTable", physioProgressTagListView, pharmacyWaiting);
+        QueueManager physioWaiting = new QueueManager(physioWaitingListView, "physioWaitingTable", physioWaitingTagListView, physioProgress);
+        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", doctorProgressTagListView, pharmacyWaiting, physioWaiting, "Physiotherapist");
         QueueManager doctorWaiting = new QueueManager(doctorWaitingListView, "doctorWaitingTable", doctorWaitingTagListView, doctorProgress);
         QueueManager educationProgress = new QueueManager(educationProgressListView, "educationProgressTable", educationProgressTagListView, doctorWaiting);
         QueueManager educationWaiting = new QueueManager(educationWaitingListView, "educationWaitingTable", educationWaitingTagListView, educationProgress);
@@ -226,6 +241,8 @@ public class QueueManagerController implements Initializable {
         buttonQueueManagerMap.put("educationProgressToDoctorButton", educationProgress);
         buttonQueueManagerMap.put("doctorWaitingToProgressButton", doctorWaiting);
         buttonQueueManagerMap.put("doctorProgressToPharmacyButton", doctorProgress);
+        buttonQueueManagerMap.put("physioWaitingToProgressButton", physioWaiting);
+        buttonQueueManagerMap.put("physioProgressToPharmacyButton", physioProgress);
         buttonQueueManagerMap.put("pharmacyWaitingToProgressButton", pharmacyWaiting);
         buttonQueueManagerMap.put("pharmacyProgressToCheckoutButton", pharmacyProgress);
 
@@ -235,6 +252,8 @@ public class QueueManagerController implements Initializable {
         choiceQueueManagerMap.put("Education: In-Progress", educationProgress);
         choiceQueueManagerMap.put("Consultation: Waiting", doctorWaiting);
         choiceQueueManagerMap.put("Consultation: In-Progress", doctorProgress);
+        choiceQueueManagerMap.put("Physiotherapy: Waiting", physioWaiting);
+        choiceQueueManagerMap.put("Physiotherapy: In-Progress", physioProgress);
         choiceQueueManagerMap.put("Pharmacy: Waiting", pharmacyWaiting);
         choiceQueueManagerMap.put("Pharmacy: In-Progress", pharmacyProgress);
 

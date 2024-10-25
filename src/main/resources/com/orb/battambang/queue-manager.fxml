@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -44,7 +45,7 @@
       </Button>
       <AnchorPane fx:id="queuePane" layoutX="12.0" layoutY="115.0" prefHeight="501.0" prefWidth="1178.0">
          <children>
-            <Button fx:id="triageWaitingToProgressButton" layoutX="124.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="triageWaitingToProgressButton" layoutX="108.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -52,7 +53,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="triageProgressToEducationButton" layoutX="275.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="triageProgressToEducationButton" layoutX="259.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -61,7 +62,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="educationWaitingToProgressButton" layoutX="426.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="educationWaitingToProgressButton" layoutX="410.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -70,7 +71,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="educationProgressToDoctorButton" layoutX="575.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="educationProgressToDoctorButton" layoutX="560.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -79,7 +80,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="doctorWaitingToProgressButton" layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="doctorWaitingToProgressButton" layoutX="711.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -88,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="doctorProgressToPharmacyButton" layoutX="876.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="doctorProgressToPharmacyButton" layoutX="863.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -97,7 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="pharmacyWaitingToProgressButton" layoutX="1027.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="physioWaitingToProgressButton" layoutX="713.0" layoutY="304.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -106,7 +107,25 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="pharmacyProgressToCheckoutButton" layoutX="1177.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+            <Button fx:id="physioProgressToPharmacyButton" layoutX="863.0" layoutY="304.0" mnemonicParsing="false" onAction="#nextOnAction">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="pharmacyWaitingToProgressButton" layoutX="1016.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="pharmacyProgressToCheckoutButton" layoutX="1166.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -125,7 +144,12 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="676.0" layoutY="2.0" prefHeight="21.0" prefWidth="133.0" text="Consultation" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="671.0" layoutY="2.0" prefHeight="21.0" prefWidth="143.0" text="Doctor Consultation" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="684.0" layoutY="276.0" prefHeight="21.0" prefWidth="133.0" text="Physiotherapy" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -140,7 +164,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="191.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="181.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -170,7 +194,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="1082.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="1088.0" layoutY="40.0" text="In Progress" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -235,7 +259,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fitToWidth="true" layoutX="605.0" layoutY="73.0" prefHeight="416.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
+            <ScrollPane fitToWidth="true" layoutX="605.0" layoutY="73.0" prefHeight="193.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
@@ -250,7 +274,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fitToWidth="true" layoutX="756.0" layoutY="73.0" prefHeight="416.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
+            <ScrollPane fitToWidth="true" layoutX="756.0" layoutY="73.0" prefHeight="193.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
@@ -295,6 +319,52 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="605.0" layoutY="336.0" prefHeight="153.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="physioWaitingTagListView" focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="physioWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
+                        <Line endY="1501.0" layoutX="80.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="94.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="108.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="121.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Pane layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="69.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToWidth="true" layoutX="756.0" layoutY="336.0" prefHeight="153.0" prefWidth="143.0" stylesheets="@qm-queue-style.css">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
+                     <children>
+                        <ListView fx:id="physioProgressTagListView" focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="physioProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
+                        <Line endY="1501.0" layoutX="80.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="94.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="108.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Line endY="1501.0" layoutX="121.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
+                        <Pane layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="69.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <Label alignment="CENTER" layoutX="643.0" layoutY="306.0" text="Waiting" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="787.0" layoutY="308.0" text="In Progress" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="864.0" layoutY="-3.0" prefHeight="35.0" prefWidth="115.0" text="If Physio tag set, redirect to Physio Waiting Queue" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="9.0" />
+               </font>
+            </Label>
+            <Polyline fill="#80ff0000" layoutX="912.0" layoutY="28.0" points="10.75, 2.75, 10.75, 2.75, 10.75, 23.0, -8.0, 23.0" stroke="#6a6a6a" strokeType="INSIDE" />
          </children>
       </AnchorPane>
       <Pane fx:id="actionsPane" layoutX="47.0" layoutY="66.0" prefHeight="44.0" prefWidth="1188.0">
