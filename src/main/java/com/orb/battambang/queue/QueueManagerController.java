@@ -41,21 +41,21 @@ public class QueueManagerController implements Initializable {
     private ListView<String> pharmacyProgressListView;
 
     @FXML
-    private ListView<Character> triageWaitingTagListView; //not used yet
+    private ListView<String> triageWaitingTagListView; //not used yet
     @FXML
-    private ListView<Character> triageProgressTagListView; //not used yet
+    private ListView<String> triageProgressTagListView; //not used yet
     @FXML
-    private ListView<Character> educationWaitingTagListView; //not used yet
+    private ListView<String> educationWaitingTagListView; //not used yet
     @FXML
-    private ListView<Character> educationProgressTagListView; //not used yet
+    private ListView<String> educationProgressTagListView; //not used yet
     @FXML
-    private ListView<Character> doctorWaitingTagListView; //not used yet
+    private ListView<String> doctorWaitingTagListView; //not used yet
     @FXML
-    private ListView<Character> doctorProgressTagListView; //not used yet
+    private ListView<String> doctorProgressTagListView; //not used yet
     @FXML
-    private ListView<Character> pharmacyWaitingTagListView; //not used yet
+    private ListView<String> pharmacyWaitingTagListView; //not used yet
     @FXML
-    private ListView<Character> pharmacyProgressTagListView; //not used yet
+    private ListView<String> pharmacyProgressTagListView; //not used yet
 
     @FXML
     private AnchorPane sliderAnchorPane;

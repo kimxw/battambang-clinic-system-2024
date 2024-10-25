@@ -30,6 +30,7 @@ public class AuthDatabaseConnection {
         String filePath = configURL.getPath().replace("%20", " ");
         filePath = filePath.substring(0, filePath.lastIndexOf('/'));
         filePath = filePath + "/databases/dbconfig.txt";
+        System.out.println(filePath);
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             user = br.readLine();
