@@ -28,6 +28,7 @@ public class MenuGallery {
     private final Button triageButton;
     private final Button educationButton;
     private final Button consultationButton;
+    private final Button physiotherapistButton;
     private final Button pharmacyButton;
     private final Button queueManagerButton;
     private final Button adminButton;
@@ -46,6 +47,7 @@ public class MenuGallery {
             Button triageButton,
             Button educationButton,
             Button consultationButton,
+            Button physiotherapistButton,
             Button pharmacyButton,
             Button queueManagerButton,
             Button adminButton,
@@ -61,6 +63,7 @@ public class MenuGallery {
         this.triageButton = triageButton;
         this.educationButton = educationButton;
         this.consultationButton = consultationButton;
+        this.physiotherapistButton = physiotherapistButton;
         this.pharmacyButton = pharmacyButton;
         this.queueManagerButton = queueManagerButton;
         this.adminButton = adminButton;
@@ -118,6 +121,7 @@ public class MenuGallery {
         triageButton.setOnAction(this :: triageButtonOnAction);
         educationButton.setOnAction(this :: educationButtonOnAction);
         consultationButton.setOnAction(this :: consultButtonOnAction);
+        physiotherapistButton.setOnAction(this :: consultButtonOnAction); //TODO change to physio redirect
         pharmacyButton.setOnAction(this :: pharmacyButtonOnAction);
         queueManagerButton.setOnAction(this :: queueManagerButtonOnAction);
         adminButton.setOnAction(this :: adminButtonOnAction);

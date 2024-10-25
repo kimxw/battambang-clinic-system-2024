@@ -81,6 +81,8 @@ public class EducationController implements Initializable {
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -99,7 +101,7 @@ public class EducationController implements Initializable {
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         // for waiting list
