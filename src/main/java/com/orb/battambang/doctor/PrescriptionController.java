@@ -96,7 +96,7 @@ public class PrescriptionController implements Initializable {
 
     private int queueNumber;
 
-    private DoctorConsultController doctorConsultController;
+    private SpecialistController specialistController;
 
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
     ObservableList<Prescription.PrescriptionEntry> prescriptionObservableList = FXCollections.observableArrayList();
@@ -106,8 +106,8 @@ public class PrescriptionController implements Initializable {
         loadPrescriptions();
     }
 
-    public void setDoctorConsultController(DoctorConsultController doctorConsultController) {
-        this.doctorConsultController = doctorConsultController;
+    public void setSpecialistController(SpecialistController specialistController) {
+        this.specialistController = specialistController;
     }
 
     @Override
@@ -324,7 +324,7 @@ public class PrescriptionController implements Initializable {
     @FXML
     public void exitButtonOnAction(ActionEvent event) {
 
-        doctorConsultController.displayPrescription(prescriptionObservableList);
+        specialistController.displayPrescription(prescriptionObservableList);
 
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();

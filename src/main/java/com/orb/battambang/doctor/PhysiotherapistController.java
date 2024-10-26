@@ -4,6 +4,8 @@ import com.orb.battambang.MainApp;
 import com.orb.battambang.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -31,15 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
-
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
-public class DoctorConsultController implements Initializable {
+public class PhysiotherapistController extends SpecialistController implements Initializable {
     @FXML
     private Button switchUserButton;
     @FXML
@@ -504,7 +501,7 @@ public class DoctorConsultController implements Initializable {
             PrescriptionController controller = loader.getController(); // Get the controller instance
             controller.setQueueNumber(Integer.parseInt(queueNumberText));
             // Pass instance of DoctorConsultController to PrescriptionController
-            controller.setDoctorConsultController(this);
+            //controller.setDoctorConsultController(this); //TODO VERY IMPORTANT
 
         } catch (Exception ex) {
             Labels.showMessageLabel(warningLabel, "Unexpected error occured.", false);
