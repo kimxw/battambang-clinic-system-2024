@@ -29,6 +29,7 @@ public class MenuGallery {
     private final Button educationButton;
     private final Button consultationButton;
     private final Button physiotherapistButton;
+    private final Button audiologistButton;
     private final Button pharmacyButton;
     private final Button queueManagerButton;
     private final Button adminButton;
@@ -48,6 +49,7 @@ public class MenuGallery {
             Button educationButton,
             Button consultationButton,
             Button physiotherapistButton,
+            Button audiologistButton,
             Button pharmacyButton,
             Button queueManagerButton,
             Button adminButton,
@@ -64,6 +66,7 @@ public class MenuGallery {
         this.educationButton = educationButton;
         this.consultationButton = consultationButton;
         this.physiotherapistButton = physiotherapistButton;
+        this.audiologistButton = audiologistButton;
         this.pharmacyButton = pharmacyButton;
         this.queueManagerButton = queueManagerButton;
         this.adminButton = adminButton;
@@ -122,6 +125,7 @@ public class MenuGallery {
         educationButton.setOnAction(this :: educationButtonOnAction);
         consultationButton.setOnAction(this :: consultButtonOnAction);
         physiotherapistButton.setOnAction(this :: physioButtonOnAction);
+        audiologistButton.setOnAction(this :: audiologistButtonOnAction);
         pharmacyButton.setOnAction(this :: pharmacyButtonOnAction);
         queueManagerButton.setOnAction(this :: queueManagerButtonOnAction);
         adminButton.setOnAction(this :: adminButtonOnAction);
@@ -307,6 +311,39 @@ public class MenuGallery {
         } else {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-doctor-consult.fxml")); //TODO change to z-physio
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Physiotherapist");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
+    }
+
+    @FXML
+    public void audiologistButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
+        boolean isConsultation = staff.isConsultation();
+        if (isConsultation) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("audiologist.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Audiologist");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-doctor-consult.fxml")); //TODO change to z-audio
                 Parent root = fxmlLoader.load();
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();

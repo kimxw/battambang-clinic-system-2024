@@ -86,6 +86,8 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private Button menuPhysiotherapistButton;
     @FXML
+    private Button menuAudiologistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -104,8 +106,8 @@ public class PatientRegistrationController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
-                menuUserButton, menuLocationButton);
+                menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
 
         // Create a ToggleGroup
         ToggleGroup group = new ToggleGroup();
