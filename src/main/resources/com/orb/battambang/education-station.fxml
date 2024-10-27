@@ -230,6 +230,18 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button fx:id="menuAudiologistButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="Audiologist" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="45.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" scaleX="0.6" scaleY="0.6" scaleZ="0.6" translateX="5.0">
+                           <image>
+                              <Image url="@../../../icons/audiologist.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button fx:id="menuPharmacyButton" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="sliderMenuItem" text="  Pharmacy" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
