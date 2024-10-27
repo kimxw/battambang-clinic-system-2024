@@ -76,6 +76,8 @@ public class PatientFilterController implements Initializable{
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -98,7 +100,7 @@ public class PatientFilterController implements Initializable{
 
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
 

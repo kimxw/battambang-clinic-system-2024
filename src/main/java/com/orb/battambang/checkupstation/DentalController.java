@@ -3,6 +3,8 @@ package com.orb.battambang.checkupstation;
 import com.orb.battambang.util.Labels;
 import com.orb.battambang.util.MenuGallery;
 import com.orb.battambang.util.MiniQueueManager;
+import com.orb.battambang.util.Tag;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
@@ -54,6 +57,30 @@ public class DentalController extends CheckupMenuController implements Initializ
     private Rectangle status3Rectangle;
     @FXML
     private Rectangle status6Rectangle;
+
+    @FXML
+    private Rectangle TtagRectangle;
+    @FXML
+    private Rectangle OtagRectangle;
+    @FXML
+    private Rectangle HtagRectangle;
+    @FXML
+    private Rectangle StagRectangle;
+    @FXML
+    private Rectangle PtagRectangle;
+
+    @FXML
+    private Label TtagLabel;
+    @FXML
+    private Label OtagLabel;
+    @FXML
+    private Label HtagLabel;
+    @FXML
+    private Label StagLabel;
+    @FXML
+    private Label PtagLabel;
+
+
     @FXML
     private Button searchButton;
     @FXML
@@ -89,6 +116,8 @@ public class DentalController extends CheckupMenuController implements Initializ
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -104,12 +133,15 @@ public class DentalController extends CheckupMenuController implements Initializ
     @FXML
     private Pane editBlockPane;
 
+    private List<Tag> tagList = super.tagList;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initialiseTags();
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         // for waiting list
@@ -162,6 +194,20 @@ public class DentalController extends CheckupMenuController implements Initializ
         this.initialisingQueueNumber = initialisingQueueNumber;
     }
 
+    private void initialiseTags() {
+        Tag Ttag = new Tag(tbToggleButton);
+        Tag Otag = new Tag(optometryToggleButton);
+        Tag Htag = new Tag(hearingToggleButton);
+        Tag Stag = new Tag(socialToggleButton);
+        Tag Ptag = new Tag(physioToggleButton);
+
+        tagList.add(Ttag);
+        tagList.add(Otag);
+        tagList.add(Htag);
+        tagList.add(Stag);
+        tagList.add(Ptag);
+    }
+
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
@@ -171,6 +217,7 @@ public class DentalController extends CheckupMenuController implements Initializ
             updateParticularsPane(queueNumber);
             particularsPane.setVisible(true);
             displayDentalRecords(queueNumber);
+            updatePreToggle(queueNumber);
         }
     }
 

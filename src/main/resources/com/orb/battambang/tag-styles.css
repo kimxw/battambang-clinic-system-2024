@@ -1,0 +1,60 @@
+/* listview-style.css */
+
+/* Default style for the ListView */
+.list-view {
+    -fx-border-color: transparent transparent transparent transparent;
+}
+
+/* togglebutton-style.css */
+
+/* Default style for the ToggleButton (unselected state) */
+.toggle-button {
+    -fx-background-color: #dedede; /* Light grey background */
+    -fx-text-fill: #8f8f8f; /* Black text */
+    -fx-border-color: #b5b5b5; /* Darker grey border */
+    -fx-padding: 2px 2px;
+}
+
+.list-cell {
+    -fx-alignment: center;
+    -fx-font-family: "Consolas", monospace; /* Set monospaced font */
+    -fx-font-size: 12.5px; /* You can adjust the font size as needed */
+    -fx-padding: 3px 0px;
+}
+
+/* Styles when the button is in its "selected" (clicked) state */
+.toggle-button:selected.general {
+    -fx-background-color: #e0f7fa; /* Light blue background */
+    -fx-text-fill: #005d79; /* Darker blue text */
+    -fx-border-color: #b2ebf2; /* Slightly darker blue border */
+}
+
+.toggle-button:selected.tuberculosis {
+    -fx-background-color: #e0f7fa; /* Light blue background */
+    -fx-text-fill: #005d79; /* Darker blue text */
+    -fx-border-color: #b2ebf2; /* Slightly darker blue border */
+}
+
+.toggle-button:selected.optometry {
+    -fx-background-color: #f5e0fa; /* Light pink background */
+    -fx-text-fill: #8b1191; /* Darker pink text */
+    -fx-border-color: #e1a5e8; /* Slightly darker pink border */
+}
+
+.toggle-button:selected.hearing {
+    -fx-background-color: #b2ebb5; /* Light green background */
+    -fx-text-fill: #278a2c; /* Darker green text */
+    -fx-border-color: #58ad5d; /* Slightly darker green border */
+}
+
+.toggle-button:selected.social-worker {
+    -fx-background-color: #fff6b3; /* Light yellow background */
+    -fx-text-fill: #d99c1a; /* Darker yellow text */
+    -fx-border-color: #d1b064; /* Slightly darker yellow border */
+}
+
+.toggle-button:selected.physiotherapist {
+    -fx-background-color: #f59fb0; /* Light red background */
+    -fx-text-fill: #941c34; /* Darker red text */
+    -fx-border-color: #d1647a; /* Slightly darker red border */
+}

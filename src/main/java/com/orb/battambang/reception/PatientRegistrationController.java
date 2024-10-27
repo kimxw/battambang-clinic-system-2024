@@ -84,6 +84,8 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -102,7 +104,7 @@ public class PatientRegistrationController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         // Create a ToggleGroup
@@ -272,8 +274,17 @@ public class PatientRegistrationController implements Initializable {
                             queueUpdateStatement.setString(2, inputName);
                             queueUpdateStatement.executeUpdate();
                         }
+
+                        // Create tags for the patient
+                        String createTags = "INSERT INTO patientTagTable (queueNumber, tag_T, tag_O, tag_H, tag_P, tag_S) VALUES (?, FALSE, FALSE, FALSE, FALSE, FALSE);";
+                        try (PreparedStatement createTagsStatement = connection.prepareStatement(createTags)) {
+                            createTagsStatement.setInt(1, queueNo);
+                            createTagsStatement.executeUpdate(); // Execute the query to insert the tags
+                        }
                     }
                 }
+
+
                 clearInputFields();
             } catch (Exception exc) {
                 Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);

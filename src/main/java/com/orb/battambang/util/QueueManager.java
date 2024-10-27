@@ -4,10 +4,14 @@ import com.orb.battambang.connection.DatabaseConnection;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
+import javafx.util.Callback;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,21 +19,121 @@ public class QueueManager {
 
     private final String currentTable;
     private final ListView<String> currentListView;
+    private final ListView<String> currentTagListView;
     private final ObservableList<String> queueList;
-    private final String targetTable;
-    private final ListView<String> targetListView;
+    private final ObservableList<String> tagList;
+
+    private QueueManager nextQM;
+    private LinkedHashMap<String, QueueManager> alternateTagQueueManagers = new LinkedHashMap<>(Map.of()); //default empty
+
+    //private final String targetTable;
+    //private final ListView<String> targetListView;
     private static final Connection connection = DatabaseConnection.connection;
 
-    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
+
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
+                        QueueManager nextQM) {
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);
 
         this.currentTable = currentTable;
 
-        this.targetListView = targetListView;
+        this.currentTagListView = currentTagListView;
+        this.tagList = FXCollections.observableArrayList();
+        this.currentTagListView.setItems(tagList);
 
-        this.targetTable = targetTable;
+        currentTagListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    getStyleClass().removeAll("tuberculosis", "optometry", "hearing", "social-worker", "physiotherapist");
+                } else {
+                    setText(item.toString());
+                    // Apply style based on the String
+                    switch (item) {
+                        case "T":
+                            getStyleClass().add("tuberculosis");
+                            break;
+                        case "O":
+                            getStyleClass().add("optometry");
+                            break;
+                        case "H":
+                            getStyleClass().add("hearing");
+                            break;
+                        case "S":
+                            getStyleClass().add("social-worker");
+                            break;
+                        case "P":
+                            getStyleClass().add("physiotherapist");
+                            break;
+                        case "?":
+                            getStyleClass().add("unknown");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+
+        this.nextQM = nextQM; //deault next QM
+
+        startPolling();
+    }
+
+    public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
+                        QueueManager nextQM, LinkedHashMap<String, QueueManager> alternateTagQueueManagers) {
+        this.currentListView = currentListView;
+        this.queueList = FXCollections.observableArrayList();
+        this.currentListView.setItems(queueList);
+
+        this.currentTable = currentTable;
+
+        this.currentTagListView = currentTagListView;
+        this.tagList = FXCollections.observableArrayList();
+        this.currentTagListView.setItems(tagList);
+
+        currentTagListView.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    getStyleClass().removeAll("tuberculosis", "optometry", "hearing", "social-worker", "physiotherapist");
+                } else {
+                    setText(item.toString());
+                    // Apply style based on the String
+                    switch (item) {
+                        case "T":
+                            getStyleClass().add("tuberculosis");
+                            break;
+                        case "O":
+                            getStyleClass().add("optometry");
+                            break;
+                        case "H":
+                            getStyleClass().add("hearing");
+                            break;
+                        case "S":
+                            getStyleClass().add("social-worker");
+                            break;
+                        case "P":
+                            getStyleClass().add("physiotherapist");
+                            break;
+                        case "?":
+                            getStyleClass().add("unknown");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+
+        this.nextQM = nextQM; //default next QM
+        this.alternateTagQueueManagers = alternateTagQueueManagers;
 
         startPolling();
     }
@@ -41,21 +145,28 @@ public class QueueManager {
     public ListView<String> getCurrentListView() {
         return currentListView;
     }
+    public ListView<String> getCurrentTagListView() {
+        return this.currentTagListView;
+    }
+    public QueueManager getNextQueueManager() {
+        return this.nextQM;
+    }
 
     private void startPolling() {
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> updateWaitingList());
+                Platform.runLater(() -> updateListView());
             }
         }, 0, 5000); // Poll every 5 seconds
     }
 
-    public void updateWaitingList() {
+    public void updateListView() {
+        //update queueNumber + name
         SelectionModel<String> selectionModel = this.getCurrentListView().getSelectionModel();
         String selected = selectionModel.getSelectedItem();
-        String query = "SELECT queueNumber, name FROM " + currentTable;
+        String query = "SELECT queueNumber, name FROM " + currentTable + " ORDER BY createdAt;";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -72,10 +183,41 @@ public class QueueManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //update tags
+        tagList.clear();
+        for (String queueItem : queueList) {
+            int queueNumber = Integer.parseInt(queueItem.substring(0, queueItem.indexOf(':')));
+            String tagQuery = "SELECT tagSequence FROM patientTagTable WHERE queueNumber = " + queueNumber;
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(tagQuery)) {
+                 String tag;
+                 if (resultSet.next()) {
+                     tag = resultSet.getString("tagSequence");
+                 } else {
+                     tag = "";
+                 }
+                 tagList.add(tag);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
+    public boolean search(int queueNumber) {
+        String query = String.format("SELECT 1 FROM %s WHERE queueNumber = %d", this.currentTable, queueNumber);
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static void addNew(int queueNumber, ListView<String> targetListView, String targetTable) throws SQLException {
+    public static void addNew(int queueNumber, QueueManager queueManager) {
+        ListView<String> targetListView = queueManager.getCurrentListView();
+        String targetTable = queueManager.getCurrentTable();
         String nameFromWaitingListQuery = "SELECT name FROM patientQueueTable WHERE queueNumber = ?";
         String insertIntoProgressListQuery = "INSERT INTO " + targetTable + " (queueNumber, name) VALUES (?, ?)";
 
@@ -109,7 +251,7 @@ public class QueueManager {
             // Commit the transaction
             connection.commit();
 
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
 
         } catch (Exception exc) {
             try {
@@ -128,7 +270,13 @@ public class QueueManager {
             }
         }
     }
-    public static void move(ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable) {
+
+    public static void move(QueueManager sourceQueueManager, QueueManager targetQueueManager) {
+        ListView<String> currentListView = sourceQueueManager.getCurrentListView();
+        String currentTable = sourceQueueManager.getCurrentTable();
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
+
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -139,6 +287,7 @@ public class QueueManager {
         if (selectedPatient == null) {
             return;
         }
+
         int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
@@ -175,8 +324,8 @@ public class QueueManager {
             // Update the ListViews
 
             currentListView.getSelectionModel().clearSelection();
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            sourceQueueManager.updateListView();
+            targetQueueManager.updateListView();
         } catch (SQLException e) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -195,7 +344,12 @@ public class QueueManager {
         }
     }
 
-    public static void move(int queueNumber, ListView<String> currentListView, String currentTable, ListView<String> targetListView, String targetTable){
+    public static void move(int queueNumber, QueueManager sourceQueueManager, QueueManager targetQueueManager){
+
+        ListView<String> currentListView = sourceQueueManager.getCurrentListView();
+        String currentTable = sourceQueueManager.getCurrentTable();
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM " + currentTable + " WHERE queueNumber = ?";
@@ -238,8 +392,8 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
-            targetListView.getItems().add(String.format("%d: %s", queueNumber, name));
+            sourceQueueManager.updateListView();
+            targetQueueManager.updateListView();
         } catch (Exception exc) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -257,7 +411,10 @@ public class QueueManager {
             }
         }
     }
-    public static void remove( ListView<String> currentListView, String currentTable) {
+    public static void remove(QueueManager queueManager) {
+        ListView<String> currentListView = queueManager.getCurrentListView();
+        String currentTable = queueManager.getCurrentTable();
+
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
@@ -296,7 +453,7 @@ public class QueueManager {
 
             // Update the ListViews
             currentListView.getSelectionModel().clearSelection();
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
         } catch (SQLException e) {
             //add my exception handling here
             try {
@@ -317,7 +474,9 @@ public class QueueManager {
         }
     }
 
-    public static void remove(int queueNumber, ListView<String> currentListView, String currentTable) {
+    public static void remove(int queueNumber, QueueManager queueManager) {
+        ListView<String> currentListView = queueManager.getCurrentListView();
+        String currentTable = queueManager.getCurrentTable();
 
         String nameFromWaitingListQuery = "SELECT name FROM " + currentTable + " WHERE queueNumber = ?";
         String deleteFromWaitingListQuery = "DELETE FROM " + currentTable + " WHERE queueNumber = ?";
@@ -346,7 +505,7 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            currentListView.getItems().remove(String.format("%d: %s", queueNumber, name));
+            queueManager.updateListView();
         } catch (SQLException e) {
             try {
                 connection.rollback(); // Roll back transaction if any error occurs
@@ -364,13 +523,22 @@ public class QueueManager {
             }
         }
     }
+
     public void moveToNext() throws RuntimeException {
-        if(this.targetListView == null && this.targetTable == null) {
-            QueueManager.remove( this.currentListView, this.currentTable);
-        } else if (this.targetListView == null || this.targetTable == null) {
-            //internal error
+        QueueManager targetQueueManager = this.nextQM;
+        QueueManager altNextQM = getAlternateQMIfAny();
+        if (altNextQM != null) {
+            targetQueueManager = altNextQM;
+        }
+
+        ListView<String> targetListView = targetQueueManager.getCurrentListView();
+        String targetTable = targetQueueManager.getCurrentTable();
+        if(targetListView == null && targetTable == null) {
+            QueueManager.remove(this);
+        } else if (targetListView == null || targetTable == null) {
+            //internal error - not supposed to reach here
         } else {
-            QueueManager.move( this.currentListView, this.currentTable, this.targetListView, this.targetTable);
+            QueueManager.move(this, targetQueueManager);
         }
     }
 
@@ -385,6 +553,7 @@ public class QueueManager {
             selectionModel.selectPrevious();
             String prevEntry = selectionModel.getSelectedItem();
             selectionModel.clearSelection();
+
             if (currentEntry.equals(prevEntry)) {
                 return;
             }
@@ -395,13 +564,14 @@ public class QueueManager {
             selectionModel.selectNext();
             String nextEntry = selectionModel.getSelectedItem();
             selectionModel.clearSelection();
+
             if (currentEntry.equals(nextEntry)) {
                 return;
             }
-
             int queueNumberB = Integer.parseInt(nextEntry.substring(0, nextEntry.indexOf(':')));
             swapHelper(queueNumberA, queueNumberB);
         }
+        this.currentListView.refresh();
         selectionModel.select(currentEntry);
     }
 
@@ -424,23 +594,25 @@ public class QueueManager {
 
             nameAStatement.setInt(1, queueNumberA);
             ResultSet rsA = nameAStatement.executeQuery();
-            if (rsA.next()) {
-                nameA = rsA.getString("name");
+            if (!rsA.next()) {
+                System.out.println("rsA no next");
             }
+            nameA = rsA.getString("name");
             rsA.close();
 
             nameBStatement.setInt(1, queueNumberB);
             ResultSet rsB = nameBStatement.executeQuery();
-            if (rsB.next()) {
-                nameB = rsB.getString("name");
+            if (!rsB.next()) {
+                System.out.println("rsB no next");
             }
+            nameB = rsB.getString("name");
             rsB.close();
 
             if (nameA.equals("") || nameB.equals("")) {
                 return;
             }
 
-            // perform swap (-1 and temp patient due to unique constraint which makes copying not possible)
+//            // perform swap (-1 and temp patient due to unique constraint which makes copying not possible)
             updateStatement.setInt(1, -1);
             updateStatement.setString(2, "TEMPORARY PATIENT");
             updateStatement.setInt(3, queueNumberB);
@@ -462,7 +634,8 @@ public class QueueManager {
             connection.commit();
 
             // Update the ListViews
-            updateWaitingList();
+            updateListView();
+
         } catch (SQLException e) {
             //add my exception handling here
             try {
@@ -483,5 +656,40 @@ public class QueueManager {
         }
     }
 
+    private QueueManager getAlternateQMIfAny() {
+        String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
+
+        if (selectedPatient == null) {
+            if (!currentListView.getItems().isEmpty()) {
+                selectedPatient = currentListView.getItems().get(0);
+            }
+        }
+
+        if (selectedPatient == null) {
+            return null;
+        }
+
+        for (String altTag : alternateTagQueueManagers.keySet()) {
+            int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
+            String tagColumn = "tag_" + altTag.charAt(0);
+            String query = String.format("SELECT %s FROM patientTagTable WHERE queueNumber = %d", tagColumn, queueNumber);
+            try (Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+                resultSet.next();
+                if (resultSet.getBoolean(1)) {
+                    return alternateTagQueueManagers.get(altTag); //this behaviour ensures that alt QMs earlierin the Map will get a priority
+                }
+                //else continue
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return this.currentTable;
+    }
 
 }

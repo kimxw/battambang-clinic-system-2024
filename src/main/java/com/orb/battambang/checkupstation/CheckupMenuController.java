@@ -1,11 +1,8 @@
 package com.orb.battambang.checkupstation;
 
 import com.orb.battambang.MainApp;
-import com.orb.battambang.util.Labels;
+import com.orb.battambang.util.*;
 
-import com.orb.battambang.util.MenuGallery;
-import com.orb.battambang.util.MiniQueueManager;
-import com.orb.battambang.util.Rectangles;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -29,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
@@ -73,6 +72,19 @@ public class CheckupMenuController implements Initializable {
     private Rectangle status5Rectangle;
     @FXML
     private Rectangle status6Rectangle;
+
+    @FXML
+    protected ToggleButton tbToggleButton;
+    @FXML
+    protected ToggleButton optometryToggleButton;
+    @FXML
+    protected ToggleButton hearingToggleButton;
+    @FXML
+    protected ToggleButton socialToggleButton;
+    @FXML
+    protected ToggleButton physioToggleButton;
+
+
     @FXML
     private Button switchUserButton;
     @FXML
@@ -85,6 +97,7 @@ public class CheckupMenuController implements Initializable {
     private Button historyButton;
     @FXML
     private Button searchButton;
+
     @FXML
     private TextField queueNumberTextField;
     @FXML
@@ -111,6 +124,8 @@ public class CheckupMenuController implements Initializable {
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -124,15 +139,18 @@ public class CheckupMenuController implements Initializable {
     private Button menuLocationButton;
 
 
+    protected List<Tag> tagList = new ArrayList<>();
     private FXMLLoader fxmlLoader;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        initialiseTags();
+
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         // for waiting list
@@ -167,6 +185,91 @@ public class CheckupMenuController implements Initializable {
 
     public void setInitialisingQueueNumber(int initialisingQueueNumber) {
         this.initialisingQueueNumber = initialisingQueueNumber;
+    }
+
+    private void initialiseTags() {
+        Tag Ttag = new Tag(tbToggleButton);
+        Tag Otag = new Tag(optometryToggleButton);
+        Tag Htag = new Tag(hearingToggleButton);
+        Tag Stag = new Tag(socialToggleButton);
+        Tag Ptag = new Tag(physioToggleButton);
+
+        tagList.add(Ttag);
+        tagList.add(Otag);
+        tagList.add(Htag);
+        tagList.add(Stag);
+        tagList.add(Ptag);
+    }
+
+    @FXML
+    protected void tagToggleOnAction(ActionEvent e) {
+        updatePostToggle(Integer.parseInt(queueNoLabel.getText()));
+    }
+
+    protected void updatePreToggle(int queueNumber) {
+        boolean tb = false;
+        boolean opto = false;
+        boolean hearing = false;
+        boolean social = false;
+        boolean physio = false;
+
+        String updateQuery = "SELECT * FROM patientTagTable WHERE queueNumber = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, queueNumber); // Set the queueNumber parameter
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    tb = resultSet.getBoolean("tag_T");
+                    opto = resultSet.getBoolean("tag_O");
+                    hearing = resultSet.getBoolean("tag_H");
+                    social = resultSet.getBoolean("tag_S");
+                    physio = resultSet.getBoolean("tag_P");
+                } else {
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                }
+            }
+        } catch (SQLException e) {
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            throw new RuntimeException(e);
+        }
+
+        tbToggleButton.setSelected(tb);
+        optometryToggleButton.setSelected(opto);
+        hearingToggleButton.setSelected(hearing);
+        socialToggleButton.setSelected(social);
+        physioToggleButton.setSelected(physio);
+
+    }
+
+    private void updatePostToggle(int queueNumber) {
+        boolean tb = tbToggleButton.isSelected();
+        boolean opto = optometryToggleButton.isSelected();
+        boolean hearing = hearingToggleButton.isSelected();
+        boolean social = socialToggleButton.isSelected();
+        boolean physio = physioToggleButton.isSelected();
+        System.out.println(tb);
+        System.out.println(opto);
+        System.out.println(hearing);
+        System.out.println(social);
+        System.out.println(physio);
+
+        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_S = ?, tag_P = ? WHERE queueNumber = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setBoolean(1, tb);
+            updateStatement.setBoolean(2, opto);
+            updateStatement.setBoolean(3, hearing);
+            updateStatement.setBoolean(4, social);
+            updateStatement.setBoolean(5, physio);
+            updateStatement.setInt(6, queueNumber);
+
+            System.out.println(updateStatement);
+
+            updateStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -243,13 +346,16 @@ public class CheckupMenuController implements Initializable {
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
             Labels.showMessageLabel(queueSelectLabel, "Input a queue number.", false);
         } else {
-            updateParticularsPane(Integer.parseInt(queueNumberTextField.getText()));
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+            updateParticularsPane(queueNumber);
+            updatePreToggle(queueNumber);
             particularsPane.setVisible(true);
         }
     }
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+        String tagQuery = "SELECT tagSequence FROM patientTagTable WHERE queueNumber = " + queueNumber;
 
         try {
             Statement statement = connection.createStatement();
@@ -296,8 +402,22 @@ public class CheckupMenuController implements Initializable {
                 Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
 
-                return;
             }
+
+            patientResultSet.close();
+
+            ResultSet tagResultSet = statement.executeQuery(tagQuery);
+            String tagSequence = "";
+            if (tagResultSet.next()) {
+               tagSequence = tagResultSet.getString("tagSequence");
+
+            }
+
+            for(Tag t : tagList) {
+                t.updateTag(tagSequence);
+            }
+
+            tagResultSet.close();
 
             // Close the statement
             statement.close();

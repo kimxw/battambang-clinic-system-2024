@@ -28,6 +28,7 @@ public class MenuGallery {
     private final Button triageButton;
     private final Button educationButton;
     private final Button consultationButton;
+    private final Button physiotherapistButton;
     private final Button pharmacyButton;
     private final Button queueManagerButton;
     private final Button adminButton;
@@ -46,6 +47,7 @@ public class MenuGallery {
             Button triageButton,
             Button educationButton,
             Button consultationButton,
+            Button physiotherapistButton,
             Button pharmacyButton,
             Button queueManagerButton,
             Button adminButton,
@@ -61,6 +63,7 @@ public class MenuGallery {
         this.triageButton = triageButton;
         this.educationButton = educationButton;
         this.consultationButton = consultationButton;
+        this.physiotherapistButton = physiotherapistButton;
         this.pharmacyButton = pharmacyButton;
         this.queueManagerButton = queueManagerButton;
         this.adminButton = adminButton;
@@ -118,6 +121,7 @@ public class MenuGallery {
         triageButton.setOnAction(this :: triageButtonOnAction);
         educationButton.setOnAction(this :: educationButtonOnAction);
         consultationButton.setOnAction(this :: consultButtonOnAction);
+        physiotherapistButton.setOnAction(this :: physioButtonOnAction);
         pharmacyButton.setOnAction(this :: pharmacyButtonOnAction);
         queueManagerButton.setOnAction(this :: queueManagerButtonOnAction);
         adminButton.setOnAction(this :: adminButtonOnAction);
@@ -275,6 +279,39 @@ public class MenuGallery {
                 Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
                 stage.setResizable(false);
                 stage.setTitle("Consultation");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+        }
+    }
+
+    @FXML
+    public void physioButtonOnAction(ActionEvent e) {
+        if (AuthDatabaseConnection.isConnectionOpen()) {
+            AuthDatabaseConnection.closeDatabaseConnection();
+        }
+        boolean isConsultation = staff.isConsultation();
+        if (isConsultation) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("physiotherapist.fxml"));
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Physiotherapist");
+                stage.setScene(scene);
+            } catch (Exception exc) {
+                exc.printStackTrace();
+            }
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("z-doctor-consult.fxml")); //TODO change to z-physio
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                stage.setResizable(false);
+                stage.setTitle("Physiotherapist");
                 stage.setScene(scene);
             } catch (Exception exc) {
                 System.out.println(exc);
