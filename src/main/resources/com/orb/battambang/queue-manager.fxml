@@ -117,7 +117,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="783.0" layoutY="270.0" mnemonicParsing="false" onAction="#nextOnAction" prefHeight="24.0" prefWidth="36.0">
+            <Button fx:id="audioWaitingToProgressButton" layoutX="783.0" layoutY="270.0" mnemonicParsing="false" onAction="#nextOnAction" prefHeight="24.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -126,7 +126,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button layoutX="783.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction" prefHeight="24.0" prefWidth="36.0">
+            <Button fx:id="audioProgressToPharmacyButton" layoutX="783.0" layoutY="36.0" mnemonicParsing="false" onAction="#nextOnAction" prefHeight="24.0" prefWidth="36.0">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -367,8 +367,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
-                        <ListView focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
+                        <ListView fx:id="audioWaitingTagListView" focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="audioWaitingListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
                         <Line endY="1501.0" layoutX="80.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
                         <Line endY="1501.0" layoutX="94.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
                         <Line endY="1501.0" layoutX="108.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
@@ -382,8 +382,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1500.0" prefWidth="133.0">
                      <children>
-                        <ListView focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
-                        <ListView focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
+                        <ListView fx:id="audioProgressTagListView" focusTraversable="false" layoutX="66.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@tag-styles.css" />
+                        <ListView fx:id="audioProgressListView" focusTraversable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="1500.0" prefWidth="68.0" stylesheets="@qm-queue-style.css" />
                         <Line endY="1501.0" layoutX="80.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
                         <Line endY="1501.0" layoutX="94.0" layoutY="92.0" startY="-92.0" stroke="#c8c8c8" />
                         <Line endY="1501.0" layoutX="108.0" layoutY="91.0" startY="-92.0" stroke="#c8c8c8" />
@@ -423,19 +423,21 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <Line endX="311.25" layoutX="544.0" layoutY="5.0" startX="-100.0" />
-            <Polyline fill="#80ff0000" layoutX="531.0" layoutY="49.0" points="-60.0, -44.5, -42.0, -44.5, -42.0, 234.0, -18.0, 234.0" strokeType="INSIDE" />
+            <Line endX="311.25" layoutX="544.0" layoutY="5.0" startX="-64.0" />
+            <Polyline fill="#80ff0000" layoutX="531.0" layoutY="49.0" points="-71.0, -44.5, -42.0, -44.5, -42.0, 234.0, -18.0, 234.0" strokeType="INSIDE" />
             <Polyline fill="#80ff0000" layoutX="691.0" layoutY="49.0" points="-42.0, -44.5, -25.5, -44.5, -25.5, 234.0, -18.0, 234.0" strokeType="INSIDE" />
             <Polyline fill="#f8f8f8" layoutX="836.0" layoutY="308.0" points="25.0, -38.0, 31.875, -33.125, 25.0, -28.375, 25.0, -38.0" strokeType="INSIDE" />
             <Polyline fill="#f8f8f8" layoutX="645.0" layoutY="315.0" points="25.0, -38.0, 31.875, -33.125, 25.0, -28.375, 25.0, -38.0" strokeType="INSIDE" />
             <Polyline fill="#f8f8f8" layoutX="485.0" layoutY="316.0" points="25.0, -38.0, 31.875, -33.125, 25.0, -28.375, 25.0, -38.0" strokeType="INSIDE" />
-            <Label layoutX="459.0" layoutY="-11.0" text="Physio Tag" />
-            <Label layoutX="637.0" layoutY="-11.0" text="Audio Tag" />
+            <Label layoutX="469.0" layoutY="-11.0" text="Physio Tag" />
+            <Label layoutX="653.0" layoutY="-11.0" text="Hearing Tag" />
             <Polyline fill="#80ff0000" layoutX="881.0" layoutY="50.0" points="-46.33331298828125, -45.5, -25.25, -45.5, -26.0, 225.8125, -19.125, 225.8125" strokeType="INSIDE" />
             <Polyline fill="#f8f8f8" layoutX="613.0" layoutY="45.0" points="25.0, -38.0, 31.875, -33.125, 25.0, -28.375, 25.0, -38.0" rotate="-90.0" strokeType="INSIDE" />
             <Line endX="-66.33331298828125" endY="21.833328247070312" layoutX="708.0" layoutY="15.0" startX="-66.33331298828125" startY="1.1666717529296875" />
             <Polyline fill="#f8f8f8" layoutX="773.0" layoutY="45.0" points="25.0, -38.0, 31.875, -33.125, 25.0, -28.375, 25.0, -38.0" rotate="-90.0" strokeType="INSIDE" />
             <Line endX="-66.33331298828125" endY="21.833328247070312" layoutX="868.0" layoutY="15.0" startX="-66.33331298828125" startY="1.1666717529296875" />
+            <Label layoutX="815.0" layoutY="-11.0" text="Default" />
+            <Polyline fill="#80ff0000" layoutX="491.0" layoutY="12.0" points="-12.5, -7.5, -12.5, -7.5, -41.25, -7.5, -41.25, 3.0" strokeType="INSIDE" />
          </children>
       </AnchorPane>
       <Pane fx:id="actionsPane" layoutX="147.0" layoutY="66.0" prefHeight="44.0" prefWidth="1105.0">

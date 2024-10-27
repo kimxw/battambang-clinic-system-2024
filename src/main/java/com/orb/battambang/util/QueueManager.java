@@ -10,6 +10,8 @@ import javafx.scene.control.SelectionModel;
 import javafx.util.Callback;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,8 +24,7 @@ public class QueueManager {
     private final ObservableList<String> tagList;
 
     private QueueManager nextQM;
-    private QueueManager altNextQM;
-    private String altTag;
+    private LinkedHashMap<String, QueueManager> alternateTagQueueManagers = new LinkedHashMap<>(Map.of()); //default empty
 
     //private final String targetTable;
     //private final ListView<String> targetListView;
@@ -78,13 +79,13 @@ public class QueueManager {
             }
         });
 
-        this.nextQM = nextQM;
+        this.nextQM = nextQM; //deault next QM
 
         startPolling();
     }
 
     public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
-                        QueueManager nextQM, QueueManager altNextQM, String altTag) {
+                        QueueManager nextQM, LinkedHashMap<String, QueueManager> alternateTagQueueManagers) {
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);
@@ -131,9 +132,8 @@ public class QueueManager {
             }
         });
 
-        this.nextQM = nextQM;
-        this.altNextQM = altNextQM;
-        this.altTag = altTag;
+        this.nextQM = nextQM; //default next QM
+        this.alternateTagQueueManagers = alternateTagQueueManagers;
 
         startPolling();
     }
@@ -526,10 +526,9 @@ public class QueueManager {
 
     public void moveToNext() throws RuntimeException {
         QueueManager targetQueueManager = this.nextQM;
-        if(this.altNextQM != null) {
-            if (shouldGoToAlt()) {
-                targetQueueManager = this.altNextQM;
-            }
+        QueueManager altNextQM = getAlternateQMIfAny();
+        if (altNextQM != null) {
+            targetQueueManager = altNextQM;
         }
 
         ListView<String> targetListView = targetQueueManager.getCurrentListView();
@@ -657,8 +656,9 @@ public class QueueManager {
         }
     }
 
-    private boolean shouldGoToAlt() {
+    private QueueManager getAlternateQMIfAny() {
         String selectedPatient = currentListView.getSelectionModel().getSelectedItem();
+
         if (selectedPatient == null) {
             if (!currentListView.getItems().isEmpty()) {
                 selectedPatient = currentListView.getItems().get(0);
@@ -666,19 +666,30 @@ public class QueueManager {
         }
 
         if (selectedPatient == null) {
-            return false;
+            return null;
         }
 
-        int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
-        String tagColumn = "tag_" + altTag.charAt(0);
-        String query = String.format("SELECT %s FROM patientTagTable WHERE queueNumber = %d", tagColumn, queueNumber);
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-            resultSet.next();
-            return resultSet.getBoolean(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        for (String altTag : alternateTagQueueManagers.keySet()) {
+            int queueNumber = Integer.parseInt(selectedPatient.substring(0, selectedPatient.indexOf(':')));
+            String tagColumn = "tag_" + altTag.charAt(0);
+            String query = String.format("SELECT %s FROM patientTagTable WHERE queueNumber = %d", tagColumn, queueNumber);
+            try (Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query)) {
+                resultSet.next();
+                if (resultSet.getBoolean(1)) {
+                    return alternateTagQueueManagers.get(altTag); //this behaviour ensures that alt QMs earlierin the Map will get a priority
+                }
+                //else continue
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return this.currentTable;
     }
 
 }

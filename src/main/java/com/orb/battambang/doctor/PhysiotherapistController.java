@@ -41,13 +41,12 @@ public class PhysiotherapistController extends SpecialistController implements I
         super.initialize(url, resourceBundle);
 
         //mini QMs
-        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "doctorWaitingTable");
-        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "doctorProgressTable");
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "physioWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "physioProgressTable");
     }
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
-        System.out.println("BUTTON PRESSED");
         super.searchButtonOnAction(e);
 
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
@@ -218,9 +217,9 @@ public class PhysiotherapistController extends SpecialistController implements I
     }
 
     private void movePatientToInProgress(Integer queueNumber) {
-        String nameFromWaitingListQuery = "SELECT name FROM doctorWaitingTable WHERE queueNumber = ?";
-        String deleteFromWaitingListQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO doctorProgressTable (queueNumber, name) VALUES (?, ?)";
+        String nameFromWaitingListQuery = "SELECT name FROM physioWaitingTable WHERE queueNumber = ?";
+        String deleteFromWaitingListQuery = "DELETE FROM physioWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO physioProgressTable (queueNumber, name) VALUES (?, ?)";
 
         try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
              PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
@@ -288,8 +287,8 @@ public class PhysiotherapistController extends SpecialistController implements I
 
     private void movePatientToPharmacy(Integer queueNumber) {
 
-        String nameFromWaitingListQuery = "SELECT name FROM doctorProgressTable WHERE queueNumber = ?";
-        String deleteFromProgressListQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = ?";
+        String nameFromWaitingListQuery = "SELECT name FROM physioProgressTable WHERE queueNumber = ?";
+        String deleteFromProgressListQuery = "DELETE FROM physioProgressTable WHERE queueNumber = ?";
         String insertIntoNextListQuery = "INSERT INTO pharmacyWaitingTable (queueNumber, name) VALUES (?, ?)";
 
         try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);

@@ -16,10 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.ResourceBundle;
 
 public class QueueManagerController implements Initializable {
 
@@ -40,30 +38,38 @@ public class QueueManagerController implements Initializable {
     @FXML
     private ListView<String> physioProgressListView;
     @FXML
+    private ListView<String> audioWaitingListView;
+    @FXML
+    private ListView<String> audioProgressListView;
+    @FXML
     private ListView<String> pharmacyWaitingListView;
     @FXML
     private ListView<String> pharmacyProgressListView;
 
     @FXML
-    private ListView<String> triageWaitingTagListView; //not used yet
+    private ListView<String> triageWaitingTagListView;
     @FXML
-    private ListView<String> triageProgressTagListView; //not used yet
+    private ListView<String> triageProgressTagListView;
     @FXML
-    private ListView<String> educationWaitingTagListView; //not used yet
+    private ListView<String> educationWaitingTagListView;
     @FXML
-    private ListView<String> educationProgressTagListView; //not used yet
+    private ListView<String> educationProgressTagListView;
     @FXML
-    private ListView<String> doctorWaitingTagListView; //not used yet
+    private ListView<String> doctorWaitingTagListView;
     @FXML
-    private ListView<String> doctorProgressTagListView; //not used yet
+    private ListView<String> doctorProgressTagListView;
     @FXML
-    private ListView<String> physioWaitingTagListView; //not used yet
+    private ListView<String> physioWaitingTagListView;
     @FXML
-    private ListView<String> physioProgressTagListView; //not used yet
+    private ListView<String> physioProgressTagListView;
     @FXML
-    private ListView<String> pharmacyWaitingTagListView; //not used yet
+    private ListView<String> audioWaitingTagListView;
     @FXML
-    private ListView<String> pharmacyProgressTagListView; //not used yet
+    private ListView<String> audioProgressTagListView;
+    @FXML
+    private ListView<String> pharmacyWaitingTagListView;
+    @FXML
+    private ListView<String> pharmacyProgressTagListView;
 
     @FXML
     private AnchorPane sliderAnchorPane;
@@ -121,6 +127,10 @@ public class QueueManagerController implements Initializable {
     @FXML
     private Button physioProgressToPharmacyButton;
     @FXML
+    private Button audioWaitingToProgressButton;
+    @FXML
+    private Button audioProgressToPharmacyButton;
+    @FXML
     private Button pharmacyWaitingToProgressButton;
     @FXML
     private Button pharmacyProgressToCheckoutButton;
@@ -167,6 +177,7 @@ public class QueueManagerController implements Initializable {
                 "Education: Waiting", "Education: In-Progress",
                 "Consultation: Waiting", "Consultation: In-Progress",
                 "Physiotherapy: Waiting", "Physiotherapy: In-Progress",
+                "Audiologist: Waiting", "Audiologist: In-Progress",
                 "Pharmacy: Waiting", "Pharmacy: In-Progress"};
         addTargetChoiceBox.getItems().addAll(choiceBoxItems);
         moveTargetChoiceBox.getItems().addAll(choiceBoxItems);
@@ -226,15 +237,35 @@ public class QueueManagerController implements Initializable {
 
     private void setUpQueuePane() {
 
+       //Setting up QMs with alternate tagQueueManagersHashMaps for QMs that have alt next
         QueueManager pharmacyProgress = new QueueManager(pharmacyProgressListView, "pharmacyProgressTable", pharmacyProgressTagListView,null);
+
         QueueManager pharmacyWaiting = new QueueManager(pharmacyWaitingListView, "pharmacyWaitingTable", pharmacyWaitingTagListView, pharmacyProgress);
-        QueueManager physioProgress = new QueueManager(physioProgressListView, "physioProgressTable", physioProgressTagListView, pharmacyWaiting);
+
+        QueueManager audioProgress = new QueueManager(audioProgressListView, "audioProgressTable", audioProgressTagListView, pharmacyWaiting);
+
+        QueueManager audioWaiting = new QueueManager(audioWaitingListView, "audioWaitingTable", audioWaitingTagListView, audioProgress);
+
+        LinkedHashMap<String, QueueManager> alternateQMForPhysioProgress = new LinkedHashMap<>();
+        alternateQMForPhysioProgress.put("Hearing", audioWaiting);
+        QueueManager physioProgress = new QueueManager(physioProgressListView, "physioProgressTable", physioProgressTagListView, pharmacyWaiting, alternateQMForPhysioProgress);
+
         QueueManager physioWaiting = new QueueManager(physioWaitingListView, "physioWaitingTable", physioWaitingTagListView, physioProgress);
-        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", doctorProgressTagListView, pharmacyWaiting, physioWaiting, "Physiotherapist");
+
+        LinkedHashMap<String, QueueManager> alternateQMForDoctorProgress = new LinkedHashMap<>();
+        alternateQMForDoctorProgress.put("Physiotherapist", physioWaiting);
+        alternateQMForDoctorProgress.put("Hearing", audioWaiting);
+
+        QueueManager doctorProgress = new QueueManager(doctorProgressListView, "doctorProgressTable", doctorProgressTagListView, pharmacyWaiting, alternateQMForDoctorProgress);
+
         QueueManager doctorWaiting = new QueueManager(doctorWaitingListView, "doctorWaitingTable", doctorWaitingTagListView, doctorProgress);
+
         QueueManager educationProgress = new QueueManager(educationProgressListView, "educationProgressTable", educationProgressTagListView, doctorWaiting);
+
         QueueManager educationWaiting = new QueueManager(educationWaitingListView, "educationWaitingTable", educationWaitingTagListView, educationProgress);
+
         QueueManager triageProgress = new QueueManager(triageProgressListView, "triageProgressTable", triageProgressTagListView, educationWaiting);
+
         QueueManager triageWaiting = new QueueManager(triageWaitingListView, "triageWaitingTable", triageWaitingTagListView, triageProgress);
 
         buttonQueueManagerMap.put("triageWaitingToProgressButton", triageWaiting);
@@ -245,6 +276,8 @@ public class QueueManagerController implements Initializable {
         buttonQueueManagerMap.put("doctorProgressToPharmacyButton", doctorProgress);
         buttonQueueManagerMap.put("physioWaitingToProgressButton", physioWaiting);
         buttonQueueManagerMap.put("physioProgressToPharmacyButton", physioProgress);
+        buttonQueueManagerMap.put("audioWaitingToProgressButton", audioWaiting);
+        buttonQueueManagerMap.put("audioProgressToPharmacyButton", audioProgress);
         buttonQueueManagerMap.put("pharmacyWaitingToProgressButton", pharmacyWaiting);
         buttonQueueManagerMap.put("pharmacyProgressToCheckoutButton", pharmacyProgress);
 
@@ -256,6 +289,8 @@ public class QueueManagerController implements Initializable {
         choiceQueueManagerMap.put("Consultation: In-Progress", doctorProgress);
         choiceQueueManagerMap.put("Physiotherapy: Waiting", physioWaiting);
         choiceQueueManagerMap.put("Physiotherapy: In-Progress", physioProgress);
+        choiceQueueManagerMap.put("Audiologist: Waiting", audioWaiting);
+        choiceQueueManagerMap.put("Audiologist: In-Progress", audioProgress);
         choiceQueueManagerMap.put("Pharmacy: Waiting", pharmacyWaiting);
         choiceQueueManagerMap.put("Pharmacy: In-Progress", pharmacyProgress);
 
