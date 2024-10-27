@@ -108,6 +108,8 @@ public class MedicineDispenseController implements Initializable {
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -126,7 +128,7 @@ public class MedicineDispenseController implements Initializable {
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "pharmacyWaitingTable");
@@ -353,30 +355,28 @@ public class MedicineDispenseController implements Initializable {
     }
 
     private void displayPrescription(int queueNumber) {
-        String prescriptionQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
-        String allergiesQuery = "SELECT drugAllergies FROM historyTable WHERE queueNumber = " + queueNumber;
+        String prescriptionQuery = "SELECT prescription FROM patientPrescriptionTable WHERE queueNumber = ?";
+        String allergiesQuery = "SELECT drugAllergies FROM historyTable WHERE queueNumber = ?";
 
-        try {
-            Statement statement = connection.createStatement();
+        try (PreparedStatement prescriptionStatement = connection.prepareStatement(prescriptionQuery);
+             PreparedStatement allergiesStatement = connection.prepareStatement(allergiesQuery)) {
 
-            ResultSet prescriptionResultSet = statement.executeQuery(prescriptionQuery);
-            if (prescriptionResultSet.next()) {
-                String prescription = prescriptionResultSet.getString("prescription");
-
-                prescriptionTextArea.setText(formatPrescription(prescription));
-
+            prescriptionStatement.setInt(1, queueNumber);
+            try (ResultSet prescriptionResultSet = prescriptionStatement.executeQuery()) {
+                if (prescriptionResultSet.next()) {
+                    String prescription = prescriptionResultSet.getString("prescription");
+                    prescriptionTextArea.setText(formatPrescription(prescription));
+                }
             }
-            prescriptionResultSet.close();
 
-            ResultSet allergiesResultSet = statement.executeQuery(allergiesQuery);
-            if (allergiesResultSet.next()) {
-                String allergies = prescriptionResultSet.getString("drugAllergies");
-
-                allergiesTextArea.setText(allergies);
+            allergiesStatement.setInt(1, queueNumber);
+            try (ResultSet allergiesResultSet = allergiesStatement.executeQuery()) {
+                if (allergiesResultSet.next()) {
+                    String allergies = allergiesResultSet.getString("drugAllergies");
+                    allergiesTextArea.setText(allergies);
+                }
             }
-            allergiesResultSet.close();
 
-            statement.close();
         } catch (SQLException exc) {
             exc.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Database error occurred", false);

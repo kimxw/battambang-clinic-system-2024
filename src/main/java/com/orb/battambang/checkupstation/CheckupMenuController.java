@@ -124,6 +124,8 @@ public class CheckupMenuController implements Initializable {
     @FXML
     private Button menuConsultationButton;
     @FXML
+    private Button menuPhysiotherapistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -148,7 +150,7 @@ public class CheckupMenuController implements Initializable {
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
+                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
                 menuUserButton, menuLocationButton);
 
         // for waiting list
@@ -246,8 +248,13 @@ public class CheckupMenuController implements Initializable {
         boolean hearing = hearingToggleButton.isSelected();
         boolean social = socialToggleButton.isSelected();
         boolean physio = physioToggleButton.isSelected();
+        System.out.println(tb);
+        System.out.println(opto);
+        System.out.println(hearing);
+        System.out.println(social);
+        System.out.println(physio);
 
-        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_P = ?, tag_S = ? WHERE queueNumber = ?";
+        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_S = ?, tag_P = ? WHERE queueNumber = ?";
         try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
             updateStatement.setBoolean(1, tb);
             updateStatement.setBoolean(2, opto);
@@ -255,6 +262,8 @@ public class CheckupMenuController implements Initializable {
             updateStatement.setBoolean(4, social);
             updateStatement.setBoolean(5, physio);
             updateStatement.setInt(6, queueNumber);
+
+            System.out.println(updateStatement);
 
             updateStatement.executeUpdate();
 

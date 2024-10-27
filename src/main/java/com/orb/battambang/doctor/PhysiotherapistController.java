@@ -1,16 +1,10 @@
 package com.orb.battambang.doctor;
 
-import com.orb.battambang.MainApp;
 import com.orb.battambang.util.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -23,7 +17,7 @@ import java.util.ResourceBundle;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
-public class DoctorConsultController extends SpecialistController implements Initializable {
+public class PhysiotherapistController extends SpecialistController implements Initializable {
 
     @FXML
     private ListView<Integer> waitingListView;
@@ -31,16 +25,9 @@ public class DoctorConsultController extends SpecialistController implements Ini
     private ListView<Integer> inProgressListView;
 
     @FXML
-    private TextArea inputConsultNotesTextArea;
+    private TextArea inputPhysioNotesTextArea;
     @FXML
-    private ChoiceBox<String> conditionChoiceBox;
-    private String[] conditionType = {"None", "Acute", "Chronic", "Acute and Chronic"};
-    @FXML
-    private Button createReferralButton;
-    @FXML
-    private RadioButton yesRadioButton, noRadioButton;
-    @FXML
-    private CheckBox consultCompleteCheckBox;
+    private CheckBox physioCompleteCheckBox;
 
     @FXML
     private Button menuUserButton;
@@ -54,21 +41,12 @@ public class DoctorConsultController extends SpecialistController implements Ini
         super.initialize(url, resourceBundle);
 
         //mini QMs
-        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "doctorWaitingTable");
-        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "doctorProgressTable");
-
-        conditionChoiceBox.getItems().addAll(conditionType);
-
-        // Create a ToggleGroup for referral radio buttons
-        ToggleGroup group = new ToggleGroup();
-        yesRadioButton.setToggleGroup(group);
-        noRadioButton.setToggleGroup(group);
-
+        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "physioWaitingTable");
+        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "physioProgressTable");
     }
 
     @FXML
     public void searchButtonOnAction(ActionEvent e) {
-
         super.searchButtonOnAction(e);
 
         if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
@@ -76,10 +54,8 @@ public class DoctorConsultController extends SpecialistController implements Ini
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
 
-            displayConsultationNotes(queueNumber);
-            displayCondition(queueNumber);
-            displayReferral(queueNumber);
-            displayConsultComplete(queueNumber);
+            displayPhysioNotes(queueNumber);
+            displayPhysioComplete(queueNumber);
 
         }
     }
@@ -91,11 +67,8 @@ public class DoctorConsultController extends SpecialistController implements Ini
             return;
         }
 
-
-        String consultNotes = inputConsultNotesTextArea.getText();
-        String conditionType = conditionChoiceBox.getValue();
-        boolean referralStatus = yesRadioButton.isSelected();
-        String doctorConsultStatus = consultCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
+        String physioNotes = inputPhysioNotesTextArea.getText();
+        String physioStatus = physioCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
 
         String queueNumberText = queueNumberTextField.getText();
         if (queueNumberText.isEmpty()) {
@@ -128,52 +101,40 @@ public class DoctorConsultController extends SpecialistController implements Ini
             return;
         }
 
-        if (conditionChoiceBox.getValue().equals("")) {
-            Labels.showMessageLabel(warningLabel, "Please choose a condition.", false);
-            return;
-        }
-
-        if (!yesRadioButton.isSelected() && !noRadioButton.isSelected()) {
-            Labels.showMessageLabel(warningLabel, "Please select a referral status.", false);
-            return;
-        }
-
-        // Check if queueNumber exists in doctorConsultTable
-        String checkDoctorConsultQuery = "SELECT COUNT(*) FROM doctorConsultTable WHERE queueNumber = ?";
-        try (PreparedStatement checkDoctorConsultStmt = connection.prepareStatement(checkDoctorConsultQuery)) {
-            checkDoctorConsultStmt.setInt(1, queueNumber);
-            ResultSet resultSet = checkDoctorConsultStmt.executeQuery();
+        // Check if queueNumber exists in phisiotherapistTable
+        String checkPhysiotherapistQuery = "SELECT COUNT(*) FROM physiotherapistTable WHERE queueNumber = ?";
+        try (PreparedStatement checkPhysiotherapistStmt = connection.prepareStatement(checkPhysiotherapistQuery)) {
+            checkPhysiotherapistStmt.setInt(1, queueNumber);
+            ResultSet resultSet = checkPhysiotherapistStmt.executeQuery();
             resultSet.next();
             int count = resultSet.getInt(1);
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, conditionType = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
-                try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
-                    doctorConsultTableStmt.setString(1, consultNotes);
-                    doctorConsultTableStmt.setString(2, conditionType);
-                    doctorConsultTableStmt.setBoolean(3, referralStatus);
-                    doctorConsultTableStmt.setString(4, menuUserButton.getText()); // Update doctor column with doctorLabel text
-                    doctorConsultTableStmt.setInt(5, queueNumber);
-                    doctorConsultTableStmt.executeUpdate();
+                String updatePhysiotherapistTableQuery = "UPDATE physiotherapistTable SET physiotherapistNotes = ?, doctor = ? WHERE queueNumber = ?";
+                try (PreparedStatement physiotherapistTableStmt = connection.prepareStatement(updatePhysiotherapistTableQuery)) {
+                    physiotherapistTableStmt.setString(1, physioNotes);
+                    physiotherapistTableStmt.setString(2, menuUserButton.getText());
+                    physiotherapistTableStmt.setInt(3, queueNumber);
+                    physiotherapistTableStmt.executeUpdate();
                 }
+
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, conditionType, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
-                    doctorConsultTableStmt.setInt(1, queueNumber);
-                    doctorConsultTableStmt.setString(2, consultNotes);
-                    doctorConsultTableStmt.setString(3, conditionType);
-                    doctorConsultTableStmt.setBoolean(4, referralStatus);
-                    doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Set doctor column with doctorLabel text
-                    doctorConsultTableStmt.executeUpdate();
+                String insertPhysiotherapistTableQuery = "INSERT INTO physiotherapistTable (queueNumber, physiotherapistNotes, doctor) VALUES (?, ?, ?)";
+                try (PreparedStatement physiotherapistTableStmt = connection.prepareStatement(insertPhysiotherapistTableQuery)) {
+                    physiotherapistTableStmt.setInt(1, queueNumber);
+                    physiotherapistTableStmt.setString(2, physioNotes);
+                    physiotherapistTableStmt.setString(3, menuUserButton.getText());
+                    physiotherapistTableStmt.executeUpdate();
                 }
+
             }
 
             // Update patientQueueTable
-            String updatePatientQueueTableQuery = "UPDATE patientQueueTable SET doctorConsultStatus = ? WHERE queueNumber = ?";
+            String updatePatientQueueTableQuery = "UPDATE patientQueueTable SET physiotherapistStatus = ? WHERE queueNumber = ?";
             try (PreparedStatement patientQueueTableStmt = connection.prepareStatement(updatePatientQueueTableQuery)) {
-                patientQueueTableStmt.setString(1, doctorConsultStatus);
+                patientQueueTableStmt.setString(1, physioStatus);
                 patientQueueTableStmt.setInt(2, queueNumber);
                 patientQueueTableStmt.executeUpdate();
             }
@@ -188,122 +149,41 @@ public class DoctorConsultController extends SpecialistController implements Ini
         }
     }
 
-    @FXML
-    public void radioButtonOnAction(ActionEvent e) {
-        if (yesRadioButton.isSelected()) {
-            createReferralButton.setVisible(true);
-        } else {
-            createReferralButton.setVisible(false);
-        }
-    }
-
-    @FXML
-    public void createReferralButtonOnAction(ActionEvent e) {
-        if (queueNumberTextField.getText().trim().isEmpty()) {
-            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("referral.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setResizable(false);
-            stage.setTitle("Create Referral");
-            stage.setScene(scene);
-
-            // Get the controller instance
-            ReferralController controller = loader.getController();
-
-            // Set the queue number
-            String queueNumberText = queueNumberTextField.getText().trim();
-            controller.setQueueNumber(Integer.parseInt(queueNumberText));
-
-            stage.show();
-
-        } catch (Exception ex) {
-            Labels.showMessageLabel(warningLabel, "Unexpected error occurred.", false);
-            ex.printStackTrace();  // Print stack trace for debugging
-        }
-    }
-
-
-    public void displayConsultationNotes(int queueNumber) {
-        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+    public void displayPhysioNotes(int queueNumber) {
+        String patientQuery = "SELECT physiotherapistNotes FROM physiotherapistTable WHERE queueNumber = " + queueNumber;
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                inputConsultNotesTextArea.setText(resultSet.getString("consultationNotes"));
+                inputPhysioNotesTextArea.setText(resultSet.getString("physiotherapistNotes"));
             } else {
-                inputConsultNotesTextArea.setText("");
+                inputPhysioNotesTextArea.setText("");
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
-            inputConsultNotesTextArea.setText("");
+            inputPhysioNotesTextArea.setText("");
         }
     }
 
 
-
-    public void displayCondition(int queueNumber) {
-        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
+    public void displayPhysioComplete(int queueNumber) {
+        String patientQuery = "SELECT physiotherapistStatus FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                String condition = resultSet.getString("conditionType");
-                conditionChoiceBox.setValue(condition); // Set the selected value in the ChoiceBox
-            } else {
-                conditionChoiceBox.setValue(""); // Set an empty value if no condition is found
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException, optionally show a message or log the error
-            System.out.println(ex);
-        }
-    }
+                String physioStatus = resultSet.getString("physiotherapistStatus");
 
-    public void displayReferral(int queueNumber) {
-        String patientQuery = "SELECT * FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(patientQuery);
-
-            if (resultSet.next()) {
-                boolean referralStatus = resultSet.getBoolean("referralStatus");
-                if (referralStatus) {
-                    yesRadioButton.setSelected(true);
-                    createReferralButton.setVisible(true);
+                // Toggle CheckBox based on physioStatus
+                if ("Complete".equalsIgnoreCase(physioStatus)) {
+                    physioCompleteCheckBox.setSelected(true); // Tick the CheckBox for complete status
                 } else {
-                    noRadioButton.setSelected(true); // Select No if referralStatus is false
-                }
-            } else {
-                yesRadioButton.setSelected(false);
-                noRadioButton.setSelected(false);
-            }
-        } catch (SQLException ex) {
-            // Handle SQLException, optionally show a message or log the error
-            System.out.println(ex);
-        }
-    }
-
-    public void displayConsultComplete(int queueNumber) {
-        String patientQuery = "SELECT doctorConsultStatus FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(patientQuery);
-
-            if (resultSet.next()) {
-                String doctorConsultStatus = resultSet.getString("doctorConsultStatus");
-
-                // Toggle CheckBox based on doctorConsultStatus
-                if ("Complete".equalsIgnoreCase(doctorConsultStatus)) {
-                    consultCompleteCheckBox.setSelected(true); // Tick the CheckBox for complete status
-                } else {
-                    consultCompleteCheckBox.setSelected(false); // Untick the CheckBox for incomplete or deferred status
+                    physioCompleteCheckBox.setSelected(false); // Untick the CheckBox for incomplete or deferred status
                 }
             } else {
                 // If no result found, clear CheckBox selection
-                consultCompleteCheckBox.setSelected(false);
+                physioCompleteCheckBox.setSelected(false);
             }
         } catch (SQLException ex) {
             // Handle SQLException, optionally show a message or log the error
@@ -313,12 +193,8 @@ public class DoctorConsultController extends SpecialistController implements Ini
 
 
     private void clearConsultFields() {
-        inputConsultNotesTextArea.setText("");
-        conditionChoiceBox.setValue("");
-        yesRadioButton.setSelected(false);
-        noRadioButton.setSelected(false);
-        consultCompleteCheckBox.setSelected(false);
-        createReferralButton.setVisible(false);
+        inputPhysioNotesTextArea.setText("");
+        physioCompleteCheckBox.setSelected(false);
     }
 
     protected void clearAllFields() {
@@ -341,9 +217,9 @@ public class DoctorConsultController extends SpecialistController implements Ini
     }
 
     private void movePatientToInProgress(Integer queueNumber) {
-        String nameFromWaitingListQuery = "SELECT name FROM doctorWaitingTable WHERE queueNumber = ?";
-        String deleteFromWaitingListQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = ?";
-        String insertIntoProgressListQuery = "INSERT INTO doctorProgressTable (queueNumber, name) VALUES (?, ?)";
+        String nameFromWaitingListQuery = "SELECT name FROM physioWaitingTable WHERE queueNumber = ?";
+        String deleteFromWaitingListQuery = "DELETE FROM physioWaitingTable WHERE queueNumber = ?";
+        String insertIntoProgressListQuery = "INSERT INTO physioProgressTable (queueNumber, name) VALUES (?, ?)";
 
         try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
              PreparedStatement deleteStatement = connection.prepareStatement(deleteFromWaitingListQuery);
@@ -411,8 +287,8 @@ public class DoctorConsultController extends SpecialistController implements Ini
 
     private void movePatientToPharmacy(Integer queueNumber) {
 
-        String nameFromWaitingListQuery = "SELECT name FROM doctorProgressTable WHERE queueNumber = ?";
-        String deleteFromProgressListQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = ?";
+        String nameFromWaitingListQuery = "SELECT name FROM physioProgressTable WHERE queueNumber = ?";
+        String deleteFromProgressListQuery = "DELETE FROM physioProgressTable WHERE queueNumber = ?";
         String insertIntoNextListQuery = "INSERT INTO pharmacyWaitingTable (queueNumber, name) VALUES (?, ?)";
 
         try (PreparedStatement nameStatement = connection.prepareStatement(nameFromWaitingListQuery);
