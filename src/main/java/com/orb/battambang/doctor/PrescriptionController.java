@@ -65,15 +65,6 @@ public class PrescriptionController implements Initializable {
     private TextArea inputDosageTextArea;
 
     @FXML
-    private Button addUpdateButton;
-
-    @FXML
-    private Button deleteButton;
-
-    @FXML
-    private Button clearButton;
-
-    @FXML
     private Button exitButton;
 
     @FXML
@@ -101,6 +92,9 @@ public class PrescriptionController implements Initializable {
     ObservableList<Medicine> medicineObservableList = FXCollections.observableArrayList();
     ObservableList<Prescription.PrescriptionEntry> prescriptionObservableList = FXCollections.observableArrayList();
 
+    //-------------------------------------------------------
+    //Get queueNumber and controller of previous stage
+    //-------------------------------------------------------
     public void setQueueNumber(int queueNumber) {
         this.queueNumber = queueNumber;
         loadPrescriptions();
@@ -110,6 +104,9 @@ public class PrescriptionController implements Initializable {
         this.specialistController = specialistController;
     }
 
+    //-------------------------------------------------------
+    //Initialisers
+    //-------------------------------------------------------
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeMedicineTable();
@@ -221,30 +218,9 @@ public class PrescriptionController implements Initializable {
 
     }
 
-    private void loadPrescriptions() {
-        String patientQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(patientQuery);
-
-            if (resultSet.next()) {
-                String prescriptionText = resultSet.getString("prescription");
-
-                if (prescriptionText != null && !prescriptionText.isEmpty()) {
-                    // Convert prescriptionText to ObservableList<Prescription.PrescriptionEntry>
-                    prescriptionObservableList = Prescription.convertToObservableList(prescriptionText);
-
-                    // Display prescriptionList in TableView
-                    prescriptionTableView.setItems(prescriptionObservableList);
-                } else {
-                    // If prescriptionText is null or empty, clear the TableView
-                    prescriptionTableView.setItems(FXCollections.observableArrayList());
-                }
-            }
-        } catch (SQLException e) {
-            Logger.getLogger(PrescriptionController.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
+    //-------------------------------------------------------
+    //On Action
+    //-------------------------------------------------------
     @FXML
     public void addUpdateButtonOnAction(ActionEvent event) {
         // Get the input values
@@ -286,21 +262,6 @@ public class PrescriptionController implements Initializable {
         clearInputFields();
     }
 
-    // Helper method to clear input fields
-    private void clearInputFields() {
-        inputNameTextField.clear();
-        inputQuantityTextField.clear();
-        inputUnitsTextField.clear();
-        inputDosageTextArea.clear();
-        inputIdTextField.clear();
-    }
-
-    @FXML
-    public void clearButtonOnAction(ActionEvent e) {
-        clearInputFields();
-    }
-
-
     @FXML
     public void deleteButtonOnAction(ActionEvent event) {
         // Get the selected PrescriptionEntry
@@ -320,7 +281,6 @@ public class PrescriptionController implements Initializable {
         }
     }
 
-
     @FXML
     public void exitButtonOnAction(ActionEvent event) {
 
@@ -329,15 +289,65 @@ public class PrescriptionController implements Initializable {
         Stage stage = (Stage) exitButton.getScene().getWindow();
         stage.close();
     }
-    public void updatePrescriptionInDatabase(int queueNumber, String prescriptionString) {
-        String updateQuery = "UPDATE doctorConsultTable SET prescription = ? WHERE queueNumber = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
-            pstmt.setString(1, prescriptionString);
-            pstmt.setInt(2, queueNumber);
+    //-------------------------------------------------------
+    //Prescription load and update
+    //-------------------------------------------------------
+
+    private void loadPrescriptions() {
+        String patientQuery = "SELECT prescription FROM patientPrescriptionTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String prescriptionText = resultSet.getString("prescription");
+
+                if (prescriptionText != null && !prescriptionText.isEmpty()) {
+                    // Convert prescriptionText to ObservableList<Prescription.PrescriptionEntry>
+                    prescriptionObservableList = Prescription.convertToObservableList(prescriptionText);
+
+                    // Display prescriptionList in TableView
+                    prescriptionTableView.setItems(prescriptionObservableList);
+                } else {
+                    // If prescriptionText is null or empty, clear the TableView
+                    prescriptionTableView.setItems(FXCollections.observableArrayList());
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PrescriptionController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    //upsert = update or insert
+    //this method is only used by the previous controller i.e. when update is pressed
+    public static void upsertPrescriptionInDatabase(int queueNumber, String prescriptionString) {
+        String upsertQuery = "INSERT INTO patientPrescriptionTable (queueNumber, prescription) " +
+                "VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE prescription = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(upsertQuery)) {
+            pstmt.setInt(1, queueNumber);
+            pstmt.setString(2, prescriptionString);
+            pstmt.setString(3, prescriptionString);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    //-------------------------------------------------------
+    //Clear fields
+    //-------------------------------------------------------
+    private void clearInputFields() {
+        inputNameTextField.clear();
+        inputQuantityTextField.clear();
+        inputUnitsTextField.clear();
+        inputDosageTextArea.clear();
+        inputIdTextField.clear();
+    }
+
+    @FXML
+    public void clearButtonOnAction(ActionEvent e) {
+        clearInputFields();
     }
 }

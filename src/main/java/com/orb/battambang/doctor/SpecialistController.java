@@ -240,156 +240,9 @@ public class SpecialistController implements Initializable {
         tagList.add(Ptag);
     }
 
-    @FXML
-    protected void tagToggleOnAction(ActionEvent e) {
-        if(queueNoLabel.getText().isEmpty()) {
-            resetToggleButtons();
-            return;
-        }
-        updatePostToggle(Integer.parseInt(queueNoLabel.getText()));
-    }
-
-    protected void updatePreToggle(int queueNumber) {
-        boolean tb = false;
-        boolean opto = false;
-        boolean hearing = false;
-        boolean social = false;
-        boolean physio = false;
-
-        String updateQuery = "SELECT * FROM patientTagTable WHERE queueNumber = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-            preparedStatement.setInt(1, queueNumber); // Set the queueNumber parameter
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    tb = resultSet.getBoolean("tag_T");
-                    opto = resultSet.getBoolean("tag_O");
-                    hearing = resultSet.getBoolean("tag_H");
-                    social = resultSet.getBoolean("tag_S");
-                    physio = resultSet.getBoolean("tag_P");
-                } else {
-                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
-                }
-            }
-        } catch (SQLException e) {
-            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
-            throw new RuntimeException(e);
-        }
-
-        tbToggleButton.setSelected(tb);
-        optometryToggleButton.setSelected(opto);
-        hearingToggleButton.setSelected(hearing);
-        socialToggleButton.setSelected(social);
-        physioToggleButton.setSelected(physio);
-
-    }
-
-    private void updatePostToggle(int queueNumber) {
-        boolean tb = tbToggleButton.isSelected();
-        boolean opto = optometryToggleButton.isSelected();
-        boolean hearing = hearingToggleButton.isSelected();
-        boolean social = socialToggleButton.isSelected();
-        boolean physio = physioToggleButton.isSelected();
-
-        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_P = ?, tag_S = ? WHERE queueNumber = ?";
-        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
-            updateStatement.setBoolean(1, tb);
-            updateStatement.setBoolean(2, opto);
-            updateStatement.setBoolean(3, hearing);
-            updateStatement.setBoolean(4, social);
-            updateStatement.setBoolean(5, physio);
-            updateStatement.setInt(6, queueNumber);
-
-            updateStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @FXML
-    public void searchButtonOnAction(ActionEvent e) {
-        if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
-            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
-        } else {
-            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
-
-            displayHeightAndWeight(queueNumber);
-            displayHeadLiceRecords(queueNumber);
-            displayHearingRecords(queueNumber);
-            displaySnellensRecords(queueNumber);
-            displayDentalRecords(queueNumber);
-            displayHistorySystem(queueNumber);
-            displayPrescription(queueNumber);
-            updatePreToggle(queueNumber); //for tags
-            updateParticularsPane(queueNumber);   // must update after loading all others!
-
-        }
-    }
-
-    @FXML
-    public void editPrescriptionButtonOnAction(ActionEvent e) {
-
-        if (queueNoLabel.getText().equals("")) {
-            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("prescription.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setResizable(false);
-            stage.setTitle("Edit Prescription");
-            stage.setScene(scene);
-            stage.show();
-
-            // Set the queue number in the PrescriptionController
-            String queueNumberText = queueNumberTextField.getText();
-            PrescriptionController controller = loader.getController(); // Get the controller instance
-            controller.setQueueNumber(Integer.parseInt(queueNumberText));
-            // Pass instance of DoctorConsultController to PrescriptionController
-            controller.setSpecialistController(this);
-
-        } catch (Exception ex) {
-            Labels.showMessageLabel(warningLabel, "Unexpected error occured.", false);
-        }
-    }
-
-    public void displayPrescription(int queueNumber) {
-        String patientQuery = "SELECT prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber;
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(patientQuery);
-
-            if (resultSet.next()) {
-                String prescriptionText = resultSet.getString("prescription");
-
-                if (prescriptionText != null && !prescriptionText.isEmpty()) {
-                    // Convert prescriptionText to ObservableList<Prescription.PrescriptionEntry>
-                    ObservableList<Prescription.PrescriptionEntry> prescriptionList = Prescription.convertToObservableList(prescriptionText);
-
-                    // Display prescriptionList in TableView
-                    prescriptionTableView.setItems(prescriptionList);
-                } else {
-                    // If prescriptionText is null or empty, clear the TableView
-                    prescriptionTableView.setItems(FXCollections.observableArrayList());
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex); // Handle SQLException properly in your application
-        }
-    }
-
-    //overloaded
-    public void displayPrescription(ObservableList<Prescription.PrescriptionEntry> updatedPrescriptionList) {
-        prescriptionTableView.setItems(updatedPrescriptionList);
-    }
-
-    protected ObservableList<Prescription.PrescriptionEntry>  getPrescriptionItems() {
-        return prescriptionTableView.getItems();
-    }
+    //-------------------------------------------------------
+    //Displaying Patient Records Area
+    //-------------------------------------------------------
 
     public void updateParticularsPane(int queueNumber) {
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
@@ -582,80 +435,6 @@ public class SpecialistController implements Initializable {
         }
     }
 
-    private void clearParticularsFields() {
-        queueNoLabel.setText("");
-        nameLabel.setText("");
-        ageLabel.setText("");
-        sexLabel.setText("");
-        phoneNumberLabel.setText("");
-    }
-
-    private void clearBMIFields() {
-        heightLabel.setText("");
-        weightLabel.setText("");
-        bmiLabel.setText("");
-        bmiCategoryLabel.setText("");
-        bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");
-        Rectangles.clearStatusRectangle(status1Rectangle, status1Label);
-    }
-
-    private void clearHeadLiceFields() {
-        headLiceLabel.setText("");
-        headLiceTextArea.setText("");
-        Rectangles.clearStatusRectangle(status4Rectangle, status4Label);
-    }
-
-    private void clearHearingFields() {
-        hearingProblemsLabel.setText("");
-        hearingTextArea.setText("");
-        Rectangles.clearStatusRectangle(status3Rectangle, status3Label);
-    }
-
-    private void clearSnellensFields() {
-        wpRightLabel.setText("");
-        wpLeftLabel.setText("");
-        npRightLabel.setText("");
-        npLeftLabel.setText("");
-        snellensTextArea.setText("");
-        Rectangles.clearStatusRectangle(status2Rectangle, status2Label);
-    }
-
-    private void clearDentalFields() {
-        dentalTextArea.setText("");
-        Rectangles.clearStatusRectangle(status5Rectangle, status5Label);
-    }
-
-    private void clearHistoryFields() {
-        historySystemLabel.setText("");
-        Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
-    }
-
-    private void clearPrescriptionFields(){
-        prescriptionTableView.setItems(FXCollections.observableArrayList());
-    }
-
-    protected void clearAllFields() {
-        clearParticularsFields();
-        clearBMIFields();
-        clearHeadLiceFields();
-        clearHearingFields();
-        clearSnellensFields();
-        clearDentalFields();
-        clearHistoryFields();
-        clearPrescriptionFields();
-    }
-
-
-
-    private void resetToggleButtons() {
-        tbToggleButton.setSelected(false);
-        optometryToggleButton.setSelected(false);
-        hearingToggleButton.setSelected(false);
-        socialToggleButton.setSelected(false);
-        physioToggleButton.setSelected(false);
-    }
-
-
     @FXML
     public void historyRecordsButtonOnAction(ActionEvent e) {
         if (queueNoLabel.getText().isEmpty()) {
@@ -718,6 +497,261 @@ public class SpecialistController implements Initializable {
         }
 
     }
+
+    //-------------------------------------------------------
+    //Resetting Patient Records Area
+    //-------------------------------------------------------
+
+    protected void clearAllFields() {
+        clearParticularsFields();
+        clearBMIFields();
+        clearHeadLiceFields();
+        clearHearingFields();
+        clearSnellensFields();
+        clearDentalFields();
+        clearHistoryFields();
+        clearPrescriptionFields();
+    }
+
+    private void resetToggleButtons() {
+        tbToggleButton.setSelected(false);
+        optometryToggleButton.setSelected(false);
+        hearingToggleButton.setSelected(false);
+        socialToggleButton.setSelected(false);
+        physioToggleButton.setSelected(false);
+    }
+
+    private void clearParticularsFields() {
+        queueNoLabel.setText("");
+        nameLabel.setText("");
+        ageLabel.setText("");
+        sexLabel.setText("");
+        phoneNumberLabel.setText("");
+    }
+
+    private void clearBMIFields() {
+        heightLabel.setText("");
+        weightLabel.setText("");
+        bmiLabel.setText("");
+        bmiCategoryLabel.setText("");
+        bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");
+        Rectangles.clearStatusRectangle(status1Rectangle, status1Label);
+    }
+
+    private void clearHeadLiceFields() {
+        headLiceLabel.setText("");
+        headLiceTextArea.setText("");
+        Rectangles.clearStatusRectangle(status4Rectangle, status4Label);
+    }
+
+    private void clearHearingFields() {
+        hearingProblemsLabel.setText("");
+        hearingTextArea.setText("");
+        Rectangles.clearStatusRectangle(status3Rectangle, status3Label);
+    }
+
+    private void clearSnellensFields() {
+        wpRightLabel.setText("");
+        wpLeftLabel.setText("");
+        npRightLabel.setText("");
+        npLeftLabel.setText("");
+        snellensTextArea.setText("");
+        Rectangles.clearStatusRectangle(status2Rectangle, status2Label);
+    }
+
+    private void clearDentalFields() {
+        dentalTextArea.setText("");
+        Rectangles.clearStatusRectangle(status5Rectangle, status5Label);
+    }
+
+    private void clearHistoryFields() {
+        historySystemLabel.setText("");
+        Rectangles.clearStatusRectangle(status6Rectangle, status6Label);
+    }
+
+    private void clearPrescriptionFields(){
+        prescriptionTableView.setItems(FXCollections.observableArrayList());
+    }
+
+    //-------------------------------------------------------
+    //Displaying Prescription
+    //-------------------------------------------------------
+
+    public void displayPrescription(int queueNumber) {
+        String patientQuery = "SELECT prescription FROM patientPrescriptionTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String prescriptionText = resultSet.getString("prescription");
+
+                if (prescriptionText != null && !prescriptionText.isEmpty()) {
+                    // Convert prescriptionText to ObservableList<Prescription.PrescriptionEntry>
+                    ObservableList<Prescription.PrescriptionEntry> prescriptionList = Prescription.convertToObservableList(prescriptionText);
+
+                    // Display prescriptionList in TableView
+                    prescriptionTableView.setItems(prescriptionList);
+                } else {
+                    // If prescriptionText is null or empty, clear the TableView
+                    prescriptionTableView.setItems(FXCollections.observableArrayList());
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex); // Handle SQLException properly in your application
+        }
+    }
+
+    //overloaded
+    public void displayPrescription(ObservableList<Prescription.PrescriptionEntry> updatedPrescriptionList) {
+        prescriptionTableView.setItems(updatedPrescriptionList);
+    }
+
+    protected ObservableList<Prescription.PrescriptionEntry>  getPrescriptionItems() {
+        return prescriptionTableView.getItems();
+    }
+
+    //-------------------------------------------------------
+    //On Action and direct helpers
+    //-------------------------------------------------------
+    @FXML
+    protected void tagToggleOnAction(ActionEvent e) {
+        if(queueNoLabel.getText().isEmpty()) {
+            resetToggleButtons();
+            return;
+        }
+        updatePostToggle(Integer.parseInt(queueNoLabel.getText()));
+    }
+
+    protected void updatePreToggle(int queueNumber) {
+        boolean tb = false;
+        boolean opto = false;
+        boolean hearing = false;
+        boolean social = false;
+        boolean physio = false;
+
+        String updateQuery = "SELECT * FROM patientTagTable WHERE queueNumber = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, queueNumber); // Set the queueNumber parameter
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    tb = resultSet.getBoolean("tag_T");
+                    opto = resultSet.getBoolean("tag_O");
+                    hearing = resultSet.getBoolean("tag_H");
+                    social = resultSet.getBoolean("tag_S");
+                    physio = resultSet.getBoolean("tag_P");
+                } else {
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                }
+            }
+        } catch (SQLException e) {
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            throw new RuntimeException(e);
+        }
+
+        tbToggleButton.setSelected(tb);
+        optometryToggleButton.setSelected(opto);
+        hearingToggleButton.setSelected(hearing);
+        socialToggleButton.setSelected(social);
+        physioToggleButton.setSelected(physio);
+
+    }
+
+    private void updatePostToggle(int queueNumber) {
+        boolean tb = tbToggleButton.isSelected();
+        boolean opto = optometryToggleButton.isSelected();
+        boolean hearing = hearingToggleButton.isSelected();
+        boolean social = socialToggleButton.isSelected();
+        boolean physio = physioToggleButton.isSelected();
+
+        String updateQuery = "UPDATE patientTagTable SET tag_T = ?, tag_O = ?, tag_H = ?, tag_P = ?, tag_S = ? WHERE queueNumber = ?";
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setBoolean(1, tb);
+            updateStatement.setBoolean(2, opto);
+            updateStatement.setBoolean(3, hearing);
+            updateStatement.setBoolean(4, social);
+            updateStatement.setBoolean(5, physio);
+            updateStatement.setInt(6, queueNumber);
+
+            updateStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void searchButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || !queueNumberTextField.getText().matches("\\d+")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+        } else {
+            int queueNumber = Integer.parseInt(queueNumberTextField.getText());
+
+            displayHeightAndWeight(queueNumber);
+            displayHeadLiceRecords(queueNumber);
+            displayHearingRecords(queueNumber);
+            displaySnellensRecords(queueNumber);
+            displayDentalRecords(queueNumber);
+            displayHistorySystem(queueNumber);
+            displayPrescription(queueNumber);
+            updatePreToggle(queueNumber); //for tags
+            updateParticularsPane(queueNumber);   // must update after loading all others!
+
+        }
+    }
+
+    @FXML
+    public void editPrescriptionButtonOnAction(ActionEvent e) {
+
+        if (queueNoLabel.getText().equals("")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("prescription.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("Edit Prescription");
+            stage.setScene(scene);
+            stage.show();
+
+            // Set the queue number in the PrescriptionController
+            String queueNumberText = queueNumberTextField.getText();
+            PrescriptionController controller = loader.getController(); // Get the controller instance
+            controller.setQueueNumber(Integer.parseInt(queueNumberText));
+            // Pass instance of DoctorConsultController to PrescriptionController
+            controller.setSpecialistController(this);
+
+        } catch (Exception ex) {
+            Labels.showMessageLabel(warningLabel, "Unexpected error occured.", false);
+        }
+    }
+
+    protected void updateButtonOnAction(ActionEvent e) {
+        String queueNumberText = queueNumberTextField.getText();
+        if (queueNumberText.isEmpty()) {
+            Labels.showMessageLabel(warningLabel, "Please fill in the queue number.", false);
+            return;
+        }
+
+        int queueNumber;
+        try {
+            queueNumber = Integer.parseInt(queueNumberText);
+        } catch (NumberFormatException ex) {
+            Labels.showMessageLabel(warningLabel, "Please enter a valid queue number.", false);
+            return;
+        }
+        PrescriptionController.upsertPrescriptionInDatabase(queueNumber, Prescription.convertToString(getPrescriptionItems()));
+    }
+
+
+    //-------------------------------------------------------
+    //Others
+    //-------------------------------------------------------
 
     @FXML
     public void switchUserButtonOnAction(ActionEvent e) {

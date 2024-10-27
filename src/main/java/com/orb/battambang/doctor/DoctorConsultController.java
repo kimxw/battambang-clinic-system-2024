@@ -9,9 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.TableColumn;
-
 import static com.orb.battambang.connection.DatabaseConnection.connection;
 
 public class DoctorConsultController extends SpecialistController implements Initializable {
@@ -35,23 +31,10 @@ public class DoctorConsultController extends SpecialistController implements Ini
     private ListView<Integer> inProgressListView;
 
     @FXML
-    protected ToggleButton tbToggleButton;
-    @FXML
-    protected ToggleButton optometryToggleButton;
-    @FXML
-    protected ToggleButton hearingToggleButton;
-    @FXML
-    protected ToggleButton socialToggleButton;
-    @FXML
-    protected ToggleButton physioToggleButton;
-
-    @FXML
     private TextArea inputConsultNotesTextArea;
     @FXML
     private ChoiceBox<String> conditionChoiceBox;
     private String[] conditionType = {"None", "Acute", "Chronic", "Acute and Chronic"};
-    @FXML
-    private Button updateButton;
     @FXML
     private Button createReferralButton;
     @FXML
@@ -61,11 +44,6 @@ public class DoctorConsultController extends SpecialistController implements Ini
 
     @FXML
     private Button menuUserButton;
-    @FXML
-    private Button menuLocationButton;
-
-    @FXML
-    private Pane editBlockPane;
 
     protected List<Tag> tagList = new ArrayList<>();
 
@@ -86,7 +64,6 @@ public class DoctorConsultController extends SpecialistController implements Ini
         yesRadioButton.setToggleGroup(group);
         noRadioButton.setToggleGroup(group);
 
-        //clearConsultFields(); //TODO: EXPERIEMNT
     }
 
     @FXML
@@ -117,7 +94,6 @@ public class DoctorConsultController extends SpecialistController implements Ini
 
         String consultNotes = inputConsultNotesTextArea.getText();
         String conditionType = conditionChoiceBox.getValue();
-        String prescriptionString = Prescription.convertToString(getPrescriptionItems());
         boolean referralStatus = yesRadioButton.isSelected();
         String doctorConsultStatus = consultCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
 
@@ -172,26 +148,24 @@ public class DoctorConsultController extends SpecialistController implements Ini
 
             if (count > 0) {
                 // Update existing record
-                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, conditionType = ?, prescription = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
+                String updateDoctorConsultTableQuery = "UPDATE doctorConsultTable SET consultationNotes = ?, conditionType = ?, referralStatus = ?, doctor = ? WHERE queueNumber = ?";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(updateDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setString(1, consultNotes);
                     doctorConsultTableStmt.setString(2, conditionType);
-                    doctorConsultTableStmt.setString(3, prescriptionString);
-                    doctorConsultTableStmt.setBoolean(4, referralStatus);
-                    doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Update doctor column with doctorLabel text
-                    doctorConsultTableStmt.setInt(6, queueNumber);
+                    doctorConsultTableStmt.setBoolean(3, referralStatus);
+                    doctorConsultTableStmt.setString(4, menuUserButton.getText()); // Update doctor column with doctorLabel text
+                    doctorConsultTableStmt.setInt(5, queueNumber);
                     doctorConsultTableStmt.executeUpdate();
                 }
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, `conditionType`, prescription, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, conditionType, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setInt(1, queueNumber);
                     doctorConsultTableStmt.setString(2, consultNotes);
                     doctorConsultTableStmt.setString(3, conditionType);
-                    doctorConsultTableStmt.setString(4, prescriptionString);
-                    doctorConsultTableStmt.setBoolean(5, referralStatus);
-                    doctorConsultTableStmt.setString(6, menuUserButton.getText()); // Set doctor column with doctorLabel text
+                    doctorConsultTableStmt.setBoolean(4, referralStatus);
+                    doctorConsultTableStmt.setString(5, menuUserButton.getText()); // Set doctor column with doctorLabel text
                     doctorConsultTableStmt.executeUpdate();
                 }
             }
@@ -204,11 +178,12 @@ public class DoctorConsultController extends SpecialistController implements Ini
                 patientQueueTableStmt.executeUpdate();
             }
 
+            super.updateButtonOnAction(e); //update prescriptions + whatever else parent constructor takes care of
+
             // Clear warning label and show success message if all operations succeed
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
         } catch (SQLException ex) {
             System.out.println(ex);
-            System.out.println("UPDATE RECORD - updateButtonOnAction");
             Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
         }
     }
@@ -313,7 +288,7 @@ public class DoctorConsultController extends SpecialistController implements Ini
     }
 
     public void displayConsultComplete(int queueNumber) {
-        String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+        String patientQuery = "SELECT doctorConsultStatus FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
