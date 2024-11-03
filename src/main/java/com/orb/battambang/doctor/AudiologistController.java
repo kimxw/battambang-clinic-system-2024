@@ -14,6 +14,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -63,6 +64,9 @@ public class AudiologistController extends SpecialistController implements Initi
     private CheckBox rec4CheckBox;
 
     @FXML
+    private CheckBox audiologistCompleteCheckBox;
+
+    @FXML
     private Button menuUserButton;
 
     protected List<Tag> tagList = new ArrayList<>();
@@ -87,141 +91,178 @@ public class AudiologistController extends SpecialistController implements Initi
         } else {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
 
-            displayPhysioNotes(queueNumber);
-            displayPhysioComplete(queueNumber);
+            displayAudiologistFields(queueNumber);
+            displayAudiologistComplete(queueNumber);
 
         }
     }
 
     @FXML
     public void updateButtonOnAction(ActionEvent e) {
-//        if (queueNoLabel.getText().equals("")) {
-//            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
-//            return;
-//        }
-//
-//        String physioNotes = inputPhysioNotesTextArea.getText();
-//        String physioStatus = physioCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
-//
-//        String queueNumberText = queueNumberTextField.getText();
-//        if (queueNumberText.isEmpty()) {
-//            Labels.showMessageLabel(warningLabel, "Please fill in the queue number.", false);
-//            return;
-//        }
-//
-//        int queueNumber;
-//        try {
-//            queueNumber = Integer.parseInt(queueNumberText);
-//        } catch (NumberFormatException ex) {
-//            Labels.showMessageLabel(warningLabel, "Please enter a valid queue number.", false);
-//            return;
-//        }
-//
-//        // Check if queueNumber exists in patientQueueTable
-//        String checkQueueNumberQuery = "SELECT COUNT(*) FROM patientQueueTable WHERE queueNumber = ?";
-//        try (PreparedStatement checkQueueNumberStmt = connection.prepareStatement(checkQueueNumberQuery)) {
-//            checkQueueNumberStmt.setInt(1, queueNumber);
-//            ResultSet resultSet = checkQueueNumberStmt.executeQuery();
-//            resultSet.next();
-//            int count = resultSet.getInt(1);
-//            if (count == 0) {
-//                Labels.showMessageLabel(warningLabel, "Queue number does not exist.", false);
-//                return;
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println(ex); // Handle the exception appropriately
-//            Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
-//            return;
-//        }
-//
-//        // Check if queueNumber exists in phisiotherapistTable
-//        String checkPhysiotherapistQuery = "SELECT COUNT(*) FROM physiotherapistTable WHERE queueNumber = ?";
-//        try (PreparedStatement checkPhysiotherapistStmt = connection.prepareStatement(checkPhysiotherapistQuery)) {
-//            checkPhysiotherapistStmt.setInt(1, queueNumber);
-//            ResultSet resultSet = checkPhysiotherapistStmt.executeQuery();
-//            resultSet.next();
-//            int count = resultSet.getInt(1);
-//
-//            if (count > 0) {
-//                // Update existing record
-//                String updatePhysiotherapistTableQuery = "UPDATE physiotherapistTable SET physiotherapistNotes = ?, doctor = ? WHERE queueNumber = ?";
-//                try (PreparedStatement physiotherapistTableStmt = connection.prepareStatement(updatePhysiotherapistTableQuery)) {
-//                    physiotherapistTableStmt.setString(1, physioNotes);
-//                    physiotherapistTableStmt.setString(2, menuUserButton.getText());
-//                    physiotherapistTableStmt.setInt(3, queueNumber);
-//                    physiotherapistTableStmt.executeUpdate();
-//                }
-//
-//            } else {
-//                // Insert new record
-//                String insertPhysiotherapistTableQuery = "INSERT INTO physiotherapistTable (queueNumber, physiotherapistNotes, doctor) VALUES (?, ?, ?)";
-//                try (PreparedStatement physiotherapistTableStmt = connection.prepareStatement(insertPhysiotherapistTableQuery)) {
-//                    physiotherapistTableStmt.setInt(1, queueNumber);
-//                    physiotherapistTableStmt.setString(2, physioNotes);
-//                    physiotherapistTableStmt.setString(3, menuUserButton.getText());
-//                    physiotherapistTableStmt.executeUpdate();
-//                }
-//
-//            }
-//
-//            // Update patientQueueTable
-//            String updatePatientQueueTableQuery = "UPDATE patientQueueTable SET physiotherapistStatus = ? WHERE queueNumber = ?";
-//            try (PreparedStatement patientQueueTableStmt = connection.prepareStatement(updatePatientQueueTableQuery)) {
-//                patientQueueTableStmt.setString(1, physioStatus);
-//                patientQueueTableStmt.setInt(2, queueNumber);
-//                patientQueueTableStmt.executeUpdate();
-//            }
-//
-//            super.updateButtonOnAction(e); //update prescriptions + whatever else parent constructor takes care of
-//
-//            // Clear warning label and show success message if all operations succeed
-//            Labels.showMessageLabel(warningLabel, "Update successful.", true);
-//        } catch (SQLException ex) {
-//            System.out.println(ex);
-//            Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
-//        }
+        if (queueNoLabel.getText().equals("")) {
+            Labels.showMessageLabel(queueSelectLabel, "Input a valid queue number.", false);
+            return;
+        }
+
+        //otoscopy results
+        boolean otoscopyClear = otoscopyClearCheckBox.isSelected();
+        boolean otoscopyEarwax = otoscopyEarwaxCheckBox.isSelected();
+        boolean otoscopyFurtherInvestigation = otoscopyFurtherInvCheckBox.isSelected();
+
+        //hearing screening results
+        boolean hearing500Hz = frequency500CheckBox.isSelected();
+        boolean hearing1000Hz = frequency1000CheckBox.isSelected();
+        boolean hearing2000Hz = frequency2000CheckBox.isSelected();
+        boolean hearing4000Hz = frequency4000CheckBox.isSelected();
+
+        //recommendations
+        boolean noAction = rec1CheckBox.isSelected();
+        boolean visitEnt = rec2CheckBox.isSelected();
+        boolean followUpEnt = rec3CheckBox.isSelected();
+        boolean detailedHearingAssessment = rec4CheckBox.isSelected();
+
+        //status
+        String audioStatus = audiologistCompleteCheckBox.isSelected() ? "Complete" : "Incomplete";
+
+
+        String queueNumberText = queueNumberTextField.getText();
+        if (queueNumberText.isEmpty()) {
+            Labels.showMessageLabel(warningLabel, "Please fill in the queue number.", false);
+            return;
+        }
+
+        int queueNumber;
+        try {
+            queueNumber = Integer.parseInt(queueNumberText);
+        } catch (NumberFormatException ex) {
+            Labels.showMessageLabel(warningLabel, "Please enter a valid queue number.", false);
+            return;
+        }
+
+        String upsertAudiologistTableQuery = """
+                INSERT INTO audiologistTable (queueNumber, doctor,
+                                                           otoscopy_clear,
+                                                           otoscopy_earwax,
+                                                           otoscopy_further_investigation,
+                                                       
+                                                           hearing_500Hz,
+                                                           hearing_1000Hz,
+                                                           hearing_2000Hz,
+                                                           hearing_4000Hz,
+                                                       
+                                                           no_action,
+                                                           visit_ent,
+                                                           follow_up_ent,
+                                                           detailed_hearing_assessment)                                                            
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    doctor = VALUES(doctor),
+                    otoscopy_clear = VALUES(otoscopy_clear),
+                    otoscopy_earwax = VALUES(otoscopy_earwax),
+                    otoscopy_further_investigation = VALUES(otoscopy_further_investigation),
+                    
+                    hearing_500Hz = VALUES(hearing_500Hz),
+                    hearing_1000Hz = VALUES(hearing_1000Hz),
+                    hearing_2000Hz = VALUES(hearing_2000Hz),
+                    hearing_4000Hz = VALUES(hearing_4000Hz),
+                    
+                    no_action = VALUES(no_action),
+                    visit_ent = VALUES(visit_ent),
+                    follow_up_ent = VALUES(follow_up_ent),
+                    detailed_hearing_assessment = VALUES(detailed_hearing_assessment)
+            """;
+
+            try (PreparedStatement audiologistTableStmt = connection.prepareStatement(upsertAudiologistTableQuery)) {
+                audiologistTableStmt.setInt(1, queueNumber);
+                audiologistTableStmt.setString(2, menuUserButton.getText());
+                audiologistTableStmt.setBoolean(3, otoscopyClear);
+                audiologistTableStmt.setBoolean(4, otoscopyEarwax);
+                audiologistTableStmt.setBoolean(5, otoscopyFurtherInvestigation);
+                audiologistTableStmt.setBoolean(6, hearing500Hz);
+                audiologistTableStmt.setBoolean(7, hearing1000Hz);
+                audiologistTableStmt.setBoolean(8, hearing2000Hz);
+                audiologistTableStmt.setBoolean(9, hearing4000Hz);
+                audiologistTableStmt.setBoolean(10, noAction);
+                audiologistTableStmt.setBoolean(11, visitEnt);
+                audiologistTableStmt.setBoolean(12, followUpEnt);
+                audiologistTableStmt.setBoolean(13, detailedHearingAssessment);
+                audiologistTableStmt.executeUpdate();
+            } catch (SQLException ex) {
+                System.out.println(ex); // Handle exception appropriately
+                Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
+                return;
+            }
+
+        // Update patientQueueTable separately if necessary
+            String updatePatientQueueTableQuery = "UPDATE patientQueueTable SET audiologistStatus = ? WHERE queueNumber = ?";
+            try (PreparedStatement patientQueueTableStmt = connection.prepareStatement(updatePatientQueueTableQuery)) {
+                patientQueueTableStmt.setString(1, audioStatus);
+                patientQueueTableStmt.setInt(2, queueNumber);
+                patientQueueTableStmt.executeUpdate();
+            } catch (SQLException ex) {
+                System.out.println(ex); // Handle exception appropriately
+                Labels.showMessageLabel(warningLabel, "Database error occurred.", false);
+                return;
+            }
+
+        // Show success message if all operations succeed
+            Labels.showMessageLabel(warningLabel, "Update successful.", true);
+
     }
 
-    public void displayPhysioNotes(int queueNumber) {
-//        String patientQuery = "SELECT physiotherapistNotes FROM physiotherapistTable WHERE queueNumber = " + queueNumber;
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery(patientQuery);
-//
-//            if (resultSet.next()) {
-//                inputPhysioNotesTextArea.setText(resultSet.getString("physiotherapistNotes"));
-//            } else {
-//                inputPhysioNotesTextArea.setText("");
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
-//            inputPhysioNotesTextArea.setText("");
-//        }
+    public void displayAudiologistFields(int queueNumber) {
+        String patientQuery = "SELECT * FROM audiologistTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                otoscopyClearCheckBox.setSelected(resultSet.getBoolean("otoscopy_clear"));
+                otoscopyEarwaxCheckBox.setSelected(resultSet.getBoolean("otoscopy_earwax"));
+                otoscopyFurtherInvCheckBox.setSelected(resultSet.getBoolean("otoscopy_further_investigation"));
+
+                frequency500CheckBox.setSelected(resultSet.getBoolean("hearing_500Hz"));
+                frequency1000CheckBox.setSelected(resultSet.getBoolean("hearing_1000Hz"));
+                frequency2000CheckBox.setSelected(resultSet.getBoolean("hearing_2000Hz"));
+                frequency4000CheckBox.setSelected(resultSet.getBoolean("hearing_4000Hz"));
+
+                rec1CheckBox.setSelected(resultSet.getBoolean("no_action"));
+                rec2CheckBox.setSelected(resultSet.getBoolean("visit_ent"));
+                rec3CheckBox.setSelected(resultSet.getBoolean("follow_up_ent"));
+                rec4CheckBox.setSelected(resultSet.getBoolean("detailed_hearing_assessment"));
+            } else {
+                clearAudiologistFields();
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearAudiologistFields();
+        }
     }
 
 
-    public void displayPhysioComplete(int queueNumber) {
-//        String patientQuery = "SELECT physiotherapistStatus FROM patientQueueTable WHERE queueNumber = " + queueNumber;
-//        try (Statement statement = connection.createStatement()) {
-//            ResultSet resultSet = statement.executeQuery(patientQuery);
-//
-//            if (resultSet.next()) {
-//                String physioStatus = resultSet.getString("physiotherapistStatus");
-//
-//                // Toggle CheckBox based on physioStatus
-//                if ("Complete".equalsIgnoreCase(physioStatus)) {
-//                    physioCompleteCheckBox.setSelected(true); // Tick the CheckBox for complete status
-//                } else {
-//                    physioCompleteCheckBox.setSelected(false); // Untick the CheckBox for incomplete or deferred status
-//                }
-//            } else {
-//                // If no result found, clear CheckBox selection
-//                physioCompleteCheckBox.setSelected(false);
-//            }
-//        } catch (SQLException ex) {
-//            // Handle SQLException, optionally show a message or log the error
-//            System.out.println(ex);
-//        }
+    public void displayAudiologistComplete(int queueNumber) {
+        String patientQuery = "SELECT audiologistStatus FROM patientQueueTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                String audioStatus = resultSet.getString("audiologistStatus");
+
+                // Toggle CheckBox based on audioStatus
+                if ("Complete".equalsIgnoreCase(audioStatus)) {
+                    audiologistCompleteCheckBox.setSelected(true); // Tick the CheckBox for complete status
+                } else {
+                    audiologistCompleteCheckBox.setSelected(false); // Untick the CheckBox for incomplete or deferred status
+                }
+            } else {
+                // If no result found, clear CheckBox selection
+                audiologistCompleteCheckBox.setSelected(false);
+            }
+        } catch (SQLException ex) {
+            // Handle SQLException, optionally show a message or log the error
+            System.out.println(ex);
+        }
     }
 
 

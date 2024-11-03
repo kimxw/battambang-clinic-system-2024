@@ -205,7 +205,7 @@
          </font>
       </Label>
       <Button fx:id="editPrescriptionButton" layoutX="909.0" layoutY="545.0" mnemonicParsing="false" onAction="#editPrescriptionButtonOnAction" text="Edit Prescription" />
-      <CheckBox fx:id="physioCompleteCheckBox" layoutX="623.0" layoutY="595.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="321.0" text="Patient has completed audiologist consultation" />
+      <CheckBox fx:id="audiologistCompleteCheckBox" layoutX="623.0" layoutY="595.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="321.0" text="Patient has completed audiologist consultation" />
       <Line endX="-100.0" endY="503.5" layoutX="402.0" layoutY="110.0" startX="-100.0" startY="24.5" stroke="#00000038" />
       <Pane fx:id="snellensPane" layoutX="332.0" layoutY="262.0" prefHeight="216.0" prefWidth="269.0">
          <children>
