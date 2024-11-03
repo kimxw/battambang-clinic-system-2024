@@ -51,8 +51,9 @@ public class PatientTableViewUpdater {
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String address = resultSet.getString("address");
+                String faceID = resultSet.getString("faceID");
 
-                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address, faceID));
             }
 
             patientTableView.setItems(patientObservableList); // Update the TableView

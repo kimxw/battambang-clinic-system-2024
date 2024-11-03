@@ -173,7 +173,7 @@ public class MenuGallery {
                 stage.setTitle("Reception");
                 stage.setScene(scene);
             } catch (Exception exc) {
-                System.out.println(exc);
+                exc.printStackTrace();
             }
         } else {
             try {

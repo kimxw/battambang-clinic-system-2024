@@ -6,6 +6,8 @@ import com.orb.battambang.util.Labels;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +49,18 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private TextArea inputAddressTextArea;
     @FXML
+    private TextField inputFaceIDTextArea;
+
+    @FXML
+    private TextField queueSearchTextField;
+    @FXML
+    private TextField nameSearchTextField;
+    @FXML
+    private TextField phoneNumberSearchTextField;
+    @FXML
+    private TextField faceIDSearchTextField;
+
+    @FXML
     private TableView<Patient> patientTableView;
     @FXML
     private TableColumn<Patient, Integer> queueNoTableColumn;
@@ -62,6 +76,8 @@ public class PatientRegistrationController implements Initializable {
     private TableColumn<Patient, String> phoneNumberTableColumn;
     @FXML
     private TableColumn<Patient, String> addressTableColumn;
+    @FXML
+    private TableColumn<Patient, String> faceIDTableColumn;
     @FXML
     private RadioButton maleRadioButton;
     @FXML
@@ -101,6 +117,7 @@ public class PatientRegistrationController implements Initializable {
     private Button menuLocationButton;
 
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
+    FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -122,8 +139,9 @@ public class PatientRegistrationController implements Initializable {
         sexTableColumn.setCellValueFactory(new PropertyValueFactory<>("sex"));
         phoneNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         addressTableColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        faceIDTableColumn.setCellValueFactory(new PropertyValueFactory<>("faceID"));
 
-        String patientViewQuery = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable;";
+        String patientViewQuery = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address, faceID FROM patientQueueTable;";
 
         try (
              Statement statement = connection.createStatement();
@@ -138,12 +156,77 @@ public class PatientRegistrationController implements Initializable {
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("PhoneNumber");
                 String address = resultSet.getString("Address");
+                String faceID = resultSet.getString("faceID");
 
-                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address, faceID));
             }
 
             // Set items to the TableView
             patientTableView.setItems(patientObservableList);
+
+            // Filter by queue number
+            queueSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(patientSearchModel -> {
+                    String searchQueue = newValue.trim();
+                    String searchName = nameSearchTextField.getText().trim().toLowerCase();
+                    String searchPhone = phoneNumberSearchTextField.getText().trim();
+                    String searchFaceID = faceIDSearchTextField.getText().trim();
+                    boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                    boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                    boolean matchFaceID = searchFaceID.isEmpty() || patientSearchModel.getFaceID().contains(searchFaceID);
+                    return matchQueue && matchName && matchPhone && matchFaceID;
+                });
+            });
+
+            // Filter by name
+            nameSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(patientSearchModel -> {
+                    String searchQueue = queueSearchTextField.getText().trim();
+                    String searchName = newValue.trim().toLowerCase();
+                    String searchPhone = phoneNumberSearchTextField.getText().trim();
+                    String searchFaceID = faceIDSearchTextField.getText().trim();
+                    boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                    boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                    boolean matchFaceID = searchFaceID.isEmpty() || patientSearchModel.getFaceID().contains(searchFaceID);
+                    return matchQueue && matchName && matchPhone && matchFaceID;
+                });
+            });
+
+            // Filter by phone number
+            phoneNumberSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(patientSearchModel -> {
+                    String searchQueue = queueSearchTextField.getText().trim();
+                    String searchName = nameSearchTextField.getText().trim().toLowerCase();
+                    String searchPhone = newValue.trim();
+                    String searchFaceID = faceIDSearchTextField.getText().trim();
+                    boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                    boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                    boolean matchFaceID = searchFaceID.isEmpty() || patientSearchModel.getFaceID().contains(searchFaceID);
+                    return matchQueue && matchName && matchPhone && matchFaceID;
+                });
+            });
+
+            // Filter by faceID
+            faceIDSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredList.setPredicate(patientSearchModel -> {
+                    String searchQueue = queueSearchTextField.getText().trim();
+                    String searchName = nameSearchTextField.getText().trim().toLowerCase();
+                    String searchPhone = phoneNumberSearchTextField.getText().trim();
+                    String searchFaceID = newValue.trim();
+                    boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                    boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                    boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                    boolean matchFaceID = searchFaceID.isEmpty() || patientSearchModel.getFaceID().contains(searchFaceID);
+                    return matchQueue && matchName && matchPhone && matchFaceID;
+                });
+            });
+
+            SortedList<Patient> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(patientTableView.comparatorProperty());
+            patientTableView.setItems(sortedList);
 
             startPolling();
 
@@ -164,7 +247,7 @@ public class PatientRegistrationController implements Initializable {
     }
 
     private void updateTableView() {
-        String query = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address FROM patientQueueTable";
+        String query = "SELECT queueNumber, name, DOB, age, sex, phoneNumber, address, faceID FROM patientQueueTable";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -179,11 +262,29 @@ public class PatientRegistrationController implements Initializable {
                 Character sex = !sexString.isEmpty() ? sexString.charAt(0) : null;
                 String phoneNumber = resultSet.getString("phoneNumber");
                 String address = resultSet.getString("address");
+                String faceID = resultSet.getString("faceID");
 
-                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address));
+                patientObservableList.add(new Patient(queueNo, name, DOB, age, sex, phoneNumber, address, faceID));
             }
 
-            patientTableView.setItems(patientObservableList); // Update the TableView
+            // Ensure the filter and sort are re-applied
+
+            filteredList.setPredicate(patientSearchModel -> {
+                String searchQueue = queueSearchTextField.getText().trim();
+                String searchName = nameSearchTextField.getText().trim().toLowerCase();
+                String searchPhone = phoneNumberSearchTextField.getText().trim();
+                String searchFaceID = faceIDSearchTextField.getText().trim();
+                boolean matchQueue = searchQueue.isEmpty() || patientSearchModel.getQueueNo().toString().contains(searchQueue);
+                boolean matchName = searchName.isEmpty() || patientSearchModel.getName().toLowerCase().contains(searchName);
+                boolean matchPhone = searchPhone.isEmpty() || patientSearchModel.getPhoneNumber().contains(searchPhone);
+                boolean matchFaceID = searchFaceID.isEmpty() || patientSearchModel.getFaceID().contains(searchFaceID);
+                return matchQueue && matchName && matchPhone && matchFaceID;
+            });
+
+            SortedList<Patient> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(patientTableView.comparatorProperty());
+
+            patientTableView.setItems(sortedList); // Update the TableView
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -215,10 +316,11 @@ public class PatientRegistrationController implements Initializable {
         }
         Character inputSex = maleRadioButton.isSelected() ? Character.valueOf('M') : (femaleRadioButton.isSelected() ? 'F' : null); //interesting boxing phenomenon for ternery operator
         String inputAddress = inputAddressTextArea.getText();
+        String inputFaceID = inputFaceIDTextArea.getText() ;
 
         if (isEditOperation && selectedPatientForEdit != null) {
             // Update the existing patient record
-            String updateQuery = "UPDATE patientQueueTable SET name = ?, DOB = ?, age = ?, sex = ?, phoneNumber = ?, address = ? WHERE queueNumber = ?";
+            String updateQuery = "UPDATE patientQueueTable SET name = ?, DOB = ?, age = ?, sex = ?, phoneNumber = ?, address = ?, faceID = ? WHERE queueNumber = ?";
             try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
                 statement.setString(1, inputName);
                 statement.setString(2, inputDOB);
@@ -226,7 +328,8 @@ public class PatientRegistrationController implements Initializable {
                 statement.setString(4, String.valueOf(inputSex));
                 statement.setString(5, inputPhoneNumber);
                 statement.setString(6, inputAddress);
-                statement.setInt(7, selectedPatientForEdit.getQueueNo());
+                statement.setString(7, inputFaceID);
+                statement.setInt(8, selectedPatientForEdit.getQueueNo());
 
                 int affectedRows = statement.executeUpdate();
                 if (affectedRows == 1) {
@@ -242,7 +345,7 @@ public class PatientRegistrationController implements Initializable {
             }
         } else {
             // Existing code to add a new patient
-            String insertFields = "INSERT INTO patientQueueTable(name, DOB, age, sex, phoneNumber, address, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertFields = "INSERT INTO patientQueueTable(name, DOB, age, sex, phoneNumber, address, faceID, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(insertFields, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, inputName);
                 statement.setString(2, inputDOB);
@@ -250,12 +353,13 @@ public class PatientRegistrationController implements Initializable {
                 statement.setString(4, String.valueOf(inputSex));
                 statement.setString(5, inputPhoneNumber);
                 statement.setString(6, inputAddress);
-                statement.setString(7, "Incomplete");
+                statement.setString(7, inputFaceID);
                 statement.setString(8, "Incomplete");
                 statement.setString(9, "Incomplete");
                 statement.setString(10, "Incomplete");
                 statement.setString(11, "Incomplete");
                 statement.setString(12, "Incomplete");
+                statement.setString(13, "Incomplete");
                 //educationStatus is by default incomplete so no need to add here
 
                 int affectedRows = statement.executeUpdate();
@@ -267,7 +371,7 @@ public class PatientRegistrationController implements Initializable {
                         Labels.showMessageLabel(messageLabel1, "Patient added successfully.", true);
 
                         // Add the new patient to the ObservableList
-                        patientObservableList.add(new Patient(queueNo, inputName, inputDOB, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress));
+                        patientObservableList.add(new Patient(queueNo, inputName, inputDOB, Integer.parseInt(inputAge), inputSex, inputPhoneNumber, inputAddress, inputFaceID));
 
                         // Also add the new patient to the triageWaitingTable
                         String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber, name) VALUES (?, ?);";
@@ -289,6 +393,7 @@ public class PatientRegistrationController implements Initializable {
 
                 clearInputFields();
             } catch (Exception exc) {
+                exc.printStackTrace();
                 Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
             }
         }
@@ -303,14 +408,14 @@ public class PatientRegistrationController implements Initializable {
         maleRadioButton.setSelected(false);
         femaleRadioButton.setSelected(false);
         inputAddressTextArea.setText("");
+        inputFaceIDTextArea.setText("");
     }
 
 
-
-    @FXML
-    public void filterButtonOnAction(ActionEvent e) {
-        loadFXML("patient-filter.fxml", e);
-    }
+//    @FXML
+//    public void filterButtonOnAction(ActionEvent e) {
+//        loadFXML("patient-filter.fxml", e);
+//    }
 
     @FXML
     public void editButtonOnAction(ActionEvent e) {
@@ -337,6 +442,7 @@ public class PatientRegistrationController implements Initializable {
                 femaleRadioButton.setSelected(false);
             }
             inputAddressTextArea.setText(selectedPatientForEdit.getAddress());
+            inputFaceIDTextArea.setText(selectedPatientForEdit.getFaceID());
             isEditOperation = true;
         } else {
             Labels.showMessageLabel(messageLabel1, "Please select a row.", false);
@@ -398,6 +504,74 @@ public class PatientRegistrationController implements Initializable {
         } catch (Exception exc) {
             Labels.showMessageLabel(messageLabel1, "Unable to load page.", false);
         }
+    }
+
+    @FXML
+    public void newQueueNumberForExistingOnAction(ActionEvent e) {
+        Patient selectedItem = patientTableView.getSelectionModel().getSelectedItem();
+        String inputName = selectedItem.getName();
+        String inputDOB = selectedItem.getDOB();
+        Integer inputAge = selectedItem.getAge();
+        String inputPhoneNumber = selectedItem.getPhoneNumber();
+        if (inputPhoneNumber == null) {
+            inputPhoneNumber = "";
+        }
+        Character inputSex = selectedItem.getSex();
+        String inputAddress = selectedItem.getAddress();
+        String inputFaceID = selectedItem.getFaceID() ;
+
+        String insertFields = "INSERT INTO patientQueueTable(name, DOB, age, sex, phoneNumber, address, faceID, bmiStatus, snellensStatus, hearingStatus, liceStatus, dentalStatus, historyStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(insertFields, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, inputName);
+            statement.setString(2, inputDOB);
+            statement.setInt(3, inputAge);
+            statement.setString(4, String.valueOf(inputSex));
+            statement.setString(5, inputPhoneNumber);
+            statement.setString(6, inputAddress);
+            statement.setString(7, inputFaceID);
+            statement.setString(8, "Incomplete");
+            statement.setString(9, "Incomplete");
+            statement.setString(10, "Incomplete");
+            statement.setString(11, "Incomplete");
+            statement.setString(12, "Incomplete");
+            statement.setString(13, "Incomplete");
+            //educationStatus is by default incomplete so no need to add here
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 1) {
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int queueNo = generatedKeys.getInt(1);
+                    Labels.showMessageLabel(messageLabel1, "Patient added successfully.", true);
+
+                    // Add the new patient to the ObservableList
+                    patientObservableList.add(new Patient(queueNo, inputName, inputDOB, inputAge, inputSex, inputPhoneNumber, inputAddress, inputFaceID));
+
+                    // Also add the new patient to the triageWaitingTable
+                    String updateWaitingQueue = "INSERT INTO triageWaitingTable (queueNumber, name) VALUES (?, ?);";
+                    try (PreparedStatement queueUpdateStatement = connection.prepareStatement(updateWaitingQueue)) {
+                        queueUpdateStatement.setInt(1, queueNo);
+                        queueUpdateStatement.setString(2, inputName);
+                        queueUpdateStatement.executeUpdate();
+                    }
+
+                    // Create tags for the patient
+                    String createTags = "INSERT INTO patientTagTable (queueNumber, tag_T, tag_O, tag_H, tag_P, tag_S) VALUES (?, FALSE, FALSE, FALSE, FALSE, FALSE);";
+                    try (PreparedStatement createTagsStatement = connection.prepareStatement(createTags)) {
+                        createTagsStatement.setInt(1, queueNo);
+                        createTagsStatement.executeUpdate(); // Execute the query to insert the tags
+                    }
+                }
+            }
+
+
+            clearInputFields();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            Labels.showMessageLabel(messageLabel1, "Invalid fields.", false);
+        }
+
     }
 
 

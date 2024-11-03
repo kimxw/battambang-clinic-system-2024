@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+/*
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +29,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
+*/
 
-public class PatientFilterController implements Initializable{
+public class PatientFilterController{
 
+    /*
     @FXML
     private Label messageLabel2;
     @FXML
@@ -261,5 +264,7 @@ public class PatientFilterController implements Initializable{
             System.out.println(e);
         }
     }
+
+     */
 
 }
