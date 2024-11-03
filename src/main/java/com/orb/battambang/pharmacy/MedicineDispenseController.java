@@ -110,6 +110,8 @@ public class MedicineDispenseController implements Initializable {
     @FXML
     private Button menuPhysiotherapistButton;
     @FXML
+    private Button menuAudiologistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -128,8 +130,8 @@ public class MedicineDispenseController implements Initializable {
         //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
-                menuUserButton, menuLocationButton);
+                menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
 
         MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "pharmacyWaitingTable");
         MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "pharmacyProgressTable");
