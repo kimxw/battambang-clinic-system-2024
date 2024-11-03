@@ -192,14 +192,14 @@ public class PhysiotherapistController extends SpecialistController implements I
     }
 
 
-    private void clearConsultFields() {
+    private void clearPhysioFields() {
         inputPhysioNotesTextArea.setText("");
         physioCompleteCheckBox.setSelected(false);
     }
 
     protected void clearAllFields() {
         super.clearAllFields();
-        clearConsultFields();
+        clearPhysioFields();
     }
 
     @FXML

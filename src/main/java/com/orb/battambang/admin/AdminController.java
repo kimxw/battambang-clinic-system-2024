@@ -54,6 +54,8 @@ public class AdminController implements Initializable {
     @FXML
     private Button menuPhysiotherapistButton;
     @FXML
+    private Button menuAudiologistButton;
+    @FXML
     private Button menuPharmacyButton;
     @FXML
     private Button menuQueueManagerButton;
@@ -129,8 +131,8 @@ public class AdminController implements Initializable {
 
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPhysiotherapistButton, menuPharmacyButton, menuQueueManagerButton, menuAdminButton, menuLogoutButton,
-                menuUserButton, menuLocationButton);
+                menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
 
         initializeTableColumns();
         initializeStaffList();
@@ -502,9 +504,9 @@ public class AdminController implements Initializable {
                             String SR = escapeCsv(resultSet.getString("SR"));
 
                             String consultationNotes = escapeCsv(resultSet.getString("consultationNotes"));
-                            String prescription = escapeCsv(resultSet.getString("prescription"));
+                            String prescription = ""; //escapeCsv(resultSet.getString("prescription")); //TODO
                             boolean referralStatus = resultSet.getBoolean("referralStatus");
-                            String condition = escapeCsv(resultSet.getString("condition"));
+                            String conditionType = escapeCsv(resultSet.getString("conditionType"));
                             String referral = escapeCsv(resultSet.getString("referral"));
                             //Write data to CSV
                             printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%f,%f,%f,%s,%s,%s,%s,%s,%b,%b,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
@@ -513,7 +515,7 @@ public class AdminController implements Initializable {
                                     doctorConsultStatus, pharmacyStatus, height, weight, bmi, bmiCategory, wpRight,
                                     wpLeft, npRight, npLeft, hearingProblems, headLice, bodySystem, PS, duration,
                                     drugAllergies, HPI, DH, PH, SH, FH, SR, consultationNotes, prescription, referralStatus,
-                                    condition, referral);
+                                    conditionType, referral);
 
                         }
                     }
