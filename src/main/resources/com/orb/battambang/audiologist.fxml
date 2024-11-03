@@ -590,5 +590,11 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <ImageView fitHeight="35.0" fitWidth="31.0" layoutX="625.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/warning-yellow.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="659.0" layoutY="540.0" prefHeight="35.0" prefWidth="233.0" text="Caution: This is a draft prescription.            To save to patient records, click on 'Update'" wrapText="true" />
    </children>
 </Pane>

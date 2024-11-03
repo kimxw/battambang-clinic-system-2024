@@ -466,6 +466,10 @@ public class PatientRegistrationController implements Initializable {
                 String deleteEPQuery = "DELETE FROM educationProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deleteDWQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deleteDPQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePhWQuery = "DELETE FROM physioWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePhPQuery = "DELETE FROM physioProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteAWQuery = "DELETE FROM audioWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteAPQuery = "DELETE FROM audioProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deletePWQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deletePPQuery = "DELETE FROM pharmacyProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 try (Statement deleteStatement = connection.createStatement()) {
@@ -475,6 +479,10 @@ public class PatientRegistrationController implements Initializable {
                     deleteStatement.executeUpdate(deleteEPQuery);
                     deleteStatement.executeUpdate(deleteDWQuery);
                     deleteStatement.executeUpdate(deleteDPQuery);
+                    deleteStatement.executeUpdate(deletePhWQuery);
+                    deleteStatement.executeUpdate(deletePhPQuery);
+                    deleteStatement.executeUpdate(deleteAWQuery);
+                    deleteStatement.executeUpdate(deleteAPQuery);
                     deleteStatement.executeUpdate(deletePWQuery);
                     deleteStatement.executeUpdate(deletePPQuery);
                 }
