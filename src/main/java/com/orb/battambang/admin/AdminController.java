@@ -434,29 +434,44 @@ public class AdminController implements Initializable {
                      PrintWriter printWriter = new PrintWriter(fileWriter)) {
 
                     // Write header for CSV
-                    printWriter.println("queueNumber,name,DOB,age,sex,phoneNumber,address,bmiStatus,snellensStatus,hearingStatus,liceStatus,dentalStatus,historyStatus,educationStatus,doctorConsultStatus,pharmacyStatus,height,weight,bmi,bmiCategory,wpRight,wpLeft,npRight,npLeft,hearingProblems,headLice,bodySystem,PS,duration,drugAllergies,HPI,DH,PH,SH,FH,SR,consultationNotes,prescription,referralStatus,condition,referral");
+                    printWriter.println("queueNumber,name,DOB,age,sex,phoneNumber,address,faceID," +
+                            "bmiStatus,snellensStatus,hearingStatus,liceStatus,dentalStatus,historyStatus," +
+                            "educationStatus,doctorConsultStatus,pharmacyStatus,height,weight,bmi,bmiCategory," +
+                            "wpRight,wpLeft,npRight,npLeft,hearingProblems,headLice," +
+                            "bodySystem,PS,duration,drugAllergies,HPI,DH,PH,SH,FH,SR," +
+                            "consultationNotes,prescription,referralStatus,conditionType,referral" +
+                            "physiotherapistNotes, otoscopy_clear, otoscopy_earwax, otoscopy_further_investigation," +
+                            "hearing_500Hz, hearing_1000Hz, hearing_2000Hz, hearing_4000Hz," +
+                            "no_action, visit_ent, follow_up_ent, detailed_hearing_assessment");
 
                     // Execute SQL query with joins
                     String query = """
-                                    SELECT \s
-                                    pq.queueNumber AS queueNumber, pq.name, pq.DOB, pq.age, pq.sex, pq.phoneNumber, pq.address,\s
-                                    pq.bmiStatus, pq.snellensStatus, pq.hearingStatus, pq.liceStatus, pq.dentalStatus, pq.historyStatus,\s
-                                    pq.educationStatus, pq.doctorConsultStatus, pq.pharmacyStatus, \s
-                                    hwt.height, hwt.weight, hwt.bmi, hwt.bmiCategory, \s
-                                    st.wpRight, st.wpLeft, st.npRight, st.npLeft, \s
-                                    ht.hearingProblems, \s
-                                    hl.headLice, \s
-                                    ht_history.bodySystem, ht_history.PS, ht_history.duration, ht_history.drugAllergies, ht_history.HPI,\s
-                                    ht_history.DH, ht_history.PH, ht_history.SH, ht_history.FH, ht_history.SR,\s
-                                    dc.consultationNotes, dc.prescription, dc.referralStatus, dc.condition, dc.referral\s
+                                    SELECT 
+                                    pq.queueNumber AS queueNumber, pq.name, pq.DOB, pq.age, pq.sex, pq.phoneNumber, pq.address, pq.faceID,
+                                    pq.bmiStatus, pq.snellensStatus, pq.hearingStatus, pq.liceStatus, pq.dentalStatus, pq.historyStatus,
+                                    pq.educationStatus, pq.doctorConsultStatus, pq.pharmacyStatus, 
+                                    hwt.height, hwt.weight, hwt.bmi, hwt.bmiCategory, 
+                                    st.wpRight, st.wpLeft, st.npRight, st.npLeft, 
+                                    ht.hearingProblems, 
+                                    hl.headLice, 
+                                    ht_history.bodySystem, ht_history.PS, ht_history.duration, ht_history.drugAllergies, ht_history.HPI,
+                                    ht_history.DH, ht_history.PH, ht_history.SH, ht_history.FH, ht_history.SR,
+                                    dc.consultationNotes, dc.prescription, dc.referralStatus, dc.conditionType, dc.referral,
+                                    pt.physiotherapistNotes,
+                                    ad.otoscopy_clear, ad.otoscopy_earwax, ad.otoscopy_further_investigation,
+                                    ad.hearing_500Hz, ad.hearing_1000Hz, ad.hearing_2000Hz, ad.hearing_4000Hz,
+                                    ad.no_action, ad.visit_ent, ad.follow_up_ent, ad.detailed_hearing_assessment 
                                 FROM patientQueueTable pq
-                                LEFT JOIN heightAndWeightTable hwt ON pq.queueNumber = hwt.queueNumber\s
-                                LEFT JOIN snellensTestTable st ON pq.queueNumber = st.queueNumber\s
-                                LEFT JOIN hearingTestTable ht ON pq.queueNumber = ht.queueNumber\s
-                                LEFT JOIN headLiceTable hl ON pq.queueNumber = hl.queueNumber\s
-                                LEFT JOIN historyTable ht_history ON pq.queueNumber = ht_history.queueNumber\s
-                                LEFT JOIN doctorConsultTable dc ON pq.queueNumber = dc.queueNumber;
-                            """;
+                                LEFT JOIN heightAndWeightTable hwt ON pq.queueNumber = hwt.queueNumber
+                                LEFT JOIN snellensTestTable st ON pq.queueNumber = st.queueNumber
+                                LEFT JOIN hearingTestTable ht ON pq.queueNumber = ht.queueNumber
+                                LEFT JOIN headLiceTable hl ON pq.queueNumber = hl.queueNumber
+                                LEFT JOIN historyTable ht_history ON pq.queueNumber = ht_history.queueNumber
+                                LEFT JOIN doctorConsultTable dc ON pq.queueNumber = dc.queueNumber
+                                LEFT JOIN physiotherapistTable pt ON pq.queueNumber = pt.queueNumber
+                                LEFT JOIN audiologistTable ad ON pq.queueNumber = ad.queueNumber
+                                """;
+
 
                     try (Statement statement = DatabaseConnection.connection.createStatement();
                          ResultSet resultSet = statement.executeQuery(query)) {
@@ -469,6 +484,7 @@ public class AdminController implements Initializable {
                             String sex = escapeCsv(resultSet.getString("sex"));
                             String phoneNumber = escapeCsv(resultSet.getString("phoneNumber"));
                             String address = escapeCsv(resultSet.getString("address"));
+                            String faceID = escapeCsv(resultSet.getString("faceID"));
                             String bmiStatus = escapeCsv(resultSet.getString("bmiStatus"));
                             String snellensStatus = escapeCsv(resultSet.getString("snellensStatus"));
                             String hearingStatus = escapeCsv(resultSet.getString("hearingStatus"));
@@ -508,14 +524,38 @@ public class AdminController implements Initializable {
                             boolean referralStatus = resultSet.getBoolean("referralStatus");
                             String conditionType = escapeCsv(resultSet.getString("conditionType"));
                             String referral = escapeCsv(resultSet.getString("referral"));
+
+                            String physioNotes = escapeCsv(resultSet.getString("physiotherapistNotes"));
+                            boolean otoscopy_clear = resultSet.getBoolean("otoscopy_clear");
+                            boolean otoscopy_earwax = resultSet.getBoolean("otoscopy_earwax");
+                            boolean otoscopy_further_investigation = resultSet.getBoolean("otoscopy_further_investigation");
+                            boolean hearing_500Hz = resultSet.getBoolean("hearing_500Hz");
+                            boolean hearing_1000Hz = resultSet.getBoolean("hearing_1000Hz");
+                            boolean hearing_2000Hz = resultSet.getBoolean("hearing_2000Hz");
+                            boolean hearing_4000Hz = resultSet.getBoolean("hearing_4000Hz");
+                            boolean no_action = resultSet.getBoolean("no_action");
+                            boolean visit_ent = resultSet.getBoolean("visit_ent");
+                            boolean follow_up_ent = resultSet.getBoolean("follow_up_ent");
+                            boolean detailed_hearing_assessment = resultSet.getBoolean("detailed_hearing_assessment");
                             //Write data to CSV
-                            printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%f,%f,%f,%s,%s,%s,%s,%s,%b,%b,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
-                                    queueNumber, name, dob, age, sex, phoneNumber, address, bmiStatus, snellensStatus,
+                            printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s,%s,%s," +
+                                            "%s,%s,%s,%s,%s," +
+                                            "%s,%s,%f,%f,%f,%s,%s," +
+                                            "%s,%s,%s,%b,%b,%s,%s,%s," +
+                                            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," +
+                                            "%s,%s,%s," +
+                                            "%b,%b,%b," +
+                                            "%b,%b,%b,%b" +
+                                            "%b,%b,%b,%b%n",
+                                    queueNumber, name, dob, age, sex, phoneNumber, address, faceID, bmiStatus, snellensStatus,
                                     hearingStatus, liceStatus, dentalStatus, historyStatus, educationStatus,
                                     doctorConsultStatus, pharmacyStatus, height, weight, bmi, bmiCategory, wpRight,
                                     wpLeft, npRight, npLeft, hearingProblems, headLice, bodySystem, PS, duration,
                                     drugAllergies, HPI, DH, PH, SH, FH, SR, consultationNotes, prescription, referralStatus,
-                                    conditionType, referral);
+                                    conditionType, referral, physioNotes,
+                                    otoscopy_clear, otoscopy_earwax, otoscopy_further_investigation,
+                                    hearing_500Hz, hearing_1000Hz, hearing_2000Hz, hearing_4000Hz,
+                                    no_action, visit_ent, follow_up_ent, detailed_hearing_assessment);
 
                         }
                     }

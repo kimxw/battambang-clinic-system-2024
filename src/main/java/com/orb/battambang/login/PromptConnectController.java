@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +51,10 @@ public class PromptConnectController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();
             Scene scene = new Scene(fxmlLoader.load(), 520, 400);
+
+            Image logo = new Image(getClass().getResourceAsStream("/icons/logo.png"));
+            newUserStage.getIcons().add(logo);
+
             newUserStage.setResizable(false);
             newUserStage.setTitle("Login");
             newUserStage.setScene(scene);
