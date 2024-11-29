@@ -16,10 +16,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.CheckupMenuController">
    <children>
-      <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
-         <font>
-            <Font size="11.0" />
-         </font></Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="524.0" layoutX="18.0" layoutY="118.0" stroke="#ebebeb00" strokeType="INSIDE" width="340.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="471.0" layoutX="32.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
       <Label layoutX="37.0" layoutY="131.0" text="Select Patient :">
@@ -28,32 +24,46 @@
          </font>
       </Label>
       <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
-      <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button fx:id="hearingTestButton" layoutX="570.0" layoutY="118.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button fx:id="headLiceButton" layoutX="668.0" layoutY="118.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
       <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-      <Button fx:id="dentalButton" layoutX="766.0" layoutY="118.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Dental">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button fx:id="historyButton" layoutX="864.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="History">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
+      <Pane fx:id="tabPane" layoutX="373.0" layoutY="119.0" prefHeight="31.0" prefWidth="595.0">
+         <children>
+            <Button fx:id="heightAndWeightButton" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="vitalSignsButton" layoutX="91.0" mnemonicParsing="false" onAction="#vitalSignsButtonOnAction" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #ebebeb;" text="Vitals Signs">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="snellensTestButton" layoutX="167.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="hearingTestButton" layoutX="252.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="headLiceButton" layoutX="337.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #ebebeb;" text="Developmental Checks" textOverrun="CENTER_WORD_ELLIPSIS">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="historyButton" layoutX="471.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #ebebeb;" text="History">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="dentalButton" layoutX="548.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="41.0" style="-fx-background-color: #ebebeb;" text="HEF">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
       <Label fx:id="queueSelectLabel" layoutX="146.0" layoutY="101.0" prefHeight="17.0" prefWidth="140.0" />
       <Pane fx:id="fixedPane" layoutX="63.0" layoutY="172.0" prefHeight="386.0" prefWidth="125.0">
          <children>

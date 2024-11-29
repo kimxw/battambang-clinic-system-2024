@@ -318,6 +318,11 @@ public class CheckupMenuController implements Initializable {
     }
 
     @FXML
+    public void vitalSignsButtonOnAction(ActionEvent e) {
+        loadFXML("height-and-weight.fxml", e);
+    }
+
+    @FXML
     public void snellensTestButtonOnAction(ActionEvent e) {
         loadFXML("snellens-test.fxml", e);
     }
