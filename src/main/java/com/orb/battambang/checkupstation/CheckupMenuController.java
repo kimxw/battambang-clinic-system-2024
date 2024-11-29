@@ -334,7 +334,7 @@ public class CheckupMenuController implements Initializable {
 
     @FXML
     public void headLiceButtonOnAction(ActionEvent e) {
-        loadFXML("head-lice.fxml", e);
+        loadFXML("developmental-checks.fxml", e);
     }
 
     @FXML
