@@ -40,23 +40,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     private Label sexLabel;
     @FXML
     private Label phoneNumberLabel;
-    @FXML
-    private Label status1Label;
-    @FXML
-    private Label status2Label;
-    @FXML
-    private Label status3Label;
-    @FXML
-    private Label status6Label;
-    @FXML
-    private Rectangle status1Rectangle;
-    @FXML
-    private Rectangle status2Rectangle;
-    @FXML
-    private Rectangle status3Rectangle;
-    @FXML
-    private Rectangle status6Rectangle;
-
 
     @FXML
     private Rectangle TtagRectangle;
