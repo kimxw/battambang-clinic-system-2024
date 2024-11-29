@@ -69,5 +69,14 @@ public class DatabaseConnection {
         }
     }
 
+    public static boolean isAlive() {
+        try {
+            return DatabaseConnection.connection.isValid(20);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

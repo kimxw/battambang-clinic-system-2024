@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -124,6 +125,11 @@ public class MedicineDispenseController implements Initializable {
     @FXML
     private Button menuLocationButton;
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -131,8 +137,7 @@ public class MedicineDispenseController implements Initializable {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
-
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
         MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "pharmacyWaitingTable");
         MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "pharmacyProgressTable");
 

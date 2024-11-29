@@ -354,7 +354,7 @@
             <ToggleButton fx:id="hearingToggleButton" layoutX="175.0" layoutY="21.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
             <ToggleButton fx:id="socialToggleButton" layoutX="4.0" layoutY="50.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
             <ToggleButton fx:id="physioToggleButton" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
-            <ToggleButton fx:id="tbToggleButton" layoutX="4.0" layoutY="21.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tubercolosis" />
+            <ToggleButton fx:id="tbToggleButton" layoutX="4.0" layoutY="21.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tuberculosis" />
             <ToggleButton fx:id="optometryToggleButton" layoutX="93.0" layoutY="21.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
             <Label layoutX="4.0" layoutY="-5.0" prefHeight="19.0" prefWidth="82.0" text="Tags">
                <font>
@@ -579,15 +579,32 @@
             </HBox>
          </children>
       </AnchorPane>
-      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="185.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="446.0" prefWidth="404.0">
-         <children>
-            <ImageView fitHeight="35.0" fitWidth="31.0" layoutX="9.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../icons/warning-yellow.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="43.0" layoutY="309.0" prefHeight="35.0" prefWidth="233.0" text="Caution: This is a draft prescription.            To save to patient records, click on 'Update'" wrapText="true" />
-         </children></Pane>
+      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="185.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="446.0" prefWidth="404.0" />
       <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="612.0" layoutY="625.0" prefHeight="17.0" prefWidth="398.0" text="." />
+      <Label fx:id="connectionStatus" layoutX="720.0" layoutY="3.0" prefHeight="60.0" prefWidth="114.0" text="Disconnected" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="connectionImageView" fitHeight="21.0" fitWidth="15.0" layoutX="690.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+         <image>
+            <Image url="@../../../icons/cross.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="35.0" fitWidth="31.0" layoutX="625.0" layoutY="495.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/warning-yellow.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="659.0" layoutY="490.0" prefHeight="19.0" prefWidth="233.0" text="Caution: This is a draft prescription." wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label layoutX="659.0" layoutY="503.0" prefHeight="19.0" prefWidth="233.0" text="To save to patient records, click on 'Update'" wrapText="true">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

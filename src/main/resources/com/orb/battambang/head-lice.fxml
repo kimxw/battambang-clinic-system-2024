@@ -224,7 +224,7 @@
             <ToggleButton fx:id="hearingToggleButton" layoutX="213.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
             <ToggleButton fx:id="socialToggleButton" layoutX="44.0" layoutY="427.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
             <ToggleButton fx:id="physioToggleButton" layoutX="139.0" layoutY="427.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
-            <ToggleButton fx:id="tbToggleButton" layoutX="44.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tubercolosis" />
+            <ToggleButton fx:id="tbToggleButton" layoutX="44.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tuberculosis" />
             <ToggleButton fx:id="optometryToggleButton" layoutX="132.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
          </children>
       </Pane>
@@ -419,5 +419,15 @@
          </children>
       </AnchorPane>
       <Pane fx:id="editBlockPane" layoutX="398.0" layoutY="167.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="431.0" prefWidth="543.0" />
+      <Label fx:id="connectionStatus" layoutX="720.0" layoutY="3.0" prefHeight="60.0" prefWidth="114.0" text="Disconnected" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="connectionImageView" fitHeight="21.0" fitWidth="15.0" layoutX="690.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+         <image>
+            <Image url="@../../../icons/cross.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

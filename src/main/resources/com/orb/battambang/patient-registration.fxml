@@ -296,5 +296,15 @@
          </children>
       </AnchorPane>
       <Button layoutX="420.0" layoutY="110.0" mnemonicParsing="false" onAction="#newQueueNumberForExistingOnAction" prefHeight="21.0" prefWidth="280.0" stylesheets="@button-style.css" text="Create New Queue Number For Selected Patient" />
+      <Label fx:id="connectionStatus" layoutX="720.0" layoutY="3.0" prefHeight="60.0" prefWidth="114.0" text="Disconnected" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="connectionImageView" fitHeight="21.0" fitWidth="15.0" layoutX="690.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+         <image>
+            <Image url="@../../../icons/cross.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

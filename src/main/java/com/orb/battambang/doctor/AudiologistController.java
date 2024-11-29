@@ -205,6 +205,8 @@ public class AudiologistController extends SpecialistController implements Initi
                 return;
             }
 
+        super.updateButtonOnAction(e); //update prescriptions + whatever else parent constructor takes care of
+
         // Show success message if all operations succeed
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
 

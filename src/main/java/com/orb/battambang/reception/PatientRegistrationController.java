@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.time.LocalDate;
@@ -116,15 +117,21 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private Button menuLocationButton;
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
     FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         // Create a ToggleGroup
         ToggleGroup group = new ToggleGroup();

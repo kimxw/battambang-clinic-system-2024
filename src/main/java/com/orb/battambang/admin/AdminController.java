@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -124,6 +125,11 @@ public class AdminController implements Initializable {
 
     private final String[] roles = {"Admin", "Reception", "Triage", "Education", "Consultation", "Pharmacy"};
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -132,7 +138,7 @@ public class AdminController implements Initializable {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         initializeTableColumns();
         initializeStaffList();
@@ -456,11 +462,12 @@ public class AdminController implements Initializable {
                                     hl.headLice, 
                                     ht_history.bodySystem, ht_history.PS, ht_history.duration, ht_history.drugAllergies, ht_history.HPI,
                                     ht_history.DH, ht_history.PH, ht_history.SH, ht_history.FH, ht_history.SR,
-                                    dc.consultationNotes, dc.prescription, dc.referralStatus, dc.conditionType, dc.referral,
+                                    dc.consultationNotes, dc.referralStatus, dc.conditionType, dc.referral,
                                     pt.physiotherapistNotes,
                                     ad.otoscopy_clear, ad.otoscopy_earwax, ad.otoscopy_further_investigation,
                                     ad.hearing_500Hz, ad.hearing_1000Hz, ad.hearing_2000Hz, ad.hearing_4000Hz,
-                                    ad.no_action, ad.visit_ent, ad.follow_up_ent, ad.detailed_hearing_assessment 
+                                    ad.no_action, ad.visit_ent, ad.follow_up_ent, ad.detailed_hearing_assessment,
+                                    pp.prescription 
                                 FROM patientQueueTable pq
                                 LEFT JOIN heightAndWeightTable hwt ON pq.queueNumber = hwt.queueNumber
                                 LEFT JOIN snellensTestTable st ON pq.queueNumber = st.queueNumber
@@ -470,6 +477,7 @@ public class AdminController implements Initializable {
                                 LEFT JOIN doctorConsultTable dc ON pq.queueNumber = dc.queueNumber
                                 LEFT JOIN physiotherapistTable pt ON pq.queueNumber = pt.queueNumber
                                 LEFT JOIN audiologistTable ad ON pq.queueNumber = ad.queueNumber
+                                LEFT JOIN patientPrescriptionTable pp ON pq.queueNumber = pp.queueNumber
                                 """;
 
 
@@ -520,7 +528,6 @@ public class AdminController implements Initializable {
                             String SR = escapeCsv(resultSet.getString("SR"));
 
                             String consultationNotes = escapeCsv(resultSet.getString("consultationNotes"));
-                            String prescription = ""; //escapeCsv(resultSet.getString("prescription")); //TODO
                             boolean referralStatus = resultSet.getBoolean("referralStatus");
                             String conditionType = escapeCsv(resultSet.getString("conditionType"));
                             String referral = escapeCsv(resultSet.getString("referral"));
@@ -537,6 +544,8 @@ public class AdminController implements Initializable {
                             boolean visit_ent = resultSet.getBoolean("visit_ent");
                             boolean follow_up_ent = resultSet.getBoolean("follow_up_ent");
                             boolean detailed_hearing_assessment = resultSet.getBoolean("detailed_hearing_assessment");
+                            String prescription = escapeCsv(resultSet.getString("prescription"));
+
                             //Write data to CSV
                             printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s,%s,%s," +
                                             "%s,%s,%s,%s,%s," +
@@ -545,7 +554,7 @@ public class AdminController implements Initializable {
                                             "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," +
                                             "%s,%s,%s," +
                                             "%b,%b,%b," +
-                                            "%b,%b,%b,%b" +
+                                            "%b,%b,%b,%b," +
                                             "%b,%b,%b,%b%n",
                                     queueNumber, name, dob, age, sex, phoneNumber, address, faceID, bmiStatus, snellensStatus,
                                     hearingStatus, liceStatus, dentalStatus, historyStatus, educationStatus,

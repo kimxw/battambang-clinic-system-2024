@@ -2,10 +2,12 @@ package com.orb.battambang.util;
 
 import com.orb.battambang.MainApp;
 import com.orb.battambang.connection.AuthDatabaseConnection;
+import com.orb.battambang.connection.DatabaseConnection;
 import com.orb.battambang.login.NewLoginPageController;
 
 import com.orb.battambang.login.Staff;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +16,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MenuGallery {
 
@@ -37,7 +45,61 @@ public class MenuGallery {
     private final Button userButton;
     private final Button locationButton;
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
+    public final Image CONNECTED = new Image(MainApp.class.getResource("/icons/tick.png").toExternalForm());
+    public final Image DISCONNECTED = new Image(MainApp.class.getResource("/icons/cross.png").toExternalForm());
+
+    private ScheduledExecutorService scheduler;
+
     private Staff staff;
+
+    public MenuGallery(
+            AnchorPane sliderAnchorPane,
+            Label menuLabel,
+            Label menuBackLabel,
+            Button homeButton,
+            Button receptionButton,
+            Button triageButton,
+            Button educationButton,
+            Button consultationButton,
+            Button physiotherapistButton,
+            Button audiologistButton,
+            Button pharmacyButton,
+            Button queueManagerButton,
+            Button adminButton,
+            Button logoutButton,
+            Button userButton,
+            Button locationButton,
+            ImageView connectionImageView,
+            Label connectionStatus) {
+
+        this.sliderAnchorPane = sliderAnchorPane;
+        this.menuLabel = menuLabel;
+        this.menuBackLabel = menuBackLabel;
+        this.homeButton = homeButton;
+        this.receptionButton = receptionButton;
+        this.triageButton = triageButton;
+        this.educationButton = educationButton;
+        this.consultationButton = consultationButton;
+        this.physiotherapistButton = physiotherapistButton;
+        this.audiologistButton = audiologistButton;
+        this.pharmacyButton = pharmacyButton;
+        this.queueManagerButton = queueManagerButton;
+        this.adminButton = adminButton;
+        this.logoutButton = logoutButton;
+        this.userButton = userButton;
+        this.locationButton = locationButton;
+        this.staff = NewLoginPageController.getStaffDetails();
+        this.connectionImageView = connectionImageView;
+        this.connectionStatus = connectionStatus;
+
+        setUpMenu();
+
+    }
 
     public MenuGallery(
             AnchorPane sliderAnchorPane,
@@ -135,6 +197,13 @@ public class MenuGallery {
         userButton.setText(NewLoginPageController.getStaffDetails().getFirstName() +
                 " " + NewLoginPageController.getStaffDetails().getLastName() +
                 " | ID: " + NewLoginPageController.getStaffDetails().getStaffID());
+
+
+        if (this.connectionImageView != null && this.connectionStatus != null) {
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.scheduleAtFixedRate(this::checkConnection, 0, 30, TimeUnit.SECONDS);
+        }
+
 
     }
 
@@ -457,6 +526,27 @@ public class MenuGallery {
             newUserStage.show();
         } catch (Exception exc) {
             System.out.println(exc);
+        }
+    }
+
+    private void checkConnection() {
+        boolean isConnected = DatabaseConnection.isAlive();
+        //System.out.println("Is Connected: " + isConnected);
+
+        Platform.runLater(() -> {
+            if (isConnected) {
+                connectionStatus.setText("Connected");
+                connectionImageView.setImage(CONNECTED);
+            } else {
+                connectionStatus.setText("Disconnected");
+                connectionImageView.setImage(DISCONNECTED);
+            }
+        });
+    }
+
+    public void stopConnectionCheck() {
+        if (scheduler != null && !scheduler.isShutdown()) {
+            scheduler.shutdown();
         }
     }
 }

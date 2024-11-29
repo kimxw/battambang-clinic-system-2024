@@ -162,6 +162,11 @@ public class QueueManagerController implements Initializable {
     @FXML
     private ImageView warningImageView;
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
     QueueManager lastSelectedQM = null;
 
     @Override
@@ -170,7 +175,7 @@ public class QueueManagerController implements Initializable {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         setUpActionsPane();
         setUpQueuePane();

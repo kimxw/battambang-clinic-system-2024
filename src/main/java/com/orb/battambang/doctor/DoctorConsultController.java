@@ -159,7 +159,7 @@ public class DoctorConsultController extends SpecialistController implements Ini
                 }
             } else {
                 // Insert new record
-                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, conditionType, referralStatus, doctor) VALUES (?, ?, ?, ?, ?, ?)";
+                String insertDoctorConsultTableQuery = "INSERT INTO doctorConsultTable (queueNumber, consultationNotes, conditionType, referralStatus, doctor) VALUES (?, ?, ?, ?, ?)";
                 try (PreparedStatement doctorConsultTableStmt = connection.prepareStatement(insertDoctorConsultTableQuery)) {
                     doctorConsultTableStmt.setInt(1, queueNumber);
                     doctorConsultTableStmt.setString(2, consultNotes);

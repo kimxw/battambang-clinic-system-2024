@@ -34,22 +34,17 @@
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <Label layoutX="6.0" layoutY="203.0" text="Reason for referral:">
+                  <Label layoutX="4.0" layoutY="28.0" text="Reason for referral:">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextArea fx:id="notesTextArea" layoutX="105.0" layoutY="193.0" prefHeight="111.0" prefWidth="332.0" promptText="enter notes." wrapText="true">
+                  <TextArea fx:id="medicationTextArea" layoutX="105.0" layoutY="123.0" prefHeight="0.0" prefWidth="332.0" wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </TextArea>
-                  <Label layoutX="6.0" layoutY="41.0" prefHeight="37.0" prefWidth="94.0" text="He/She has been prescribed:" wrapText="true">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Label>
-                  <TextArea fx:id="medicationTextArea" layoutX="106.0" layoutY="41.0" prefHeight="143.0" prefWidth="332.0" wrapText="true">
+                  <TextArea fx:id="notesTextArea" layoutX="5.0" layoutY="47.0" prefHeight="257.0" prefWidth="432.0" promptText="enter notes." wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
