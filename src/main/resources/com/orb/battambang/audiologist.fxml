@@ -173,7 +173,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="110.0" layoutY="37.0" prefHeight="19.0" prefWidth="37.0" text="Yes">
+                  <Label fx:id="fluSymptomsLabel" alignment="CENTER" layoutX="110.0" layoutY="37.0" prefHeight="19.0" prefWidth="37.0" text="Yes">
                      <font>
                         <Font size="13.0" />
                      </font>

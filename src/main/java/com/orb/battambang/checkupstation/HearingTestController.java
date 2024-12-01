@@ -296,7 +296,7 @@ public class HearingTestController extends CheckupMenuController implements Init
             Labels.showMessageLabel(warningLabel, "All fields except additional notes are compulsory", false);
         }
 
-        Boolean inputFluSymptoms = null; 
+        Boolean inputFluSymptoms = null;
         if (fluYesRadioButton.isSelected()) {
             inputFluSymptoms = true;
         } else if (fluNoRadioButton.isSelected()) {

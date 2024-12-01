@@ -79,6 +79,8 @@ public class SpecialistController implements Initializable {
     @FXML
     private Label hearingProblemsLabel;
     @FXML
+    private Label fluSymptomsLabel;
+    @FXML
     private TextArea hearingTextArea;
     @FXML
     private Label wpRightLabel;
@@ -417,6 +419,14 @@ public class SpecialistController implements Initializable {
                 } else {
                     hearingProblemsLabel.setText("No");
                 }
+
+                boolean hasfluSymptoms = resultSet.getBoolean("fluSymptoms");
+                if (hasfluSymptoms) {
+                    fluSymptomsLabel.setText("Yes");
+                } else {
+                    fluSymptomsLabel.setText("No");
+                }
+
                 hearingTextArea.setText(resultSet.getString("additionalNotes"));
             } else {
                 clearHearingFields();
@@ -615,6 +625,7 @@ public class SpecialistController implements Initializable {
 
     private void clearHearingFields() {
         hearingProblemsLabel.setText("");
+        fluSymptomsLabel.setText("");
         hearingTextArea.setText("");
         Rectangles.clearStatusRectangle(status3Rectangle, status3Label);
     }
