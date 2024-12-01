@@ -298,7 +298,7 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
                     INSERT INTO scoliosisTable (queueNumber, angleOfTruncalRotation)\s
                     VALUES (?, ?)\s
                     ON DUPLICATE KEY UPDATE\s
-                        angleOfTrunkRotation = VALUES(angleOfTruncalRotation);
+                        angleOfTruncalRotation = VALUES(angleOfTruncalRotation);
                         """;
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
