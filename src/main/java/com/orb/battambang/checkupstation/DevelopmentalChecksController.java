@@ -157,7 +157,7 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                angleTextField.setText(resultSet.getString("angleOfTrunkRotation"));
+                angleTextField.setText(resultSet.getString("angleOfTruncalRotation"));
             } else {
                 clearScoliosisFields();
             }
@@ -295,10 +295,10 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
 
             //for mySQL
             String insertOrUpdateQuery = """
-                    INSERT INTO scoliosisTable (queueNumber, angleOfTrunkRotation)\s
+                    INSERT INTO scoliosisTable (queueNumber, angleOfTruncalRotation)\s
                     VALUES (?, ?)\s
                     ON DUPLICATE KEY UPDATE\s
-                        angleOfTrunkRotation = VALUES(angleOfTrunkRotation);
+                        angleOfTrunkRotation = VALUES(angleOfTruncalRotation);
                         """;
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {

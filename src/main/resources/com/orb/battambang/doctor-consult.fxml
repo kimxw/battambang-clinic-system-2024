@@ -27,8 +27,9 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="558.0" layoutX="14.0" layoutY="80.0" stroke="#ebebeb00" strokeType="INSIDE" width="595.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="500.0" layoutX="27.0" layoutY="124.0" stroke="#eeeeee" strokeType="INSIDE" width="567.0" />
-      <AnchorPane layoutX="14.0" layoutY="79.0" prefHeight="558.0" prefWidth="595.0">
+      <AnchorPane fx:id="triageDataAnchorPane" layoutX="14.0" layoutY="79.0" prefHeight="558.0" prefWidth="595.0">
          <children>
+            <Line endX="100.0" endY="470.5" layoutX="185.0" layoutY="31.0" startX="100.0" startY="24.5" stroke="#00000038" />
             <Pane fx:id="fixedPane" layoutX="24.0" layoutY="60.0" prefHeight="115.0" prefWidth="261.0">
                <children>
                   <Label layoutX="3.0" layoutY="35.0" text="Name :">
@@ -51,7 +52,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="4.0" layoutY="-6.0" text="Particulars">
+                  <Label layoutX="4.0" layoutY="-4.0" text="Particulars">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -86,6 +87,62 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="heightAndWeightPane" layoutX="6.0" layoutY="174.0" prefHeight="137.0" prefWidth="278.0">
+               <children>
+                  <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="#561212" height="19.0" layoutX="145.0" layoutY="6.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+                  <Label fx:id="status1Label" alignment="CENTER" layoutX="148.0" layoutY="6.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+                  <Label layoutX="21.0" layoutY="5.0" text="Height and Weight">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="27.0" text="Height :">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="21.0" layoutY="46.0" text="Weight :">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="22.0" layoutY="66.0" text="BMI :">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="heightLabel" layoutX="92.0" layoutY="27.0" prefHeight="19.0" prefWidth="37.0" text="138">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="128.0" layoutY="28.0" text="cm" />
+                  <Label layoutX="129.0" layoutY="47.0" text="kg" />
+                  <Label fx:id="weightLabel" layoutX="94.0" layoutY="46.0" prefHeight="19.0" prefWidth="37.0" text="45">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="bmiLabel" layoutX="94.0" layoutY="66.0" prefHeight="19.0" prefWidth="37.0" text="22.3">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="128.0" layoutY="67.0" text="kg/m2" />
+                  <Rectangle fx:id="bmiCategoryRectangle" fill="#a5db67" height="19.0" layoutX="178.0" layoutY="67.0" stroke="#19b91e" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+                  <Label fx:id="bmiCategoryLabel" alignment="CENTER" layoutX="182.0" layoutY="68.0" prefHeight="17.0" prefWidth="77.0" text="Healthy Weight" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="heightAndWeightTextArea" editable="false" layoutX="20.0" layoutY="113.0" prefHeight="38.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </TextArea>
+                  <CheckBox layoutX="22.0" layoutY="89.0" mnemonicParsing="false" text="Child is below 3rd percentile (BMI by age)" />
                </children>
             </Pane>
             <Pane fx:id="hearingTestPane" layoutX="43.0" layoutY="399.0" prefHeight="89.0" prefWidth="278.0">
@@ -242,8 +299,8 @@
             </Pane>
             <Pane fx:id="dentalPane11" layoutX="319.0" layoutY="372.0" prefHeight="81.0" prefWidth="245.0">
                <children>
-                  <Rectangle arcHeight="18.0" arcWidth="18.0" fill="#da3a3a" height="19.0" layoutX="79.0" layoutY="34.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-                  <Label alignment="CENTER" layoutX="82.0" layoutY="34.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+                  <Rectangle fx:id="status8Rectangle" arcHeight="18.0" arcWidth="18.0" fill="#da3a3a" height="19.0" layoutX="79.0" layoutY="34.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+                  <Label fx:id="status8Label" alignment="CENTER" layoutX="82.0" layoutY="34.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
                   <Label layoutX="-19.0" layoutY="34.0" text="Scoliosis Check">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -254,7 +311,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="139.0" layoutY="56.0" prefHeight="19.0" prefWidth="59.0" text="99.999">
+                  <Label fx:id="truncalRotationLabel" layoutX="139.0" layoutY="56.0" prefHeight="19.0" prefWidth="59.0" text="99.999">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -268,8 +325,8 @@
             </Pane>
             <Pane fx:id="dentalPane111" layoutX="48.0" layoutY="297.0" prefHeight="81.0" prefWidth="245.0">
                <children>
-                  <Rectangle arcHeight="18.0" arcWidth="18.0" fill="#9e2121" height="19.0" layoutX="21.0" layoutY="34.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="34.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+                  <Rectangle fx:id="status7Rectangle" arcHeight="18.0" arcWidth="18.0" fill="#9e2121" height="19.0" layoutX="21.0" layoutY="34.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+                  <Label fx:id="status7Label" alignment="CENTER" layoutX="24.0" layoutY="34.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
                   <Label layoutX="-19.0" layoutY="34.0" text="Vitals">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -280,7 +337,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="89.0" layoutY="55.0" prefHeight="19.0" prefWidth="45.0" text="200">
+                  <Label fx:id="bloodPressureLabel" layoutX="89.0" layoutY="55.0" prefHeight="19.0" prefWidth="45.0" text="200">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -295,7 +352,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="89.0" layoutY="73.0" prefHeight="19.0" prefWidth="45.0" text="28.5">
+                  <Label fx:id="temperatureLabel" layoutX="89.0" layoutY="73.0" prefHeight="19.0" prefWidth="45.0" text="28.5">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -307,6 +364,25 @@
                   </Label>
                </children>
             </Pane>
+            <AnchorPane fx:id="tagsAnchorPane" layoutX="25.0" layoutY="514.0" prefHeight="24.0" prefWidth="536.0">
+               <children>
+                  <ToggleButton fx:id="hearingToggleButton" layoutX="277.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
+                  <ToggleButton fx:id="socialToggleButton" layoutX="340.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
+                  <ToggleButton fx:id="physioToggleButton" layoutX="436.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
+                  <ToggleButton fx:id="tbToggleButton" layoutX="106.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tuberculosis" />
+                  <ToggleButton fx:id="optometryToggleButton" layoutX="195.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
+                  <Label layoutX="4.0" layoutY="2.0" prefHeight="19.0" prefWidth="55.0" text="Tags">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="3.0" text="[editable]" textFill="#a3a3a3">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <Label layoutX="29.0" layoutY="94.0" text="Select Patient :">
@@ -375,82 +451,6 @@
       <RadioButton fx:id="yesRadioButton" layoutX="757.0" layoutY="544.0" mnemonicParsing="false" onAction="#radioButtonOnAction" text="Yes" />
       <RadioButton fx:id="noRadioButton" layoutX="814.0" layoutY="544.0" mnemonicParsing="false" onAction="#radioButtonOnAction" text="No" />
       <Button fx:id="createReferralButton" layoutX="886.0" layoutY="540.0" mnemonicParsing="false" onAction="#createReferralButtonOnAction" text="Create/View Referral" />
-      <Line endX="-100.0" endY="470.5" layoutX="402.0" layoutY="110.0" startX="-100.0" startY="24.5" stroke="#00000038" />
-      <Pane fx:id="heightAndWeightPane" layoutX="22.0" layoutY="253.0" prefHeight="137.0" prefWidth="278.0">
-         <children>
-            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="#561212" height="19.0" layoutX="145.0" layoutY="6.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status1Label" alignment="CENTER" layoutX="148.0" layoutY="6.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label layoutX="21.0" layoutY="5.0" text="Height and Weight">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="21.0" layoutY="27.0" text="Height :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="21.0" layoutY="46.0" text="Weight :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="22.0" layoutY="66.0" text="BMI :">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="heightLabel" layoutX="92.0" layoutY="27.0" prefHeight="19.0" prefWidth="37.0" text="138">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="128.0" layoutY="28.0" text="cm" />
-            <Label layoutX="129.0" layoutY="47.0" text="kg" />
-            <Label fx:id="weightLabel" layoutX="94.0" layoutY="46.0" prefHeight="19.0" prefWidth="37.0" text="45">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="bmiLabel" layoutX="94.0" layoutY="66.0" prefHeight="19.0" prefWidth="37.0" text="22.3">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="128.0" layoutY="67.0" text="kg/m2" />
-            <Rectangle fx:id="bmiCategoryRectangle" fill="#a5db67" height="19.0" layoutX="178.0" layoutY="67.0" stroke="#19b91e" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="bmiCategoryLabel" alignment="CENTER" layoutX="182.0" layoutY="68.0" prefHeight="17.0" prefWidth="77.0" text="Healthy Weight" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="heightAndWeightTextArea" editable="false" layoutX="20.0" layoutY="113.0" prefHeight="38.0" prefWidth="245.0" promptText="- no additional notes -" wrapText="true">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </TextArea>
-            <CheckBox layoutX="22.0" layoutY="89.0" mnemonicParsing="false" text="Child is below 3rd percentile (BMI by age)" />
-         </children>
-      </Pane>
-      <AnchorPane fx:id="tagsAnchorPane" layoutX="40.0" layoutY="593.0" prefHeight="24.0" prefWidth="536.0">
-         <children>
-            <ToggleButton fx:id="hearingToggleButton" layoutX="277.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
-            <ToggleButton fx:id="socialToggleButton" layoutX="340.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
-            <ToggleButton fx:id="physioToggleButton" layoutX="436.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
-            <ToggleButton fx:id="tbToggleButton" layoutX="106.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tuberculosis" />
-            <ToggleButton fx:id="optometryToggleButton" layoutX="195.0" layoutY="1.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
-            <Label layoutX="4.0" layoutY="2.0" prefHeight="19.0" prefWidth="55.0" text="Tags">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="39.0" layoutY="3.0" text="[editable]" textFill="#a3a3a3">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <ImageView fx:id="TXTImageView" fitHeight="35.0" fitWidth="33.0" layoutX="487.0" layoutY="86.0" onMousePressed="#TXTButtonOnAction" onMouseReleased="#TXTButtonOnRelease" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../icons/txt-button-unpressed.png" />
