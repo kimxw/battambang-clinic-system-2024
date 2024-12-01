@@ -61,6 +61,8 @@ public class SpecialistController implements Initializable {
     @FXML
     private Label bmiCategoryLabel;
     @FXML
+    private CheckBox malnourishmentFlagCheckBox;
+    @FXML
     private Label bloodPressureLabel;
     @FXML
     private Label temperatureLabel;
@@ -339,6 +341,7 @@ public class SpecialistController implements Initializable {
             if (resultSet.next()) {
                 weightLabel.setText(resultSet.getString("weight"));
                 heightLabel.setText(resultSet.getString("height"));
+                malnourishmentFlagCheckBox.setSelected(resultSet.getBoolean("malnourishmentFlagged"));
                 heightAndWeightTextArea.setText(resultSet.getString("additionalNotes"));
                 bmiLabel.setText(String.valueOf(resultSet.getDouble("bmi")));
 
@@ -605,6 +608,7 @@ public class SpecialistController implements Initializable {
     private void clearBMIFields() {
         heightLabel.setText("");
         weightLabel.setText("");
+        malnourishmentFlagCheckBox.setSelected(false);
         bmiLabel.setText("");
         bmiCategoryLabel.setText("");
         bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");

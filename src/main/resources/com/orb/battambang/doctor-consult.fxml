@@ -113,24 +113,24 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="heightLabel" layoutX="92.0" layoutY="27.0" prefHeight="19.0" prefWidth="37.0" text="138">
+                  <Label fx:id="heightLabel" layoutX="92.0" layoutY="27.0" prefHeight="19.0" prefWidth="55.0" text="138">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="128.0" layoutY="28.0" text="cm" />
-                  <Label layoutX="129.0" layoutY="47.0" text="kg" />
-                  <Label fx:id="weightLabel" layoutX="94.0" layoutY="46.0" prefHeight="19.0" prefWidth="37.0" text="45">
+                  <Label layoutX="132.0" layoutY="28.0" text="cm" />
+                  <Label layoutX="133.0" layoutY="47.0" text="kg" />
+                  <Label fx:id="weightLabel" layoutX="94.0" layoutY="46.0" prefHeight="19.0" prefWidth="58.0" text="45">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bmiLabel" layoutX="94.0" layoutY="66.0" prefHeight="19.0" prefWidth="37.0" text="22.3">
+                  <Label fx:id="bmiLabel" layoutX="94.0" layoutY="66.0" prefHeight="19.0" prefWidth="48.0" text="22.3">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="128.0" layoutY="67.0" text="kg/m2" />
+                  <Label layoutX="132.0" layoutY="67.0" text="kg/m2" />
                   <Rectangle fx:id="bmiCategoryRectangle" fill="#a5db67" height="19.0" layoutX="178.0" layoutY="67.0" stroke="#19b91e" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
                   <Label fx:id="bmiCategoryLabel" alignment="CENTER" layoutX="182.0" layoutY="68.0" prefHeight="17.0" prefWidth="77.0" text="Healthy Weight" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -142,7 +142,8 @@
                         <Font size="11.0" />
                      </font>
                   </TextArea>
-                  <CheckBox layoutX="22.0" layoutY="89.0" mnemonicParsing="false" text="Child is below 3rd percentile (BMI by age)" />
+                  <CheckBox fx:id="malnourishmentFlagCheckBox" layoutX="22.0" layoutY="89.0" mnemonicParsing="false" text="Child is below 3rd percentile (BMI by age)" />
+                  <Pane layoutX="21.0" layoutY="87.0" prefHeight="21.0" prefWidth="241.0" />
                </children>
             </Pane>
             <Pane fx:id="hearingTestPane" layoutX="43.0" layoutY="399.0" prefHeight="89.0" prefWidth="278.0">
