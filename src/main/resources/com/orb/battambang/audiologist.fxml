@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.geometry.Insets?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.doctor.AudiologistController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="558.0" layoutX="14.0" layoutY="80.0" stroke="#ebebeb00" strokeType="INSIDE" width="595.0" />
@@ -428,12 +429,12 @@
             </Button>
          </children>
       </Pane>
-      <Label layoutX="623.0" layoutY="104.0" text="Otoscopy">
+      <Label layoutX="622.0" layoutY="103.0" prefHeight="17.0" text="Otoscopy ">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="813.0" layoutY="104.0" text="Hearing Screening">
+      <Label layoutX="801.0" layoutY="104.0" text="Hearing Screening">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -657,16 +658,12 @@
       </AnchorPane>
       <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="185.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="446.0" prefWidth="13.0" />
       <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="612.0" layoutY="625.0" prefHeight="17.0" prefWidth="398.0" text="." />
-      <CheckBox fx:id="otoscopyClearCheckBox" layoutX="625.0" layoutY="128.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="124.0" text="Clear" />
-      <CheckBox fx:id="otoscopyEarwaxCheckBox" layoutX="625.0" layoutY="148.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="124.0" text="Earwax" />
-      <CheckBox fx:id="otoscopyFurtherInvCheckBox" layoutX="625.0" layoutY="168.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="160.0" text="Further Investigation" />
-      <CheckBox fx:id="frequency500CheckBox" layoutX="815.0" layoutY="128.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="124.0" text="500 Hz" />
-      <CheckBox fx:id="frequency1000CheckBox" layoutX="815.0" layoutY="148.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="124.0" text="1000 Hz" />
-      <CheckBox fx:id="frequency2000CheckBox" layoutX="815.0" layoutY="168.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="183.0" text="2000 Hz" />
-      <CheckBox fx:id="frequency4000CheckBox" layoutX="815.0" layoutY="188.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="183.0" text="4000 Hz" />
-      <CheckBox fx:id="rec1CheckBox" layoutX="625.0" layoutY="239.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="286.0" text="No actions required" />
-      <CheckBox fx:id="rec2CheckBox" layoutX="625.0" layoutY="259.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="286.0" text="Visit ENT or hearing clinic" />
-      <CheckBox fx:id="rec3CheckBox" layoutX="625.0" layoutY="279.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="286.0" text="Visit / follow up with ENT" />
+      <CheckBox fx:id="leftOtoscopyClearCheckBox" layoutX="625.0" layoutY="143.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="62.0" text="Clear" />
+      <CheckBox fx:id="leftOtoscopyEarwaxCheckBox" layoutX="625.0" layoutY="163.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="67.0" text="Earwax" />
+      <CheckBox fx:id="leftOtoscopyFurtherInvCheckBox" layoutX="625.0" layoutY="183.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="85.0" text="Further Inv." />
+      <CheckBox fx:id="rec1CheckBox" layoutX="625.0" layoutY="239.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="147.0" text="No actions required" />
+      <CheckBox fx:id="rec2CheckBox" layoutX="625.0" layoutY="259.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="171.0" text="Visit ENT or hearing clinic" />
+      <CheckBox fx:id="rec3CheckBox" layoutX="625.0" layoutY="279.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="171.0" text="Visit / follow up with ENT" />
       <CheckBox fx:id="rec4CheckBox" layoutX="625.0" layoutY="299.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="356.0" text="Visit ENT or hearing clinic for detailed hearing assessment" />
       <Label layoutX="623.0" layoutY="81.0" text="Procedure and Results">
          <font>
@@ -697,5 +694,45 @@
             <Font size="10.0" />
          </font>
       </Label>
+      <ChoiceBox fx:id="left500ChoiceBox" layoutX="843.0" layoutY="143.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="800.0" layoutY="147.0" text="500Hz" />
+      <ChoiceBox fx:id="left1000ChoiceBox" layoutX="843.0" layoutY="173.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="800.0" layoutY="177.0" text="1000Hz" />
+      <ChoiceBox fx:id="left2000ChoiceBox" layoutX="843.0" layoutY="203.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="800.0" layoutY="207.0" text="2000Hz" />
+      <ChoiceBox fx:id="left4000ChoiceBox" layoutX="843.0" layoutY="233.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="800.0" layoutY="237.0" text="4000Hz" />
+      <ChoiceBox fx:id="right500ChoiceBox" layoutX="954.0" layoutY="143.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="911.0" layoutY="147.0" text="500Hz " />
+      <ChoiceBox fx:id="right1000ChoiceBox" layoutX="954.0" layoutY="173.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="911.0" layoutY="177.0" text="1000Hz" />
+      <ChoiceBox fx:id="right2000ChoiceBox" layoutX="954.0" layoutY="203.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="911.0" layoutY="207.0" text="2000Hz" />
+      <ChoiceBox fx:id="right4000ChoiceBox" layoutX="954.0" layoutY="233.0" prefHeight="25.0" prefWidth="62.0" />
+      <Label layoutX="911.0" layoutY="237.0" text="4000Hz" />
+      <Label layoutX="623.0" layoutY="121.0" text="Left ear">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="rightOtoscopyClearCheckBox" layoutX="714.0" layoutY="143.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="57.0" text="Clear" />
+      <CheckBox fx:id="rightOtoscopyEarwaxCheckBox" layoutX="714.0" layoutY="163.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="68.0" text="Earwax" />
+      <CheckBox fx:id="rightOtoscopyFurtherInvCheckBox" layoutX="714.0" layoutY="183.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="85.0" text="Further Inv." />
+      <Label layoutX="712.0" layoutY="121.0" text="Right ear">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="801.0" layoutY="121.0" text="Left ear">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="910.0" layoutY="121.0" text="Right ear">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Pane fx:id="editBlockPane" layoutX="612.0" layoutY="80.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="545.0" prefWidth="407.0" />
    </children>
 </Pane>

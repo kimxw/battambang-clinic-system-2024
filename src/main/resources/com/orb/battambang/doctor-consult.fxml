@@ -662,7 +662,7 @@
             </HBox>
          </children>
       </AnchorPane>
-      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="185.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="446.0" prefWidth="404.0" />
+      <Pane fx:id="editBlockPane" layoutX="617.0" layoutY="73.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="558.0" prefWidth="404.0" />
       <Label fx:id="warningLabel" alignment="CENTER_RIGHT" layoutX="612.0" layoutY="625.0" prefHeight="17.0" prefWidth="398.0" text="." />
       <Label fx:id="connectionStatus" layoutX="720.0" layoutY="3.0" prefHeight="60.0" prefWidth="114.0" text="Disconnected" textFill="WHITE">
          <font>
