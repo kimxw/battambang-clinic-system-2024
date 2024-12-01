@@ -15,10 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -86,9 +83,13 @@ public class HearingTestController extends CheckupMenuController implements Init
     @FXML
     private Pane particularsPane;
     @FXML
-    private RadioButton yesRadioButton;
+    private RadioButton problemsYesRadioButton;
     @FXML
-    private RadioButton noRadioButton;
+    private RadioButton problemsNoRadioButton;
+    @FXML
+    private RadioButton fluYesRadioButton;
+    @FXML
+    private RadioButton fluNoRadioButton;
     @FXML
     private TextArea additionalNotesTextArea;
     @FXML
@@ -184,11 +185,14 @@ public class HearingTestController extends CheckupMenuController implements Init
         particularsPane.setVisible(false);
 
         // Create a ToggleGroup
-        ToggleGroup group = new ToggleGroup();
+        ToggleGroup problemsGroup = new ToggleGroup();
+        ToggleGroup fluGroup = new ToggleGroup();
 
         // Add the radio buttons to the group
-        yesRadioButton.setToggleGroup(group);
-        noRadioButton.setToggleGroup(group);
+        problemsYesRadioButton.setToggleGroup(problemsGroup);
+        problemsNoRadioButton.setToggleGroup(problemsGroup);
+        fluYesRadioButton.setToggleGroup(fluGroup);
+        fluNoRadioButton.setToggleGroup(fluGroup);
 
     }
 
@@ -240,10 +244,18 @@ public class HearingTestController extends CheckupMenuController implements Init
             if (resultSet.next()) {
                 boolean hasHearingProblems = resultSet.getBoolean("hearingProblems");
                 if (hasHearingProblems) {
-                    yesRadioButton.setSelected(true);
+                    problemsYesRadioButton.setSelected(true);
                 } else {
-                    noRadioButton.setSelected(true);
+                    problemsNoRadioButton.setSelected(true);
                 }
+
+                boolean hasFluLikeSymptoms = resultSet.getBoolean("fluSymptoms");
+                if (hasFluLikeSymptoms) {
+                    fluYesRadioButton.setSelected(true);
+                } else {
+                    fluNoRadioButton.setSelected(true);
+                }
+
                 additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
             } else {
                 clearRecordFields();
@@ -255,8 +267,10 @@ public class HearingTestController extends CheckupMenuController implements Init
     }
 
     private void clearRecordFields() {
-        yesRadioButton.setSelected(false);
-        noRadioButton.setSelected(false);
+        problemsYesRadioButton.setSelected(false);
+        problemsNoRadioButton.setSelected(false);
+        fluYesRadioButton.setSelected(false);
+        fluNoRadioButton.setSelected(false);
         additionalNotesTextArea.setText("");
     }
 
@@ -272,34 +286,51 @@ public class HearingTestController extends CheckupMenuController implements Init
     }
 
     private void addHearingTest(int queueNumber) {
-        try {
 
-            Boolean hearingProblems = yesRadioButton.isSelected() ? true : noRadioButton.isSelected() ? false : null;
-            String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
+        Boolean inputHearingProblems = null;
+        if (problemsYesRadioButton.isSelected()) {
+            inputHearingProblems = true;
+        } else if (problemsNoRadioButton.isSelected()) {
+            inputHearingProblems = false;
+        } else {
+            Labels.showMessageLabel(warningLabel, "All fields except additional notes are compulsory", false);
+        }
 
-//            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?)";
-            String insertToCreate = "INSERT INTO hearingTestTable (queueNumber, hearingProblems, additionalNotes) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE hearingProblems = VALUES(hearingProblems), additionalNotes = VALUES(additionalNotes)";
+        Boolean inputFluSymptoms = null; 
+        if (fluYesRadioButton.isSelected()) {
+            inputFluSymptoms = true;
+        } else if (fluNoRadioButton.isSelected()) {
+            inputFluSymptoms = false;
+        } else {
+            Labels.showMessageLabel(warningLabel, "All fields except additional notes are compulsory", false);
+        }
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
-                preparedStatement.setInt(1, queueNumber);
-                preparedStatement.setBoolean(2, hearingProblems);
-                preparedStatement.setString(3, notes);
+        String notes = additionalNotesTextArea.getText().isEmpty() ? "" : additionalNotesTextArea.getText();
 
-                preparedStatement.executeUpdate();
+//            String insertToCreate = "INSERT OR REPLACE INTO hearingTestTable (queueNumber, hearingProblems, fluSymptoms, additionalNotes) VALUES (?, ?, ?)";
+        String insertToCreate = "INSERT INTO hearingTestTable (queueNumber, hearingProblems, fluSymptoms, additionalNotes) " +
+                "VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE " +
+                "hearingProblems = VALUES(hearingProblems), fluSymptoms = VALUES(fluSymptoms), " +
+                "additionalNotes = VALUES(additionalNotes)";
 
-                String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Complete' WHERE queueNumber = ?";
-                try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
-                    updateStatusStatement.setInt(1, queueNumber);
-                    updateStatusStatement.executeUpdate();
-                }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertToCreate)) {
+            preparedStatement.setInt(1, queueNumber);
+            preparedStatement.setBoolean(2, inputHearingProblems);
+            preparedStatement.setBoolean(3, inputFluSymptoms);
+            preparedStatement.setString(4, notes);
 
-                Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
-            } catch (SQLException e1) {
-                Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+            preparedStatement.executeUpdate();
+
+            String updateStatusQuery = "UPDATE patientQueueTable SET hearingStatus = 'Complete' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
             }
 
-        } catch (Exception e2) {
-            Labels.showMessageLabel(warningLabel, "Please check all fields.", false);
+            Labels.showMessageLabel(warningLabel, "Updated Q" + queueNumber + " successfully", true);
+        } catch (SQLException e) {
+            System.out.println(e);
+            Labels.showMessageLabel(warningLabel, "All fields except additional notes are compulsory", false);
         }
     }
 

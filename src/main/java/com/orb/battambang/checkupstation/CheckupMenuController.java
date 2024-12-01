@@ -247,11 +247,11 @@ public class CheckupMenuController implements Initializable {
                     social = resultSet.getBoolean("tag_S");
                     physio = resultSet.getBoolean("tag_P");
                 } else {
-                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
                 }
             }
         } catch (SQLException e) {
-            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
             throw new RuntimeException(e);
         }
 
