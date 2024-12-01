@@ -30,7 +30,7 @@
             </Label>
             <TextField fx:id="queueNumberTextField" layoutX="120.0" layoutY="14.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
             <Button fx:id="searchButton" layoutX="272.0" layoutY="14.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
-            <Label fx:id="queueSelectLabel" layoutX="350.0" layoutY="18.0" prefHeight="17.0" prefWidth="140.0" />
+            <Label fx:id="queueSelectLabel" layoutX="350.0" layoutY="18.0" prefHeight="17.0" />
          </children>
       </AnchorPane>
       <Pane fx:id="fixedPane" layoutX="47.0" layoutY="131.0" prefHeight="386.0" prefWidth="125.0">
