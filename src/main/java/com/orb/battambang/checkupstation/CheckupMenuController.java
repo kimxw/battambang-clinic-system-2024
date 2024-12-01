@@ -352,7 +352,7 @@ public class CheckupMenuController implements Initializable {
 
     @FXML
     public void dentalButtonOnAction(ActionEvent e) {
-        loadFXML("dental.fxml", e);
+        loadFXML("health-equity-fund.fxml", e);
     }
 
     @FXML

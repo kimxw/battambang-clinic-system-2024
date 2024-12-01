@@ -34,14 +34,6 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
     private Label queueSelectLabel;
     @FXML
     private Label queueNoLabel;
-    @FXML
-    private Label nameLabel;
-    @FXML
-    private Label ageLabel;
-    @FXML
-    private Label sexLabel;
-    @FXML
-    private Label phoneNumberLabel;
 
     @FXML
     private TextField queueNumberTextField;
@@ -53,6 +45,8 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
     private TextArea additionalHeadLiceNotesTextArea;
     @FXML
     private TextArea additionalDentalNotesTextArea;
+    @FXML
+    private TextField angleTextField;
 
     @FXML
     private Label headLiceWarningLabel;
@@ -93,7 +87,7 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
             }
         });
 
-        // Create a ToggleGroup
+        // ToggleGroup for head lice
         ToggleGroup group = new ToggleGroup();
 
         // Add the radio buttons to the group
@@ -112,6 +106,7 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
             particularsPane.setVisible(true);
             displayHeadLiceRecords(queueNumber);
             displayDentalRecords(queueNumber);
+            displayScoliosisRecords(queueNumber);
             updatePreToggle(queueNumber);
         }
     }
@@ -156,6 +151,22 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
         }
     }
 
+    private void displayScoliosisRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM scoliosisTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                angleTextField.setText(resultSet.getString("angleOfTrunkRotation"));
+            } else {
+                clearScoliosisFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearAllRecordFields();
+        }
+    }
+
     private void clearAllRecordFields() {
         clearHeadLiceFields();
         clearDentalFields();
@@ -173,7 +184,7 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
     }
 
     private void clearScoliosisFields() {
-
+        angleTextField.setText("");
     }
 
     @FXML
@@ -200,7 +211,13 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
 
     @FXML
     private void updateScoliosisButtonOnAction(ActionEvent e) {
-
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
+        } else {
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
+            addScoliosisRecord(queueNumber);
+            updateParticularsPane(queueNumber);
+        }
     }
 
     private void addHeadLiceRecord(int queueNumber) {
@@ -265,6 +282,50 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
         }
     }
 
+    private void addScoliosisRecord(int queueNumber) {
+        try {
+            String angleStr = angleTextField.getText();
+
+            if (angleStr.isEmpty() || !angleStr.matches("\\d+(\\.\\d+)?")) {
+                Labels.showMessageLabel(scoliosisWarningLabel, "Invalid temperature format.", false);
+                return;
+            }
+
+            double angle = Double.parseDouble(angleStr);
+
+            //for mySQL
+            String insertOrUpdateQuery = """
+                    INSERT INTO scoliosisTable (queueNumber, angleOfTrunkRotation)\s
+                    VALUES (?, ?)\s
+                    ON DUPLICATE KEY UPDATE\s
+                        angleOfTrunkRotation = VALUES(angleOfTrunkRotation);
+                        """;
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
+
+                preparedStatement.setInt(1, queueNumber);
+                preparedStatement.setDouble(2, angle);
+
+                preparedStatement.executeUpdate();
+
+                String updateStatusQuery = "UPDATE patientQueueTable SET scoliosisStatus = 'Complete' WHERE queueNumber = ?";
+                try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                    updateStatusStatement.setInt(1, queueNumber);
+                    updateStatusStatement.executeUpdate();
+                }
+
+                Labels.showMessageLabel(scoliosisWarningLabel, "Updated Q" + queueNumber + " successfully", true);
+
+            } catch (SQLException e) {
+                Labels.showMessageLabel(scoliosisWarningLabel, "Please check all fields.", false);
+                e.printStackTrace();
+            }
+
+        } catch (NumberFormatException e) {
+            Labels.showMessageLabel(scoliosisWarningLabel, "Invalid number format.", false);
+        }
+    }
+
     @FXML
     private void deferHeadLiceButtonOnAction(ActionEvent e) {
         if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
@@ -307,7 +368,22 @@ public class DevelopmentalChecksController extends CheckupMenuController impleme
 
     @FXML
     private void deferScoliosisButtonOnAction(ActionEvent e) {
+        if (queueNumberTextField.getText().isEmpty() || queueNoLabel.getText().isEmpty()) {
+            Labels.showMessageLabel(queueSelectLabel, "Select a patient", false);
 
+        } else {
+            int queueNumber = Integer.parseInt(queueNoLabel.getText());
+
+            String updateStatusQuery = "UPDATE patientQueueTable SET scoliosisStatus = 'Deferred' WHERE queueNumber = ?";
+            try (PreparedStatement updateStatusStatement = connection.prepareStatement(updateStatusQuery)) {
+                updateStatusStatement.setInt(1, queueNumber);
+                updateStatusStatement.executeUpdate();
+                Labels.showMessageLabel(scoliosisDeferLabel, "Defered Q" + queueNumber + " successfully", "blue");
+            } catch (SQLException e1) {
+                Labels.showMessageLabel(scoliosisDeferLabel, "Unable to defer Q" + queueNumber, false);
+            }
+            updateParticularsPane(queueNumber);
+        }
     }
 
 }
