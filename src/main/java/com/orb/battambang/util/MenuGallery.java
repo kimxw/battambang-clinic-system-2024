@@ -513,6 +513,10 @@ public class MenuGallery {
             AuthDatabaseConnection.closeDatabaseConnection();
         }
 
+        if (DatabaseConnection.isAlive()) {
+            DatabaseConnection.closeDatabaseConnection();
+        }
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("login-page.fxml"));
             Stage newUserStage = new Stage();

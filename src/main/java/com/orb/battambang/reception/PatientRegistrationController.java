@@ -451,6 +451,7 @@ public class PatientRegistrationController implements Initializable {
             inputAddressTextArea.setText(selectedPatientForEdit.getAddress());
             inputFaceIDTextArea.setText(selectedPatientForEdit.getFaceID());
             isEditOperation = true;
+
         } else {
             Labels.showMessageLabel(messageLabel1, "Please select a row.", false);
         }
