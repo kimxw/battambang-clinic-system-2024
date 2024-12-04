@@ -126,11 +126,11 @@ public class VitalSignsController extends CheckupMenuController implements Initi
 
     private void addVitalSignsRecord(int queueNumber) {
         try {
-            String bloodPressureStr = bloodPressureTextField.getText();
+            String bloodPressure = bloodPressureTextField.getText();
             String temperatureStr = temperatureTextField.getText();
 
-            if (bloodPressureStr.isEmpty() || !bloodPressureStr.matches("\\d+")) {
-                Labels.showMessageLabel(warningLabel, "Invalid blood pressure format.", false);
+            if (bloodPressure.isEmpty()) {
+                Labels.showMessageLabel(warningLabel, "Please enter blood pressure.", false);
                 return;
             }
 
@@ -139,7 +139,6 @@ public class VitalSignsController extends CheckupMenuController implements Initi
                 return;
             }
 
-            int bloodPressure = Integer.parseInt(bloodPressureStr);
             double temperature = Double.parseDouble(temperatureStr);
 
             //for mySQL
@@ -154,7 +153,7 @@ public class VitalSignsController extends CheckupMenuController implements Initi
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
 
                 preparedStatement.setInt(1, queueNumber);
-                preparedStatement.setInt(2, bloodPressure);
+                preparedStatement.setString(2, bloodPressure);
                 preparedStatement.setDouble(3, temperature);
 
                 preparedStatement.executeUpdate();
