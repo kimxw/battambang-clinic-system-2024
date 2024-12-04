@@ -40,23 +40,6 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     private Label sexLabel;
     @FXML
     private Label phoneNumberLabel;
-    @FXML
-    private Label status1Label;
-    @FXML
-    private Label status2Label;
-    @FXML
-    private Label status3Label;
-    @FXML
-    private Label status6Label;
-    @FXML
-    private Rectangle status1Rectangle;
-    @FXML
-    private Rectangle status2Rectangle;
-    @FXML
-    private Rectangle status3Rectangle;
-    @FXML
-    private Rectangle status6Rectangle;
-
 
     @FXML
     private Rectangle TtagRectangle;
@@ -90,6 +73,8 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     private Label bmiLabel;
     @FXML
     private Label categoryLabel;
+    @FXML
+    private CheckBox malnourishmentFlagCheckBox;
     @FXML
     private Label warningLabel;
     @FXML
@@ -151,32 +136,33 @@ public class HeightAndWeightController extends CheckupMenuController implements 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initialiseTags();
-        //initialising MenuGallery
-        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
-                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
-                menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
-
-        // for waiting list
-        // Initialize the waiting list
-        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
-        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
-        
-        // Add a listener to the text property of the queueNumberTextField
-        queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Hide particularsPane when typing starts
-                if (newValue != null && !newValue.isEmpty()) {
-                    particularsPane.setVisible(false);
-                    clearParticularsFields();
-                    clearFields();
-                }
-            }
-        });
-
-        particularsPane.setVisible(false);
+        super.initialize(location, resources);
+//        initialiseTags();
+//        //initialising MenuGallery
+//        MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
+//                menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
+//                menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
+//                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
+//
+//        // for waiting list
+//        // Initialize the waiting list
+//        MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "triageWaitingTable");
+//        MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "triageProgressTable");
+//
+//        // Add a listener to the text property of the queueNumberTextField
+//        queueNumberTextField.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                // Hide particularsPane when typing starts
+//                if (newValue != null && !newValue.isEmpty()) {
+//                    particularsPane.setVisible(false);
+//                    clearParticularsFields();
+//                    clearFields();
+//                }
+//            }
+//        });
+//
+//        particularsPane.setVisible(false);
 
         // EDIT BLOCK PANE, QUEUENOLABEL LISTENER
         queueNoLabel.textProperty().addListener(new ChangeListener<String>() {
@@ -244,6 +230,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             if (resultSet.next()) {
                 weightTextField.setText(resultSet.getString("weight"));
                 heightTextField.setText(resultSet.getString("height"));
+                malnourishmentFlagCheckBox.setSelected(resultSet.getBoolean("malnourishmentFlagged"));
                 additionalNotesTextArea.setText(resultSet.getString("additionalNotes"));
                 bmiButtonOnAction(new ActionEvent());
             } else {
@@ -258,6 +245,7 @@ public class HeightAndWeightController extends CheckupMenuController implements 
     private void clearFields() {
         weightTextField.setText("");
         heightTextField.setText("");
+        malnourishmentFlagCheckBox.setSelected(false);
         additionalNotesTextArea.setText("");
         bmiLabel.setText("");
         categoryLabel.setText("");
@@ -288,11 +276,18 @@ public class HeightAndWeightController extends CheckupMenuController implements 
             double bmi = Double.parseDouble(bmiLabel.getText());
             String bmiCategory = categoryLabel.getText();
 
+            boolean isMalnourished = malnourishmentFlagCheckBox.isSelected();
+
             //for sqlite
             //String insertOrUpdateQuery = "INSERT OR REPLACE INTO heightAndWeightTable(queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?)";
 
             //for mySQL
-            String insertOrUpdateQuery = "INSERT INTO heightAndWeightTable (queueNumber, height, weight, bmi, bmiCategory, additionalNotes) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE height = VALUES(height), weight = VALUES(weight), bmi = VALUES(bmi), bmiCategory = VALUES(bmiCategory), additionalNotes = VALUES(additionalNotes)";
+            String insertOrUpdateQuery = "INSERT INTO heightAndWeightTable " +
+                    "(queueNumber, height, weight, bmi, bmiCategory, malnourishmentFlagged,additionalNotes) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE " +
+                    "height = VALUES(height), weight = VALUES(weight), bmi = VALUES(bmi), " +
+                    "bmiCategory = VALUES(bmiCategory), malnourishmentFlagged = VALUES(malnourishmentFlagged), " +
+                    "additionalNotes = VALUES(additionalNotes)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(insertOrUpdateQuery)) {
 
@@ -301,7 +296,8 @@ public class HeightAndWeightController extends CheckupMenuController implements 
                 preparedStatement.setDouble(3, weight);
                 preparedStatement.setDouble(4, bmi);
                 preparedStatement.setString(5, bmiCategory);
-                preparedStatement.setString(6, notes);
+                preparedStatement.setBoolean(6, isMalnourished);
+                preparedStatement.setString(7, notes);
 
                 preparedStatement.executeUpdate();
 

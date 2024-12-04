@@ -62,7 +62,7 @@ public class DatabaseConnection {
     public static void closeDatabaseConnection() {
         try {
             if (DatabaseConnection.connection != null && !DatabaseConnection.connection.isClosed()) {
-                DatabaseConnection.connection.close();
+                DatabaseConnection.connection = null;
             }
         } catch (SQLException e) {
             System.out.println(e);

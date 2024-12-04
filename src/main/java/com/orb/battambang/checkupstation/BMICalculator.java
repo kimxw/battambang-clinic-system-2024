@@ -9,27 +9,16 @@ public class BMICalculator {
     }
 
     public static String determineBMICategory(double bmi, int age, String sex) {
-        if (age >= 2 && age <= 19) {
-            if (bmi < 5) {
-                return "Underweight";
-            } else if (bmi < 85) {
-                return "Healthy Weight";
-            } else if (bmi < 95) {
-                return "Overweight";
-            } else {
-                return "Obese";
-            }
-        } else if (age >= 20) {
-            if (bmi < 18.5) {
-                return "Underweight";
-            } else if (bmi < 24.9) {
-                return "Healthy Weight";
-            } else if (bmi < 29.9) {
-                return "Overweight";
-            } else {
-                return "Obese";
-            }
+        if (bmi < 18.5) {
+            return "Underweight";
+        } else if (bmi < 25) {
+            return "Healthy Weight";
+        } else if (bmi < 30) {
+            return "Overweight";
+        } else if (bmi >= 30) {
+            return "Obese";
+        } else {
+            return "Unknown";
         }
-        return "Unknown";
     }
 }

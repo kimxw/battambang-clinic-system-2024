@@ -62,6 +62,13 @@ public class CheckupMenuController implements Initializable {
     @FXML
     private Label status6Label;
     @FXML
+    private Label status7Label;
+    @FXML
+    private Label status8Label;
+    @FXML
+    private Label status9Label;
+
+    @FXML
     private Rectangle status1Rectangle;
     @FXML
     private Rectangle status2Rectangle;
@@ -73,6 +80,12 @@ public class CheckupMenuController implements Initializable {
     private Rectangle status5Rectangle;
     @FXML
     private Rectangle status6Rectangle;
+    @FXML
+    private Rectangle status7Rectangle;
+    @FXML
+    private Rectangle status8Rectangle;
+    @FXML
+    private Rectangle status9Rectangle;
 
     @FXML
     protected ToggleButton tbToggleButton;
@@ -234,11 +247,11 @@ public class CheckupMenuController implements Initializable {
                     social = resultSet.getBoolean("tag_S");
                     physio = resultSet.getBoolean("tag_P");
                 } else {
-                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
                 }
             }
         } catch (SQLException e) {
-            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
             throw new RuntimeException(e);
         }
 
@@ -318,6 +331,11 @@ public class CheckupMenuController implements Initializable {
     }
 
     @FXML
+    public void vitalSignsButtonOnAction(ActionEvent e) {
+        loadFXML("vital-signs.fxml", e);
+    }
+
+    @FXML
     public void snellensTestButtonOnAction(ActionEvent e) {
         loadFXML("snellens-test.fxml", e);
     }
@@ -329,12 +347,12 @@ public class CheckupMenuController implements Initializable {
 
     @FXML
     public void headLiceButtonOnAction(ActionEvent e) {
-        loadFXML("head-lice.fxml", e);
+        loadFXML("developmental-checks.fxml", e);
     }
 
     @FXML
     public void dentalButtonOnAction(ActionEvent e) {
-        loadFXML("dental.fxml", e);
+        loadFXML("health-equity-fund.fxml", e);
     }
 
     @FXML
@@ -383,19 +401,25 @@ public class CheckupMenuController implements Initializable {
                 phoneNumberLabel.setText(phoneNumber);
 
                 String bmiStatus = patientResultSet.getString("bmiStatus");
+                String vitalSignsStatus  = patientResultSet.getString("vitalSignsStatus");
                 String snellensStatus = patientResultSet.getString("snellensStatus");
                 String hearingStatus = patientResultSet.getString("hearingStatus");
                 String liceStatus = patientResultSet.getString("liceStatus");
                 String dentalStatus = patientResultSet.getString("dentalStatus");
+                String scoliosisStatus = patientResultSet.getString("scoliosisStatus");
                 String historyStatus = patientResultSet.getString("historyStatus");
+                String healthEFStatus = patientResultSet.getString("healthEFStatus");
 
 
                 Rectangles.updateStatusRectangle(status1Rectangle, status1Label, bmiStatus);
-                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, snellensStatus);
-                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, hearingStatus);
-                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, liceStatus);
-                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, dentalStatus);
-                Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus);
+                Rectangles.updateStatusRectangle(status2Rectangle, status2Label, vitalSignsStatus);
+                Rectangles.updateStatusRectangle(status3Rectangle, status3Label, snellensStatus);
+                Rectangles.updateStatusRectangle(status4Rectangle, status4Label, hearingStatus);
+                Rectangles.updateStatusRectangle(status5Rectangle, status5Label, liceStatus);
+                Rectangles.updateStatusRectangle(status6Rectangle, status6Label, dentalStatus);
+                Rectangles.updateStatusRectangle(status7Rectangle, status7Label, scoliosisStatus);
+                Rectangles.updateStatusRectangle(status8Rectangle, status8Label, historyStatus);
+                Rectangles.updateStatusRectangle(status9Rectangle, status9Label, healthEFStatus);
 
             } else {
                 nameLabel.setText("");
@@ -409,6 +433,9 @@ public class CheckupMenuController implements Initializable {
                 Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
                 Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
+                Rectangles.updateStatusRectangle(status7Rectangle, status7Label, "Not found");
+                Rectangles.updateStatusRectangle(status8Rectangle, status8Label, "Not found");
+                Rectangles.updateStatusRectangle(status9Rectangle, status9Label, "Not found");
 
             }
 

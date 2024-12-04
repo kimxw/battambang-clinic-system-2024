@@ -28,11 +28,12 @@ public class QueueManager {
 
     //private final String targetTable;
     //private final ListView<String> targetListView;
-    private static final Connection connection = DatabaseConnection.connection;
+    private static Connection connection = null; //carefull here!
 
 
     public QueueManager(ListView<String> currentListView, String currentTable, ListView<String> currentTagListView,
                         QueueManager nextQM) {
+        connection = DatabaseConnection.connection;
         this.currentListView = currentListView;
         this.queueList = FXCollections.observableArrayList();
         this.currentListView.setItems(queueList);

@@ -61,7 +61,15 @@ public class SpecialistController implements Initializable {
     @FXML
     private Label bmiCategoryLabel;
     @FXML
+    private CheckBox malnourishmentFlagCheckBox;
+    @FXML
+    private Label bloodPressureLabel;
+    @FXML
+    private Label temperatureLabel;
+    @FXML
     private Label historySystemLabel;
+    @FXML
+    private Label truncalRotationLabel;
     @FXML
     private Rectangle bmiCategoryRectangle;
     @FXML
@@ -72,6 +80,8 @@ public class SpecialistController implements Initializable {
     private TextArea headLiceTextArea;
     @FXML
     private Label hearingProblemsLabel;
+    @FXML
+    private Label fluSymptomsLabel;
     @FXML
     private TextArea hearingTextArea;
     @FXML
@@ -113,6 +123,14 @@ public class SpecialistController implements Initializable {
     private Label status6Label;
     @FXML
     private Rectangle status6Rectangle;
+    @FXML
+    private Label status7Label;
+    @FXML
+    private Rectangle status7Rectangle;
+    @FXML
+    private Label status8Label;
+    @FXML
+    private Rectangle status8Rectangle;
     @FXML
     private ImageView TXTImageView;
     @FXML
@@ -270,10 +288,12 @@ public class SpecialistController implements Initializable {
                 phoneNumberLabel.setText(phoneNumber);
 
                 String bmiStatus = patientResultSet.getString("bmiStatus");
+                String vitalsStatus = patientResultSet.getString("vitalSignsStatus");
                 String snellensStatus = patientResultSet.getString("snellensStatus");
                 String hearingStatus = patientResultSet.getString("hearingStatus");
                 String liceStatus = patientResultSet.getString("liceStatus");
                 String dentalStatus = patientResultSet.getString("dentalStatus");
+                String scoliosisStatus = patientResultSet.getString("scoliosisStatus");
                 String historyStatus = patientResultSet.getString("historyStatus");
 
 
@@ -283,6 +303,8 @@ public class SpecialistController implements Initializable {
                 Rectangles.updateStatusRectangle(status4Rectangle, status4Label, liceStatus, true);
                 Rectangles.updateStatusRectangle(status5Rectangle, status5Label, dentalStatus, true);
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, historyStatus, true);
+                Rectangles.updateStatusRectangle(status7Rectangle, status7Label, vitalsStatus, true);
+                Rectangles.updateStatusRectangle(status8Rectangle, status8Label, scoliosisStatus, true);
 
             } else {
                 nameLabel.setText("");
@@ -296,6 +318,8 @@ public class SpecialistController implements Initializable {
                 Rectangles.updateStatusRectangle(status4Rectangle, status4Label, "Not found");
                 Rectangles.updateStatusRectangle(status5Rectangle, status5Label, "Not found");
                 Rectangles.updateStatusRectangle(status6Rectangle, status6Label, "Not found");
+                Rectangles.updateStatusRectangle(status7Rectangle, status7Label, "Not found");
+                Rectangles.updateStatusRectangle(status8Rectangle, status8Label, "Not found");
 
                 return;
             }
@@ -317,6 +341,7 @@ public class SpecialistController implements Initializable {
             if (resultSet.next()) {
                 weightLabel.setText(resultSet.getString("weight"));
                 heightLabel.setText(resultSet.getString("height"));
+                malnourishmentFlagCheckBox.setSelected(resultSet.getBoolean("malnourishmentFlagged"));
                 heightAndWeightTextArea.setText(resultSet.getString("additionalNotes"));
                 bmiLabel.setText(String.valueOf(resultSet.getDouble("bmi")));
 
@@ -341,6 +366,24 @@ public class SpecialistController implements Initializable {
         } catch (SQLException ex) {
             Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
             clearBMIFields();
+            ex.printStackTrace();
+        }
+    }
+
+    private void displayVitals(int queueNumber) {
+        String patientQuery = "SELECT * FROM vitalSignsTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                bloodPressureLabel.setText(resultSet.getString("bloodPressure"));
+                temperatureLabel.setText(resultSet.getString("temperature"));
+            } else {
+                clearVitalsFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearVitalsFields();
             ex.printStackTrace();
         }
     }
@@ -379,6 +422,14 @@ public class SpecialistController implements Initializable {
                 } else {
                     hearingProblemsLabel.setText("No");
                 }
+
+                boolean hasfluSymptoms = resultSet.getBoolean("fluSymptoms");
+                if (hasfluSymptoms) {
+                    fluSymptomsLabel.setText("Yes");
+                } else {
+                    fluSymptomsLabel.setText("No");
+                }
+
                 hearingTextArea.setText(resultSet.getString("additionalNotes"));
             } else {
                 clearHearingFields();
@@ -422,6 +473,23 @@ public class SpecialistController implements Initializable {
         } catch (SQLException ex) {
             Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
             clearDentalFields();
+        }
+    }
+
+    private void displayScoliosisRecords(int queueNumber) {
+        String patientQuery = "SELECT * FROM scoliosisTable WHERE queueNumber = " + queueNumber;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(patientQuery);
+
+            if (resultSet.next()) {
+                truncalRotationLabel.setText(resultSet.getString("angleOfTruncalRotation"));
+            } else {
+                clearScoliosisFields();
+            }
+        } catch (SQLException ex) {
+            Labels.showMessageLabel(queueSelectLabel, "Error fetching data.", false);
+            clearScoliosisFields();
+            ex.printStackTrace();
         }
     }
 
@@ -511,11 +579,13 @@ public class SpecialistController implements Initializable {
     protected void clearAllFields() {
         clearParticularsFields();
         clearBMIFields();
+        clearVitalsFields();
         clearHeadLiceFields();
         clearHearingFields();
         clearSnellensFields();
         clearDentalFields();
         clearHistoryFields();
+        clearScoliosisFields();
         clearPrescriptionFields();
     }
 
@@ -538,10 +608,17 @@ public class SpecialistController implements Initializable {
     private void clearBMIFields() {
         heightLabel.setText("");
         weightLabel.setText("");
+        malnourishmentFlagCheckBox.setSelected(false);
         bmiLabel.setText("");
         bmiCategoryLabel.setText("");
         bmiCategoryRectangle.setStyle("-fx-fill: #fefefe;");
         Rectangles.clearStatusRectangle(status1Rectangle, status1Label);
+    }
+
+    private void clearVitalsFields() {
+        bloodPressureLabel.setText("");
+        temperatureLabel.setText("");
+        Rectangles.clearStatusRectangle(status7Rectangle, status7Label);
     }
 
     private void clearHeadLiceFields() {
@@ -552,6 +629,7 @@ public class SpecialistController implements Initializable {
 
     private void clearHearingFields() {
         hearingProblemsLabel.setText("");
+        fluSymptomsLabel.setText("");
         hearingTextArea.setText("");
         Rectangles.clearStatusRectangle(status3Rectangle, status3Label);
     }
@@ -568,6 +646,11 @@ public class SpecialistController implements Initializable {
     private void clearDentalFields() {
         dentalTextArea.setText("");
         Rectangles.clearStatusRectangle(status5Rectangle, status5Label);
+    }
+
+    private void clearScoliosisFields() {
+        truncalRotationLabel.setText("");
+        Rectangles.clearStatusRectangle(status8Rectangle, status8Label);
     }
 
     private void clearHistoryFields() {
@@ -648,11 +731,11 @@ public class SpecialistController implements Initializable {
                     social = resultSet.getBoolean("tag_S");
                     physio = resultSet.getBoolean("tag_P");
                 } else {
-                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+                    Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
                 }
             }
         } catch (SQLException e) {
-            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags", false);
+            Labels.showMessageLabel(queueSelectLabel, "Unable to fetch tags / patient does not exist", false);
             throw new RuntimeException(e);
         }
 
@@ -695,11 +778,13 @@ public class SpecialistController implements Initializable {
             int queueNumber = Integer.parseInt(queueNumberTextField.getText());
 
             displayHeightAndWeight(queueNumber);
+            displayVitals(queueNumber);
             displayHeadLiceRecords(queueNumber);
             displayHearingRecords(queueNumber);
             displaySnellensRecords(queueNumber);
             displayDentalRecords(queueNumber);
             displayHistorySystem(queueNumber);
+            displayScoliosisRecords(queueNumber);
             displayPrescription(queueNumber);
             updatePreToggle(queueNumber); //for tags
             updateParticularsPane(queueNumber);   // must update after loading all others!
