@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.time.LocalDate;
@@ -116,15 +117,21 @@ public class PatientRegistrationController implements Initializable {
     @FXML
     private Button menuLocationButton;
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
     ObservableList<Patient> patientObservableList = FXCollections.observableArrayList();
     FilteredList<Patient> filteredList = new FilteredList<>(patientObservableList);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //initialising MenuGallery
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         // Create a ToggleGroup
         ToggleGroup group = new ToggleGroup();
@@ -444,6 +451,7 @@ public class PatientRegistrationController implements Initializable {
             inputAddressTextArea.setText(selectedPatientForEdit.getAddress());
             inputFaceIDTextArea.setText(selectedPatientForEdit.getFaceID());
             isEditOperation = true;
+
         } else {
             Labels.showMessageLabel(messageLabel1, "Please select a row.", false);
         }
@@ -466,6 +474,10 @@ public class PatientRegistrationController implements Initializable {
                 String deleteEPQuery = "DELETE FROM educationProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deleteDWQuery = "DELETE FROM doctorWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deleteDPQuery = "DELETE FROM doctorProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePhWQuery = "DELETE FROM physioWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deletePhPQuery = "DELETE FROM physioProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteAWQuery = "DELETE FROM audioWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
+                String deleteAPQuery = "DELETE FROM audioProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deletePWQuery = "DELETE FROM pharmacyWaitingTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 String deletePPQuery = "DELETE FROM pharmacyProgressTable WHERE queueNumber = " + selectedItem.getQueueNo();
                 try (Statement deleteStatement = connection.createStatement()) {
@@ -475,6 +487,10 @@ public class PatientRegistrationController implements Initializable {
                     deleteStatement.executeUpdate(deleteEPQuery);
                     deleteStatement.executeUpdate(deleteDWQuery);
                     deleteStatement.executeUpdate(deleteDPQuery);
+                    deleteStatement.executeUpdate(deletePhWQuery);
+                    deleteStatement.executeUpdate(deletePhPQuery);
+                    deleteStatement.executeUpdate(deleteAWQuery);
+                    deleteStatement.executeUpdate(deleteAPQuery);
                     deleteStatement.executeUpdate(deletePWQuery);
                     deleteStatement.executeUpdate(deletePPQuery);
                 }

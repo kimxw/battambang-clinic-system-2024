@@ -17,10 +17,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1230.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.orb.battambang.checkupstation.DentalController">
    <children>
-      <Button fx:id="heightAndWeightButton" layoutX="374.0" layoutY="118.0" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
-         <font>
-            <Font size="11.0" />
-         </font></Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="524.0" layoutX="18.0" layoutY="118.0" stroke="#ebebeb" strokeType="INSIDE" width="340.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="471.0" layoutX="32.0" layoutY="159.0" stroke="#eeeeee" strokeType="INSIDE" width="312.0" />
       <Label layoutX="37.0" layoutY="131.0" text="Select Patient :">
@@ -29,22 +25,48 @@
          </font>
       </Label>
       <TextField fx:id="queueNumberTextField" layoutX="130.0" layoutY="128.0" onKeyPressed="#onEnterKeyPressed" prefHeight="25.0" prefWidth="140.0" promptText="Queue Number" />
-      <Button fx:id="snellensTestButton" layoutX="472.0" layoutY="118.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button fx:id="hearingTestButton" layoutX="570.0" layoutY="118.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button layoutX="668.0" layoutY="118.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="Head Lice Check">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
       <Button fx:id="searchButton" layoutX="283.0" layoutY="128.0" mnemonicParsing="false" onAction="#searchButtonOnAction" prefHeight="23.0" prefWidth="58.0" text="Search" />
+
+      <Pane fx:id="tabPane" layoutX="373.0" layoutY="119.0" prefHeight="31.0" prefWidth="595.0">
+         <children>
+            <Button fx:id="heightAndWeightButton" mnemonicParsing="false" onAction="#heightAndWeightButtonOnAction" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: #ebebeb;" text="Height/Weight">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="vitalSignsButton" layoutX="91.0" mnemonicParsing="false" onAction="#vitalSignsButtonOnAction" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #ebebeb;" text="Vitals Signs">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="snellensTestButton" layoutX="167.0" mnemonicParsing="false" onAction="#snellensTestButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #ebebeb;" text="Snellen's Test">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="hearingTestButton" layoutX="252.0" mnemonicParsing="false" onAction="#hearingTestButtonOnAction" prefHeight="31.0" prefWidth="85.0" style="-fx-background-color: #ebebeb;" text="Hearing Test">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="headLiceButton" layoutX="337.0" mnemonicParsing="false" onAction="#headLiceButtonOnAction" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #ebebeb;" text="Developmental Checks" textOverrun="CENTER_WORD_ELLIPSIS">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="historyButton" layoutX="471.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="77.0" style="-fx-background-color: #ebebeb;" text="History">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+            <Button fx:id="dentalButton" layoutX="548.0" mnemonicParsing="false" onAction="#dentalButtonOnAction" prefHeight="31.0" prefWidth="41.0" style="-fx-background-color: #ebebeb;" text="HEF">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+
       <Pane layoutX="374.0" layoutY="149.0" prefHeight="469.0" prefWidth="588.0" style="-fx-background-color: #B0C4DE;">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="448.0" layoutX="13.0" layoutY="10.0" stroke="#eeeeee" strokeType="INSIDE" width="562.0" />
@@ -131,16 +153,6 @@
             </Label>
          </children>
       </Pane>
-      <Button layoutX="766.0" layoutY="118.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #B0C4DE;" text="Dental">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
-      <Button fx:id="historyButton" layoutX="864.0" layoutY="118.0" mnemonicParsing="false" onAction="#historyButtonOnAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #ebebeb;" text="History">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Button>
       <Pane fx:id="queuePane" layoutX="967.0" layoutY="88.0" prefHeight="500.0" prefWidth="236.0">
          <children>
             <ListView fx:id="inProgressListView" layoutX="159.0" layoutY="64.0" prefHeight="412.0" prefWidth="58.0" stylesheets="@list-styles.css" />
@@ -178,50 +190,60 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="particularsPane" layoutX="64.0" layoutY="171.0" prefHeight="453.0" prefWidth="253.0">
+      <Pane fx:id="particularsPane" layoutX="45.0" layoutY="140.0" prefHeight="460.0" prefWidth="247.0">
          <children>
-            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="214.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="214.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="nameLabel" layoutX="87.0" layoutY="59.0" prefHeight="19.0" prefWidth="134.0">
+            <Label fx:id="queueNoLabel" layoutX="87.0" layoutY="15.0" prefHeight="19.0" prefWidth="41.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="ageLabel" layoutX="85.0" layoutY="86.0" prefHeight="19.0" prefWidth="41.0">
+            <Label fx:id="nameLabel" layoutX="87.0" layoutY="37.0" prefHeight="19.0" prefWidth="134.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="sexLabel" layoutX="87.0" layoutY="119.0" prefHeight="19.0" prefWidth="26.0">
+            <Label fx:id="ageLabel" layoutX="87.0" layoutY="58.0" prefHeight="19.0" prefWidth="41.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label fx:id="phoneNumberLabel" layoutX="87.0" layoutY="149.0" prefHeight="19.0" prefWidth="134.0">
+            <Label fx:id="sexLabel" layoutX="87.0" layoutY="81.0" prefHeight="19.0" prefWidth="26.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="245.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="276.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="307.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="queueNoLabel" layoutX="85.0" layoutY="29.0" prefHeight="19.0" prefWidth="41.0">
+            <Label fx:id="phoneNumberLabel" layoutX="87.0" layoutY="103.0" prefHeight="19.0" prefWidth="134.0">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="338.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="367.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
-            <Label fx:id="status2Label" alignment="CENTER" layoutX="141.0" layoutY="245.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="status3Label" alignment="CENTER" layoutX="141.0" layoutY="276.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="status4Label" alignment="CENTER" layoutX="141.0" layoutY="307.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="status5Label" alignment="CENTER" layoutX="141.0" layoutY="338.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <Label fx:id="status6Label" alignment="CENTER" layoutX="141.0" layoutY="367.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
-            <ToggleButton fx:id="hearingToggleButton" layoutX="213.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
-            <ToggleButton fx:id="socialToggleButton" layoutX="44.0" layoutY="427.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
-            <ToggleButton fx:id="physioToggleButton" layoutX="139.0" layoutY="427.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
-            <ToggleButton fx:id="tbToggleButton" layoutX="44.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tubercolosis" />
-            <ToggleButton fx:id="optometryToggleButton" layoutX="132.0" layoutY="397.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
+            <Rectangle fx:id="status1Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="163.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status2Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="188.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status3Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="213.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status4Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="238.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status5Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="283.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status6Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="308.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status7Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="333.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status8Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="358.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Rectangle fx:id="status9Rectangle" arcHeight="18.0" arcWidth="18.0" fill="WHITE" height="19.0" layoutX="137.0" layoutY="383.0" stroke="#ff7272" strokeType="INSIDE" strokeWidth="0.0" width="85.0" />
+            <Label fx:id="status1Label" alignment="CENTER" layoutX="141.0" layoutY="163.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status2Label" alignment="CENTER" layoutX="141.0" layoutY="188.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status3Label" alignment="CENTER" layoutX="141.0" layoutY="213.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status4Label" alignment="CENTER" layoutX="141.0" layoutY="238.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status5Label" alignment="CENTER" layoutX="141.0" layoutY="283.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status6Label" alignment="CENTER" layoutX="141.0" layoutY="308.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status7Label" alignment="CENTER" layoutX="141.0" layoutY="333.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status8Label" alignment="CENTER" layoutX="141.0" layoutY="358.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="status9Label" alignment="CENTER" layoutX="141.0" layoutY="383.0" prefHeight="17.0" prefWidth="77.0" text="Incomplete" textAlignment="CENTER" textFill="WHITE" />
+            <AnchorPane fx:id="tagsAnchorPane" layoutX="55.0" layoutY="407.0" prefHeight="66.0" prefWidth="253.0">
+               <children>
+                  <ToggleButton fx:id="hearingToggleButton" layoutX="169.0" layoutY="13.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="58.0" styleClass="general" stylesheets="@tag-styles.css" text="Hearing" />
+                  <ToggleButton fx:id="socialToggleButton" layoutX="-3.0" layoutY="42.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="91.0" styleClass="general" stylesheets="@tag-styles.css" text="Social Worker" />
+                  <ToggleButton fx:id="physioToggleButton" layoutX="94.0" layoutY="42.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="98.0" styleClass="general" stylesheets="@tag-styles.css" text="Physiotherapist" />
+                  <ToggleButton fx:id="tbToggleButton" layoutX="-3.0" layoutY="13.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="84.0" styleClass="general" stylesheets="@tag-styles.css" text="Tuberculosis" />
+                  <ToggleButton fx:id="optometryToggleButton" layoutX="87.0" layoutY="13.0" mnemonicParsing="false" onAction="#tagToggleOnAction" prefHeight="23.0" prefWidth="77.0" styleClass="general" stylesheets="@tag-styles.css" text="Optometry" />
+               </children>
+            </AnchorPane>
          </children>
       </Pane>
       <AnchorPane fx:id="sliderAnchorPane" prefHeight="650.0" prefWidth="200.0" stylesheets="@menu-styles.css">
@@ -415,5 +437,15 @@
          </children>
       </AnchorPane>
       <Pane fx:id="editBlockPane" layoutX="398.0" layoutY="167.0" onMouseClicked="#editBlockPaneOnMouseClicked" prefHeight="431.0" prefWidth="543.0" />
+      <Label fx:id="connectionStatus" layoutX="720.0" layoutY="3.0" prefHeight="60.0" prefWidth="114.0" text="Disconnected" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="connectionImageView" fitHeight="21.0" fitWidth="15.0" layoutX="690.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+         <image>
+            <Image url="@../../../icons/cross.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>

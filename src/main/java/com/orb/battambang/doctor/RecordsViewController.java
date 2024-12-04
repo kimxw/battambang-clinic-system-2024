@@ -33,17 +33,22 @@ public class RecordsViewController {
         double weight = 0.0;
         double bmi = 0.0;
         String bmiCategory = "";
+        String malnourishmentFlag = "";
         String bmiNotes = "";
+        int bloodPressure = 0;
+        double temperature = 0.0;
         String wpRight = "";
         String wpLeft = "";
         String npRight = "";
         String npLeft = "";
         String snellensNotes = "";
         boolean hearingProblem = false;
+        boolean fluSymptoms = false;
         String hearingNotes = "";
         boolean liceProblem = false;
         String liceNotes = "";
         String dentalNotes = "";
+        double angleOfTruncalRotation = 0.00;
         String system = "";
         String ps = "";
         String duration = "";
@@ -55,14 +60,20 @@ public class RecordsViewController {
         String sr = "";
         String drugAllergies = "";
         String historyNotes = "";
+        boolean knowsHEF = false;
+        boolean hasHEF = false;
+        String usesHEF = "";
 
         String patientQuery = "SELECT * FROM patientQueueTable WHERE queueNumber = " + queueNumber;
         String bmiQuery = "SELECT * FROM heightAndWeightTable WHERE queueNumber = " + queueNumber;
+        String vitalsQuery = "SELECT * FROM vitalSignsTable WHERE queueNumber = " + queueNumber;
         String snellensQuery = "SELECT * FROM snellensTestTable WHERE queueNumber = " + queueNumber;
         String hearingQuery = "SELECT * FROM hearingTestTable WHERE queueNumber = " + queueNumber;
         String liceQuery = "SELECT * FROM headLiceTable WHERE queueNumber = " + queueNumber;
         String dentalQuery = "SELECT * FROM dentalTable WHERE queueNumber = " + queueNumber;
+        String scoliosisQuery = "SELECT * FROM scoliosisTable WHERE queueNumber = " + queueNumber;
         String historyQuery = "SELECT * FROM historyTable WHERE queueNumber = " + queueNumber;
+        String HEFQuery = "SELECT * FROM healthEFTable WHERE queueNumber = " + queueNumber;
 
         try {
             Statement statement = DatabaseConnection.connection.createStatement();
@@ -82,9 +93,19 @@ public class RecordsViewController {
                 weight = defaultIfNull(bmiResultSet.getDouble("weight"));
                 bmi = defaultIfNull(bmiResultSet.getDouble("bmi"));
                 bmiCategory = defaultIfNull(bmiResultSet.getString("bmiCategory"));
+                malnourishmentFlag = defaultIfNull(bmiResultSet.getBoolean("malnourishmentFlagged")
+                                        ? "FLAGGED: Child below 3rd percentile (BMI by age)"
+                                        : "No flags" );
                 bmiNotes = defaultIfNull(bmiResultSet.getString("additionalNotes"));
             }
             bmiResultSet.close();
+
+            ResultSet vitalsResultSet = statement.executeQuery(vitalsQuery);
+            if (vitalsResultSet.next()) {
+                bloodPressure = defaultIfNull(vitalsResultSet.getInt("bloodPressure"));
+                temperature = defaultIfNull(vitalsResultSet.getDouble("temperature"));
+            }
+            vitalsResultSet.close();
 
             ResultSet snellensResultSet = statement.executeQuery(snellensQuery);
             if (snellensResultSet.next()) {
@@ -99,6 +120,7 @@ public class RecordsViewController {
             ResultSet hearingResultSet = statement.executeQuery(hearingQuery);
             if (hearingResultSet.next()) {
                 hearingProblem = hearingResultSet.getBoolean("hearingProblems");
+                fluSymptoms = hearingResultSet.getBoolean("fluSymptoms");
                 hearingNotes = defaultIfNull(hearingResultSet.getString("additionalNotes"));
             }
             hearingResultSet.close();
@@ -116,6 +138,12 @@ public class RecordsViewController {
             }
             dentalResultSet.close();
 
+            ResultSet scoliosisResultSet = statement.executeQuery(scoliosisQuery);
+            if (scoliosisResultSet.next()) {
+                angleOfTruncalRotation = defaultIfNull(scoliosisResultSet.getDouble("angleOfTruncalRotation"));
+            }
+            scoliosisResultSet.close();
+
             ResultSet historyResultSet = statement.executeQuery(historyQuery);
             if (historyResultSet.next()) {
                 system = defaultIfNull(historyResultSet.getString("bodySystem"));
@@ -131,6 +159,14 @@ public class RecordsViewController {
                 historyNotes = defaultIfNull(historyResultSet.getString("additionalNotes"));
             }
             historyResultSet.close();
+
+            ResultSet HEFResultSet = statement.executeQuery(HEFQuery);
+            if (HEFResultSet.next()) {
+                knowsHEF = HEFResultSet.getBoolean("knowsHEF");
+                hasHEF = HEFResultSet.getBoolean("hasHEF");
+                usesHEF = defaultIfNull(HEFResultSet.getString("usesHEF"));
+            }
+            HEFResultSet.close();
 
             statement.close();
 
@@ -150,8 +186,13 @@ public class RecordsViewController {
                 ), "content"),
                 createStyledText("Height and Weight\n\n", "header"),
                 createStyledText(String.format(
-                        "Height : %.1f cm\nWeight : %.1f kg\nBMI : %.1f kg/m2\nBMI Category : %s\nNotes : %s\n\n",
-                        height, weight, bmi, bmiCategory, bmiNotes
+                        "Height : %.1f cm\nWeight : %.1f kg\nBMI : %.1f kg/m2\nBMI Category : %s\n%s\nNotes : %s\n\n",
+                        height, weight, bmi, bmiCategory, malnourishmentFlag, bmiNotes
+                ), "content"),
+                createStyledText("\nVital Signs\n\n", "header"),
+                createStyledText(String.format(
+                        "Blood Pressure : %d mmHg\nTemperature : %.1f °C\n\n",
+                        bloodPressure, temperature
                 ), "content"),
                 createStyledText("Snellen's Test\n\n", "header"),
                 createStyledText(String.format(
@@ -160,8 +201,8 @@ public class RecordsViewController {
                 ), "content"),
                 createStyledText("Hearing Test\n\n", "header"),
                 createStyledText(String.format(
-                        "Hearing problems reported : %s\nNotes : %s\n\n",
-                        hearingProblem ? "Yes" : "No", hearingNotes
+                        "Hearing problems reported : %s\nFlu-like symptoms reported : %s\nNotes : %s\n\n",
+                        hearingProblem ? "Yes" : "No", fluSymptoms ? "Yes" : "No", hearingNotes
                 ), "content"),
                 createStyledText("Head Lice Screening\n\n", "header"),
                 createStyledText(String.format(
@@ -172,6 +213,11 @@ public class RecordsViewController {
                 createStyledText(String.format(
                         "Notes : %s\n\n",
                         dentalNotes
+                ), "content"),
+                createStyledText("Scoliosis Checkup\n\n", "header"),
+                createStyledText(String.format(
+                        "Angle of Truncal Rotation : %.2f degrees\n\n",
+                        angleOfTruncalRotation
                 ), "content"),
                 createStyledText("History\n\n", "header"),
                 createStyledText("System\n", "header"),
@@ -195,7 +241,12 @@ public class RecordsViewController {
                 createStyledText("Notes\n", "header"),
                 createStyledText(historyNotes + "\n\n", "content"),
                 createStyledText("Drug Allergies\n", "header"),
-                createStyledText(drugAllergies + "\n\n", "content")
+                createStyledText(drugAllergies + "\n\n", "content"),
+                createStyledText("Health Equity Fund\n", "header"),
+                createStyledText(String.format(
+                        "Do you know about HEF? : %s\nDo you have HEF? : %s\n(If applicable) Do you use it? Why or why not? : %s\n\n",
+                        knowsHEF ? "Yes" : "No", hasHEF ? "Yes" : "No", usesHEF
+                ), "content")
         );
 
     }

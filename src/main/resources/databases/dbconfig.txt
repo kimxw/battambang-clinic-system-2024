@@ -4,6 +4,22 @@ localhost:3306
 
 admin
 btb!2024
+192.168.0.202:3306
+
+admin
+btb!2024
+192.168.0.214:3306
+
+root
+Star!2024
+localhost:3306
+
+root
+Star!2024
+192.168.2.200:3306
+
+admin
+btb!2024
 172.31.110.136:3306
 
 admin

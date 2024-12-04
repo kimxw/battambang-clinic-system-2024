@@ -162,7 +162,7 @@ public class HistoryController extends CheckupMenuController implements Initiali
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         // for waiting list
         // Initialize the waiting list

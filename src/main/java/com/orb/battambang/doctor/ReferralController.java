@@ -1,12 +1,13 @@
 package com.orb.battambang.doctor;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+
+import java.nio.file.StandardWatchEventKinds;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -15,10 +16,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 
 import static com.orb.battambang.connection.DatabaseConnection.connection;
@@ -35,6 +40,26 @@ public class ReferralController implements Initializable {
     private Button updateButton;
     @FXML
     private TextField dateTextField;
+
+    @FXML
+    private Button typesOpenButton;
+    @FXML
+    private Button typesCloseButton;
+    @FXML
+    private CheckBox mongKolCheckBox;
+    @FXML
+    private CheckBox poipetCheckBox;
+    @FXML
+    private CheckBox sevaCheckBox;
+    @FXML
+    private CheckBox wsCheckBox;
+    @FXML
+    private CheckBox optometristCheckbox;
+    @FXML
+    private CheckBox dentistCheckBox;
+    @FXML
+    private CheckBox bongBongdolCheckBox;
+
     @FXML
     private TextField nameTextField;
     @FXML
@@ -53,10 +78,21 @@ public class ReferralController implements Initializable {
     private TextArea medicationTextArea;
     @FXML
     private TextArea notesTextArea;
+
     private int queueNumber = -1;
+    private Map<CheckBox, String> checkBoxHashMap = new HashMap<>();
 
     public void setQueueNumber(int queueNumber) {
         this.queueNumber = queueNumber;
+
+        this.checkBoxHashMap.put(mongKolCheckBox, "MongKol Borey Hospital");
+        this.checkBoxHashMap.put(poipetCheckBox, "Poipet Referral Hospital");
+        this.checkBoxHashMap.put(sevaCheckBox, "SEVA");
+        this.checkBoxHashMap.put(wsCheckBox, "WS Audiology");
+        this.checkBoxHashMap.put(optometristCheckbox, "Optometrist");
+        this.checkBoxHashMap.put(dentistCheckBox, "Dentist");
+        this.checkBoxHashMap.put(bongBongdolCheckBox, "Bong Bondol");
+
         initData(); // Initialize data after setting queueNumber
     }
 
@@ -78,6 +114,30 @@ public class ReferralController implements Initializable {
             //System.out.println("Queue number is not set. Data initialization skipped.");
         }
     }
+
+    private String generateTypesAsString() {
+        StringBuilder types = new StringBuilder();
+
+        for (Map.Entry<CheckBox, String> entry : checkBoxHashMap.entrySet()) {
+            if (entry.getKey().isSelected()) {
+                types.append(entry.getValue()).append("; ");
+            }
+        }
+
+        return types.toString();
+    }
+
+    private void markReferralTypes(String typesAsString) {
+        for (Map.Entry<CheckBox, String> entry : this.checkBoxHashMap.entrySet()) {
+            if (typesAsString == null) {
+                return;
+            }
+            if (typesAsString.contains(entry.getValue())) {
+                entry.getKey().setSelected(true);
+            }
+        }
+    }
+
 
     private void fillPatientDetails(int queueNumber) {
         String patientViewQuery = "SELECT name, age, sex, address FROM patientQueueTable WHERE queueNumber = " + queueNumber + ";";
@@ -105,7 +165,7 @@ public class ReferralController implements Initializable {
     }
 
     private void fillDoctorConsultDetails(int queueNumber) {
-        String consultViewQuery = "SELECT doctor, prescription FROM doctorConsultTable WHERE queueNumber = " + queueNumber + ";";
+        String consultViewQuery = "SELECT doctor, referralTypes FROM doctorConsultTable WHERE queueNumber = " + queueNumber + ";";
 
         try {
             Statement statement = connection.createStatement();
@@ -113,10 +173,13 @@ public class ReferralController implements Initializable {
 
             if (resultSet.next()) {
                 String doctor = resultSet.getString("doctor");
-                String prescription = resultSet.getString("prescription");
+                //String prescription = resultSet.getString("prescription");
+                String referralTypes = resultSet.getString("referralTypes");
+
+                markReferralTypes(referralTypes);
 
                 docNameTextField.setText(doctor);
-                medicationTextArea.setText(prescription);
+                //medicationTextArea.setText(prescription);
             }
 
         } catch (SQLException e) {
@@ -126,7 +189,7 @@ public class ReferralController implements Initializable {
     }
 
     private void fillDoctorNotes(int queueNumber) {
-        String query = "SELECT referral FROM doctorConsultTable WHERE queueNumber = " + queueNumber + ";";
+        String query = "SELECT referral, referralTypes FROM doctorConsultTable WHERE queueNumber = " + queueNumber + ";";
 
         try {
             Statement statement = connection.createStatement();
@@ -142,6 +205,8 @@ public class ReferralController implements Initializable {
                         notesTextArea.setText(parts[2]);
                     }
                 }
+                String referralTypes = resultSet.getString("referralTypes");
+                markReferralTypes(referralTypes);
             }
 
         } catch (SQLException e) {
@@ -156,13 +221,15 @@ public class ReferralController implements Initializable {
         String duration = durationTextField.getText();
         String notes = notesTextArea.getText();
         String referral = diagnosis + ";" + duration + ";" + notes;
+        String referralTypes = generateTypesAsString();
 
-        String updateQuery = "UPDATE doctorConsultTable SET referral = ? WHERE queueNumber = ?";
+        String updateQuery = "UPDATE doctorConsultTable SET referral = ?, referralTypes = ? WHERE queueNumber = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
 
             pstmt.setString(1, referral);
-            pstmt.setInt(2, queueNumber);
+            pstmt.setString(2, referralTypes);
+            pstmt.setInt(3, queueNumber);
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -180,7 +247,7 @@ public class ReferralController implements Initializable {
             Node contentToPrint = pane1;
 
             // Show the print dialog
-            boolean proceed = printerJob.showPrintDialog(exitButton.getScene().getWindow());
+            boolean proceed = printerJob.showPrintDialog(dateTextField.getScene().getWindow());
 
             if (proceed) {
                 // Print the content of pane1
@@ -194,12 +261,5 @@ public class ReferralController implements Initializable {
         }
     }
 
-
-
-    @FXML
-    public void exitButtonOnAction(ActionEvent event) {
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
-    }
 
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
@@ -29,26 +30,39 @@ public class AudiologistController extends SpecialistController implements Initi
     private ListView<Integer> inProgressListView;
 
     @FXML
-    private CheckBox otoscopyClearCheckBox;
+    private CheckBox leftOtoscopyClearCheckBox;
 
     @FXML
-    private CheckBox otoscopyEarwaxCheckBox;
+    private CheckBox leftOtoscopyEarwaxCheckBox;
 
     @FXML
-    private CheckBox otoscopyFurtherInvCheckBox;
+    private CheckBox leftOtoscopyFurtherInvCheckBox;
+    @FXML
+    private CheckBox rightOtoscopyClearCheckBox;
+
+    @FXML
+    private CheckBox rightOtoscopyEarwaxCheckBox;
+
+    @FXML
+    private CheckBox rightOtoscopyFurtherInvCheckBox;
 
 
     @FXML
-    private CheckBox frequency1000CheckBox;
-
+    private ChoiceBox<String> left500ChoiceBox;
     @FXML
-    private CheckBox frequency2000CheckBox;
-
+    private ChoiceBox<String> left1000ChoiceBox;
     @FXML
-    private CheckBox frequency4000CheckBox;
-
+    private ChoiceBox<String> left2000ChoiceBox;
     @FXML
-    private CheckBox frequency500CheckBox;
+    private ChoiceBox<String> left4000ChoiceBox;
+    @FXML
+    private ChoiceBox<String> right500ChoiceBox;
+    @FXML
+    private ChoiceBox<String> right1000ChoiceBox;
+    @FXML
+    private ChoiceBox<String> right2000ChoiceBox;
+    @FXML
+    private ChoiceBox<String> right4000ChoiceBox;
 
 
     @FXML
@@ -80,6 +94,18 @@ public class AudiologistController extends SpecialistController implements Initi
         //mini QMs
         MiniQueueManager waitingQueueManager = new MiniQueueManager(waitingListView, "audioWaitingTable");
         MiniQueueManager progressQueueManager = new MiniQueueManager(inProgressListView, "audioProgressTable");
+
+        String[] choiceBoxItems = new String[]{
+                "NIL", "20 dB", "30 dB", "40 dB", "50 dB", "60 dB",
+                "70 dB", "80 dB", "90 dB", "100 dB", "110 dB", "120 dB"};
+        left500ChoiceBox.getItems().addAll(choiceBoxItems);
+        left1000ChoiceBox.getItems().addAll(choiceBoxItems);
+        left2000ChoiceBox.getItems().addAll(choiceBoxItems);
+        left4000ChoiceBox.getItems().addAll(choiceBoxItems);
+        right500ChoiceBox.getItems().addAll(choiceBoxItems);
+        right1000ChoiceBox.getItems().addAll(choiceBoxItems);
+        right2000ChoiceBox.getItems().addAll(choiceBoxItems);
+        right4000ChoiceBox.getItems().addAll(choiceBoxItems);
     }
 
     @FXML
@@ -104,16 +130,27 @@ public class AudiologistController extends SpecialistController implements Initi
             return;
         }
 
-        //otoscopy results
-        boolean otoscopyClear = otoscopyClearCheckBox.isSelected();
-        boolean otoscopyEarwax = otoscopyEarwaxCheckBox.isSelected();
-        boolean otoscopyFurtherInvestigation = otoscopyFurtherInvCheckBox.isSelected();
+        //left ear otoscopy results
+        boolean leftOtoscopyClear = leftOtoscopyClearCheckBox.isSelected();
+        boolean leftOtoscopyEarwax = leftOtoscopyEarwaxCheckBox.isSelected();
+        boolean leftOtoscopyFurtherInvestigation = leftOtoscopyFurtherInvCheckBox.isSelected();
 
-        //hearing screening results
-        boolean hearing500Hz = frequency500CheckBox.isSelected();
-        boolean hearing1000Hz = frequency1000CheckBox.isSelected();
-        boolean hearing2000Hz = frequency2000CheckBox.isSelected();
-        boolean hearing4000Hz = frequency4000CheckBox.isSelected();
+        //right ear otoscopy results
+        boolean rightOtoscopyClear = rightOtoscopyClearCheckBox.isSelected();
+        boolean rightOtoscopyEarwax = rightOtoscopyEarwaxCheckBox.isSelected();
+        boolean rightOtoscopyFurtherInvestigation = rightOtoscopyFurtherInvCheckBox.isSelected();
+
+        //left ear hearing screening results
+        String left500Hz = left500ChoiceBox.getValue();
+        String left1000Hz = left1000ChoiceBox.getValue();
+        String left2000Hz = left2000ChoiceBox.getValue();
+        String left4000Hz = left4000ChoiceBox.getValue();
+
+        //right ear hearing screening results
+        String right500Hz = right500ChoiceBox.getValue();
+        String right1000Hz = right1000ChoiceBox.getValue();
+        String right2000Hz = right2000ChoiceBox.getValue();
+        String right4000Hz = right4000ChoiceBox.getValue();
 
         //recommendations
         boolean noAction = rec1CheckBox.isSelected();
@@ -132,6 +169,7 @@ public class AudiologistController extends SpecialistController implements Initi
         }
 
         int queueNumber;
+
         try {
             queueNumber = Integer.parseInt(queueNumberText);
         } catch (NumberFormatException ex) {
@@ -141,30 +179,48 @@ public class AudiologistController extends SpecialistController implements Initi
 
         String upsertAudiologistTableQuery = """
                 INSERT INTO audiologistTable (queueNumber, doctor,
-                                                           otoscopy_clear,
-                                                           otoscopy_earwax,
-                                                           otoscopy_further_investigation,
+                                                           left_otoscopy_clear,
+                                                           left_otoscopy_earwax,
+                                                           left_otoscopy_further_investigation,
+                                                           
+                                                           right_otoscopy_clear,
+                                                           right_otoscopy_earwax,
+                                                           right_otoscopy_further_investigation,
                                                        
-                                                           hearing_500Hz,
-                                                           hearing_1000Hz,
-                                                           hearing_2000Hz,
-                                                           hearing_4000Hz,
+                                                           left_hearing_500Hz,
+                                                           left_hearing_1000Hz,
+                                                           left_hearing_2000Hz,
+                                                           left_hearing_4000Hz,
+                                                           
+                                                           right_hearing_500Hz,
+                                                           right_hearing_1000Hz,
+                                                           right_hearing_2000Hz,
+                                                           right_hearing_4000Hz,
                                                        
                                                            no_action,
                                                            visit_ent,
                                                            follow_up_ent,
                                                            detailed_hearing_assessment)                                                            
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                     doctor = VALUES(doctor),
-                    otoscopy_clear = VALUES(otoscopy_clear),
-                    otoscopy_earwax = VALUES(otoscopy_earwax),
-                    otoscopy_further_investigation = VALUES(otoscopy_further_investigation),
+                    left_otoscopy_clear = VALUES(left_otoscopy_clear),
+                    left_otoscopy_earwax = VALUES(left_otoscopy_earwax),
+                    left_otoscopy_further_investigation = VALUES(left_otoscopy_further_investigation),
                     
-                    hearing_500Hz = VALUES(hearing_500Hz),
-                    hearing_1000Hz = VALUES(hearing_1000Hz),
-                    hearing_2000Hz = VALUES(hearing_2000Hz),
-                    hearing_4000Hz = VALUES(hearing_4000Hz),
+                    right_otoscopy_clear = VALUES(right_otoscopy_clear),
+                    right_otoscopy_earwax = VALUES(right_otoscopy_earwax),
+                    right_otoscopy_further_investigation = VALUES(right_otoscopy_further_investigation),
+                    
+                    left_hearing_500Hz = VALUES(left_hearing_500Hz),
+                    left_hearing_1000Hz = VALUES(left_hearing_1000Hz),
+                    left_hearing_2000Hz = VALUES(left_hearing_2000Hz),
+                    left_hearing_4000Hz = VALUES(left_hearing_4000Hz),
+                    
+                    right_hearing_500Hz = VALUES(right_hearing_500Hz),
+                    right_hearing_1000Hz = VALUES(right_hearing_1000Hz),
+                    right_hearing_2000Hz = VALUES(right_hearing_2000Hz),
+                    right_hearing_4000Hz = VALUES(right_hearing_4000Hz),
                     
                     no_action = VALUES(no_action),
                     visit_ent = VALUES(visit_ent),
@@ -175,17 +231,24 @@ public class AudiologistController extends SpecialistController implements Initi
             try (PreparedStatement audiologistTableStmt = connection.prepareStatement(upsertAudiologistTableQuery)) {
                 audiologistTableStmt.setInt(1, queueNumber);
                 audiologistTableStmt.setString(2, menuUserButton.getText());
-                audiologistTableStmt.setBoolean(3, otoscopyClear);
-                audiologistTableStmt.setBoolean(4, otoscopyEarwax);
-                audiologistTableStmt.setBoolean(5, otoscopyFurtherInvestigation);
-                audiologistTableStmt.setBoolean(6, hearing500Hz);
-                audiologistTableStmt.setBoolean(7, hearing1000Hz);
-                audiologistTableStmt.setBoolean(8, hearing2000Hz);
-                audiologistTableStmt.setBoolean(9, hearing4000Hz);
-                audiologistTableStmt.setBoolean(10, noAction);
-                audiologistTableStmt.setBoolean(11, visitEnt);
-                audiologistTableStmt.setBoolean(12, followUpEnt);
-                audiologistTableStmt.setBoolean(13, detailedHearingAssessment);
+                audiologistTableStmt.setBoolean(3, leftOtoscopyClear);
+                audiologistTableStmt.setBoolean(4, leftOtoscopyEarwax);
+                audiologistTableStmt.setBoolean(5, leftOtoscopyFurtherInvestigation);
+                audiologistTableStmt.setBoolean(6, rightOtoscopyClear);
+                audiologistTableStmt.setBoolean(7, rightOtoscopyEarwax);
+                audiologistTableStmt.setBoolean(8, rightOtoscopyFurtherInvestigation);
+                audiologistTableStmt.setString(9, left500Hz);
+                audiologistTableStmt.setString(10, left1000Hz);
+                audiologistTableStmt.setString(11, left2000Hz);
+                audiologistTableStmt.setString(12, left4000Hz);
+                audiologistTableStmt.setString(13, right500Hz);
+                audiologistTableStmt.setString(14, right1000Hz);
+                audiologistTableStmt.setString(15, right2000Hz);
+                audiologistTableStmt.setString(16, right4000Hz);
+                audiologistTableStmt.setBoolean(17, noAction);
+                audiologistTableStmt.setBoolean(18, visitEnt);
+                audiologistTableStmt.setBoolean(19, followUpEnt);
+                audiologistTableStmt.setBoolean(20, detailedHearingAssessment);
                 audiologistTableStmt.executeUpdate();
             } catch (SQLException ex) {
                 System.out.println(ex); // Handle exception appropriately
@@ -205,6 +268,8 @@ public class AudiologistController extends SpecialistController implements Initi
                 return;
             }
 
+        super.updateButtonOnAction(e); //update prescriptions + whatever else parent constructor takes care of
+
         // Show success message if all operations succeed
             Labels.showMessageLabel(warningLabel, "Update successful.", true);
 
@@ -216,14 +281,23 @@ public class AudiologistController extends SpecialistController implements Initi
             ResultSet resultSet = statement.executeQuery(patientQuery);
 
             if (resultSet.next()) {
-                otoscopyClearCheckBox.setSelected(resultSet.getBoolean("otoscopy_clear"));
-                otoscopyEarwaxCheckBox.setSelected(resultSet.getBoolean("otoscopy_earwax"));
-                otoscopyFurtherInvCheckBox.setSelected(resultSet.getBoolean("otoscopy_further_investigation"));
+                leftOtoscopyClearCheckBox.setSelected(resultSet.getBoolean("left_otoscopy_clear"));
+                leftOtoscopyEarwaxCheckBox.setSelected(resultSet.getBoolean("left_otoscopy_earwax"));
+                leftOtoscopyFurtherInvCheckBox.setSelected(resultSet.getBoolean("left_otoscopy_further_investigation"));
 
-                frequency500CheckBox.setSelected(resultSet.getBoolean("hearing_500Hz"));
-                frequency1000CheckBox.setSelected(resultSet.getBoolean("hearing_1000Hz"));
-                frequency2000CheckBox.setSelected(resultSet.getBoolean("hearing_2000Hz"));
-                frequency4000CheckBox.setSelected(resultSet.getBoolean("hearing_4000Hz"));
+                rightOtoscopyClearCheckBox.setSelected(resultSet.getBoolean("right_otoscopy_clear"));
+                rightOtoscopyEarwaxCheckBox.setSelected(resultSet.getBoolean("right_otoscopy_earwax"));
+                rightOtoscopyFurtherInvCheckBox.setSelected(resultSet.getBoolean("right_otoscopy_further_investigation"));
+
+                left500ChoiceBox.setValue(resultSet.getString("left_hearing_500Hz"));
+                left1000ChoiceBox.setValue(resultSet.getString("left_hearing_1000Hz"));
+                left2000ChoiceBox.setValue(resultSet.getString("left_hearing_2000Hz"));
+                left4000ChoiceBox.setValue(resultSet.getString("left_hearing_4000Hz"));
+
+                right500ChoiceBox.setValue(resultSet.getString("right_hearing_500Hz"));
+                right1000ChoiceBox.setValue(resultSet.getString("right_hearing_1000Hz"));
+                right2000ChoiceBox.setValue(resultSet.getString("right_hearing_2000Hz"));
+                right4000ChoiceBox.setValue(resultSet.getString("right_hearing_4000Hz"));
 
                 rec1CheckBox.setSelected(resultSet.getBoolean("no_action"));
                 rec2CheckBox.setSelected(resultSet.getBoolean("visit_ent"));
@@ -267,14 +341,23 @@ public class AudiologistController extends SpecialistController implements Initi
 
 
     private void clearAudiologistFields() {
-        otoscopyClearCheckBox.setSelected(false);
-        otoscopyEarwaxCheckBox.setSelected(false);
-        otoscopyFurtherInvCheckBox.setSelected(false);
+        leftOtoscopyClearCheckBox.setSelected(false);
+        leftOtoscopyEarwaxCheckBox.setSelected(false);
+        leftOtoscopyFurtherInvCheckBox.setSelected(false);
 
-        frequency500CheckBox.setSelected(false);
-        frequency1000CheckBox.setSelected(false);
-        frequency2000CheckBox.setSelected(false);
-        frequency4000CheckBox.setSelected(false);
+        rightOtoscopyClearCheckBox.setSelected(false);
+        rightOtoscopyEarwaxCheckBox.setSelected(false);
+        rightOtoscopyFurtherInvCheckBox.setSelected(false);
+
+        left500ChoiceBox.setValue(null);
+        left1000ChoiceBox.setValue(null);
+        left2000ChoiceBox.setValue(null);
+        left4000ChoiceBox.setValue(null);
+
+        right500ChoiceBox.setValue(null);
+        right1000ChoiceBox.setValue(null);
+        right2000ChoiceBox.setValue(null);
+        right4000ChoiceBox.setValue(null);
 
         rec1CheckBox.setSelected(false);
         rec2CheckBox.setSelected(false);

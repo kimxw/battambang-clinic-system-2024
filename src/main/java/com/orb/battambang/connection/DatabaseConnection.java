@@ -62,10 +62,19 @@ public class DatabaseConnection {
     public static void closeDatabaseConnection() {
         try {
             if (DatabaseConnection.connection != null && !DatabaseConnection.connection.isClosed()) {
-                DatabaseConnection.connection.close();
+                DatabaseConnection.connection = null;
             }
         } catch (SQLException e) {
             System.out.println(e);
+        }
+    }
+
+    public static boolean isAlive() {
+        try {
+            return DatabaseConnection.connection.isValid(20);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

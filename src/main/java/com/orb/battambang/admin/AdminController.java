@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -124,6 +125,11 @@ public class AdminController implements Initializable {
 
     private final String[] roles = {"Admin", "Reception", "Triage", "Education", "Consultation", "Pharmacy"};
 
+    @FXML
+    public ImageView connectionImageView;
+    @FXML
+    public Label connectionStatus;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -132,7 +138,7 @@ public class AdminController implements Initializable {
         MenuGallery menuGallery = new MenuGallery(sliderAnchorPane, menuLabel, menuBackLabel, menuHomeButton,
                 menuReceptionButton, menuTriageButton, menuEducationButton, menuConsultationButton,
                 menuPhysiotherapistButton, menuAudiologistButton, menuPharmacyButton, menuQueueManagerButton,
-                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton);
+                menuAdminButton, menuLogoutButton, menuUserButton, menuLocationButton, connectionImageView, connectionStatus);
 
         initializeTableColumns();
         initializeStaffList();
@@ -434,29 +440,64 @@ public class AdminController implements Initializable {
                      PrintWriter printWriter = new PrintWriter(fileWriter)) {
 
                     // Write header for CSV
-                    printWriter.println("queueNumber,name,DOB,age,sex,phoneNumber,address,bmiStatus,snellensStatus,hearingStatus,liceStatus,dentalStatus,historyStatus,educationStatus,doctorConsultStatus,pharmacyStatus,height,weight,bmi,bmiCategory,wpRight,wpLeft,npRight,npLeft,hearingProblems,headLice,bodySystem,PS,duration,drugAllergies,HPI,DH,PH,SH,FH,SR,consultationNotes,prescription,referralStatus,condition,referral");
+                    printWriter.println("queueNumber,name,DOB,age,sex,phoneNumber,address,faceID," +
+                            "bmiStatus,vitalSignsStatus,snellensStatus,hearingStatus,liceStatus,dentalStatus,scoliosisStatus," +
+                            "historyStatus,healthEFStatus,educationStatus,doctorConsultStatus,pharmacyStatus," +
+                            "height,weight,bmi,bmiCategory,malnourishmentFlag," +
+                            "bloodPressure,temperature," +
+                            "wpRight,wpLeft,npRight,npLeft,hearingProblems,fluLikeSymptomsReported," +
+                            "headLice,dentalCheckUp,scoliosisAngleOfTruncalRotation," +
+                            "bodySystem,PS,duration,drugAllergies,HPI,DH,PH,SH,FH,SR," +
+                            "healthEquityFundQ1,healthEquityFundQ2,healthEquityFundQ3," +
+                            "consultationNotes,prescription,referralStatus,conditionType,referral,referralTypes," +
+                            "physiotherapistNotes," +
+                            "left_otoscopy_clear,left_otoscopy_earwax,left_otoscopy_further_investigation," +
+                            "left_hearing_500Hz,left_hearing_1000Hz,left_hearing_2000Hz,left_hearing_4000Hz," +
+                            "right_otoscopy_clear,right_otoscopy_earwax,right_otoscopy_further_investigation," +
+                            "right_hearing_500Hz,hearing_1000Hz,right_hearing_2000Hz,right_hearing_4000Hz," +
+                            "no_action,visit_ent,follow_up_ent,detailed_hearing_assessment");
 
                     // Execute SQL query with joins
                     String query = """
-                                    SELECT \s
-                                    pq.queueNumber AS queueNumber, pq.name, pq.DOB, pq.age, pq.sex, pq.phoneNumber, pq.address,\s
-                                    pq.bmiStatus, pq.snellensStatus, pq.hearingStatus, pq.liceStatus, pq.dentalStatus, pq.historyStatus,\s
-                                    pq.educationStatus, pq.doctorConsultStatus, pq.pharmacyStatus, \s
-                                    hwt.height, hwt.weight, hwt.bmi, hwt.bmiCategory, \s
-                                    st.wpRight, st.wpLeft, st.npRight, st.npLeft, \s
-                                    ht.hearingProblems, \s
-                                    hl.headLice, \s
-                                    ht_history.bodySystem, ht_history.PS, ht_history.duration, ht_history.drugAllergies, ht_history.HPI,\s
-                                    ht_history.DH, ht_history.PH, ht_history.SH, ht_history.FH, ht_history.SR,\s
-                                    dc.consultationNotes, dc.prescription, dc.referralStatus, dc.condition, dc.referral\s
+                                    SELECT 
+                                    pq.queueNumber AS queueNumber, pq.name, pq.DOB, pq.age, pq.sex, pq.phoneNumber, pq.address, pq.faceID,
+                                    pq.bmiStatus, pq.vitalSignsStatus, pq.snellensStatus, pq.hearingStatus, pq.liceStatus, 
+                                    pq.dentalStatus, pq.scoliosisStatus, pq.historyStatus, pq.healthEFStatus,
+                                    pq.educationStatus, pq.doctorConsultStatus, pq.pharmacyStatus, 
+                                    hwt.height, hwt.weight, hwt.bmi, hwt.bmiCategory, hwt.malnourishmentFlagged,
+                                    vt.bloodPressure, vt.temperature,
+                                    st.wpRight, st.wpLeft, st.npRight, st.npLeft, 
+                                    ht.hearingProblems, ht.fluSymptoms,
+                                    hl.headLice, 
+                                    dt.additionalNotes, 
+                                    sct.angleOfTruncalRotation,
+                                    ht_history.bodySystem, ht_history.PS, ht_history.duration, ht_history.drugAllergies, ht_history.HPI,
+                                    ht_history.DH, ht_history.PH, ht_history.SH, ht_history.FH, ht_history.SR,
+                                    heft.knowsHEF, heft.hasHEF, heft.usesHEF,
+                                    dc.consultationNotes, dc.referralStatus, dc.conditionType, dc.referral, dc.referralTypes,
+                                    pt.physiotherapistNotes,
+                                    ad.left_otoscopy_clear, ad.left_otoscopy_earwax, ad.left_otoscopy_further_investigation,
+                                    ad.right_otoscopy_clear, ad.right_otoscopy_earwax, ad.right_otoscopy_further_investigation,
+                                    ad.left_hearing_500Hz, ad.left_hearing_1000Hz, ad.left_hearing_2000Hz, ad.left_hearing_4000Hz,
+                                    ad.right_hearing_500Hz, ad.right_hearing_1000Hz, ad.right_hearing_2000Hz, ad.right_hearing_4000Hz,
+                                    ad.no_action, ad.visit_ent, ad.follow_up_ent, ad.detailed_hearing_assessment,
+                                    pp.prescription 
                                 FROM patientQueueTable pq
-                                LEFT JOIN heightAndWeightTable hwt ON pq.queueNumber = hwt.queueNumber\s
-                                LEFT JOIN snellensTestTable st ON pq.queueNumber = st.queueNumber\s
-                                LEFT JOIN hearingTestTable ht ON pq.queueNumber = ht.queueNumber\s
-                                LEFT JOIN headLiceTable hl ON pq.queueNumber = hl.queueNumber\s
-                                LEFT JOIN historyTable ht_history ON pq.queueNumber = ht_history.queueNumber\s
-                                LEFT JOIN doctorConsultTable dc ON pq.queueNumber = dc.queueNumber;
-                            """;
+                                LEFT JOIN heightAndWeightTable hwt ON pq.queueNumber = hwt.queueNumber
+                                LEFT JOIN vitalSignsTable vt ON pq.queueNumber = vt.queueNumber
+                                LEFT JOIN snellensTestTable st ON pq.queueNumber = st.queueNumber
+                                LEFT JOIN hearingTestTable ht ON pq.queueNumber = ht.queueNumber
+                                LEFT JOIN headLiceTable hl ON pq.queueNumber = hl.queueNumber
+                                LEFT JOIN dentalTable dt ON pq.queueNumber = dt.queueNumber
+                                LEFT JOIN scoliosisTable sct ON pq.queueNumber = sct.queueNumber
+                                LEFT JOIN historyTable ht_history ON pq.queueNumber = ht_history.queueNumber
+                                LEFT JOIN healthEFTable heft ON pq.queueNumber = heft.queueNumber
+                                LEFT JOIN doctorConsultTable dc ON pq.queueNumber = dc.queueNumber
+                                LEFT JOIN physiotherapistTable pt ON pq.queueNumber = pt.queueNumber
+                                LEFT JOIN audiologistTable ad ON pq.queueNumber = ad.queueNumber
+                                LEFT JOIN patientPrescriptionTable pp ON pq.queueNumber = pp.queueNumber
+                                """;
+
 
                     try (Statement statement = DatabaseConnection.connection.createStatement();
                          ResultSet resultSet = statement.executeQuery(query)) {
@@ -469,12 +510,16 @@ public class AdminController implements Initializable {
                             String sex = escapeCsv(resultSet.getString("sex"));
                             String phoneNumber = escapeCsv(resultSet.getString("phoneNumber"));
                             String address = escapeCsv(resultSet.getString("address"));
+                            String faceID = escapeCsv(resultSet.getString("faceID"));
                             String bmiStatus = escapeCsv(resultSet.getString("bmiStatus"));
+                            String vitalsStatus = escapeCsv(resultSet.getString("vitalSignsStatus"));
                             String snellensStatus = escapeCsv(resultSet.getString("snellensStatus"));
                             String hearingStatus = escapeCsv(resultSet.getString("hearingStatus"));
                             String liceStatus = escapeCsv(resultSet.getString("liceStatus"));
                             String dentalStatus = escapeCsv(resultSet.getString("dentalStatus"));
+                            String scoliosisStatus = escapeCsv(resultSet.getString("scoliosisStatus"));
                             String historyStatus = escapeCsv(resultSet.getString("historyStatus"));
+                            String healthEFStatus = escapeCsv(resultSet.getString("healthEFStatus"));
                             String educationStatus = escapeCsv(resultSet.getString("educationStatus"));
                             String doctorConsultStatus = escapeCsv(resultSet.getString("doctorConsultStatus"));
                             String pharmacyStatus = escapeCsv(resultSet.getString("pharmacyStatus"));
@@ -483,6 +528,10 @@ public class AdminController implements Initializable {
                             double weight = resultSet.getDouble("weight");
                             double bmi = resultSet.getDouble("bmi");
                             String bmiCategory = escapeCsv(resultSet.getString("bmiCategory"));
+                            boolean malnourishmentFlagged = resultSet.getBoolean("malnourishmentFlagged");
+
+                            String bloodPressure = escapeCsv(resultSet.getString("bloodPressure"));
+                            double temperature = resultSet.getDouble("temperature");
 
                             String wpRight = escapeCsv(resultSet.getString("wpRight"));
                             String wpLeft = escapeCsv(resultSet.getString("wpLeft"));
@@ -490,7 +539,11 @@ public class AdminController implements Initializable {
                             String npLeft = escapeCsv(resultSet.getString("npLeft"));
 
                             boolean hearingProblems = resultSet.getBoolean("hearingProblems");
+                            boolean fluSymptoms = resultSet.getBoolean("fluSymptoms");
+
                             boolean headLice = resultSet.getBoolean("headLice");
+                            String dentalCheckup = escapeCsv(resultSet.getString("additionalNotes"));
+                            double truncalRotation = resultSet.getDouble("angleOfTruncalRotation");
 
                             String bodySystem = escapeCsv(resultSet.getString("bodySystem"));
                             String PS = escapeCsv(resultSet.getString("PS"));
@@ -503,19 +556,84 @@ public class AdminController implements Initializable {
                             String FH = escapeCsv(resultSet.getString("FH"));
                             String SR = escapeCsv(resultSet.getString("SR"));
 
+                            boolean knowsHEF = resultSet.getBoolean("knowsHEF");
+                            boolean hasHEF = resultSet.getBoolean("hasHEF");
+                            String usesHEF = escapeCsv(resultSet.getString("usesHEF"));
+
                             String consultationNotes = escapeCsv(resultSet.getString("consultationNotes"));
-                            String prescription = ""; //escapeCsv(resultSet.getString("prescription")); //TODO
                             boolean referralStatus = resultSet.getBoolean("referralStatus");
                             String conditionType = escapeCsv(resultSet.getString("conditionType"));
                             String referral = escapeCsv(resultSet.getString("referral"));
+                            String referralTypes = escapeCsv(resultSet.getString("referralTypes"));
+
+                            String physioNotes = escapeCsv(resultSet.getString("physiotherapistNotes"));
+
+                            boolean left_otoscopy_clear = resultSet.getBoolean("left_otoscopy_clear");
+                            boolean left_otoscopy_earwax = resultSet.getBoolean("left_otoscopy_earwax");
+                            boolean left_otoscopy_further_investigation = resultSet.getBoolean("left_otoscopy_further_investigation");
+                            String left_hearing_500Hz = resultSet.getString("left_hearing_500Hz");
+                            String left_hearing_1000Hz = resultSet.getString("left_hearing_1000Hz");
+                            String left_hearing_2000Hz = resultSet.getString("left_hearing_2000Hz");
+                            String left_hearing_4000Hz = resultSet.getString("left_hearing_4000Hz");
+
+                            boolean right_otoscopy_clear = resultSet.getBoolean("right_otoscopy_clear");
+                            boolean right_otoscopy_earwax = resultSet.getBoolean("right_otoscopy_earwax");
+                            boolean right_otoscopy_further_investigation = resultSet.getBoolean("right_otoscopy_further_investigation");
+                            String right_hearing_500Hz = resultSet.getString("right_hearing_500Hz");
+                            String right_hearing_1000Hz = resultSet.getString("right_hearing_1000Hz");
+                            String right_hearing_2000Hz = resultSet.getString("right_hearing_2000Hz");
+                            String right_hearing_4000Hz = resultSet.getString("right_hearing_4000Hz");
+
+                            boolean no_action = resultSet.getBoolean("no_action");
+                            boolean visit_ent = resultSet.getBoolean("visit_ent");
+                            boolean follow_up_ent = resultSet.getBoolean("follow_up_ent");
+                            boolean detailed_hearing_assessment = resultSet.getBoolean("detailed_hearing_assessment");
+
+                            String prescription = escapeCsv(resultSet.getString("prescription"));
+
                             //Write data to CSV
-                            printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%f,%f,%f,%s,%s,%s,%s,%s,%b,%b,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s%n",
-                                    queueNumber, name, dob, age, sex, phoneNumber, address, bmiStatus, snellensStatus,
-                                    hearingStatus, liceStatus, dentalStatus, historyStatus, educationStatus,
-                                    doctorConsultStatus, pharmacyStatus, height, weight, bmi, bmiCategory, wpRight,
-                                    wpLeft, npRight, npLeft, hearingProblems, headLice, bodySystem, PS, duration,
-                                    drugAllergies, HPI, DH, PH, SH, FH, SR, consultationNotes, prescription, referralStatus,
-                                    conditionType, referral);
+                            printWriter.printf("%d,%s,%s,%d,%s,%s,%s,%s," +
+                                            "%s,%s,%s," +
+                                            "%s,%s,%s," +
+                                            "%s,%s,%s," +
+                                            "%s,%s,%s," +
+                                            "%f,%f,%f,%s,%b," +
+                                            "%s,%.1f," +
+                                            "%s,%s,%s,%s," +
+                                            "%b,%b," +
+                                            "%b," +
+                                            "%s," +
+                                            "%.2f," +
+                                            "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," +
+                                            "%b,%b,%s," +
+                                            "%s,%s,%s," +
+                                            "%s,%s,%s,%s," +
+                                            "%b,%b,%b," +
+                                            "%s,%s,%s,%s," +
+                                            "%b,%b,%b," +
+                                            "%s,%s,%s,%s," +
+                                            "%b,%b,%b,%b%n",
+                                    queueNumber, name, dob, age, sex, phoneNumber, address, faceID,
+                                    bmiStatus, vitalsStatus, snellensStatus,
+                                    hearingStatus, liceStatus, dentalStatus,
+                                    scoliosisStatus, historyStatus, healthEFStatus,
+                                    educationStatus, doctorConsultStatus, pharmacyStatus,
+                                    height, weight, bmi, bmiCategory,malnourishmentFlagged,
+                                    bloodPressure, temperature,
+                                    wpRight, wpLeft, npRight, npLeft,
+                                    hearingProblems,fluSymptoms,
+                                    headLice,
+                                    dentalCheckup,
+                                    truncalRotation,
+                                    bodySystem, PS, duration, drugAllergies, HPI, DH, PH, SH, FH, SR,
+                                    knowsHEF, hasHEF, usesHEF,
+                                    consultationNotes, prescription, referralStatus,
+                                    conditionType, referral, referralTypes, physioNotes,
+                                    left_otoscopy_clear, left_otoscopy_earwax, left_otoscopy_further_investigation,
+                                    left_hearing_500Hz, left_hearing_1000Hz, left_hearing_2000Hz, left_hearing_4000Hz,
+                                    right_otoscopy_clear, right_otoscopy_earwax, right_otoscopy_further_investigation,
+                                    right_hearing_500Hz, right_hearing_1000Hz, right_hearing_2000Hz, right_hearing_4000Hz,
+                                    no_action, visit_ent, follow_up_ent, detailed_hearing_assessment);
 
                         }
                     }
