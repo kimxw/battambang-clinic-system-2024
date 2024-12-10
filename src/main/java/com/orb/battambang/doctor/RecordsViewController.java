@@ -35,7 +35,7 @@ public class RecordsViewController {
         String bmiCategory = "";
         String malnourishmentFlag = "";
         String bmiNotes = "";
-        int bloodPressure = 0;
+        String bloodPressure = "";
         double temperature = 0.0;
         String wpRight = "";
         String wpLeft = "";
@@ -102,7 +102,7 @@ public class RecordsViewController {
 
             ResultSet vitalsResultSet = statement.executeQuery(vitalsQuery);
             if (vitalsResultSet.next()) {
-                bloodPressure = defaultIfNull(vitalsResultSet.getInt("bloodPressure"));
+                bloodPressure = defaultIfNull(vitalsResultSet.getString("bloodPressure"));
                 temperature = defaultIfNull(vitalsResultSet.getDouble("temperature"));
             }
             vitalsResultSet.close();
@@ -191,7 +191,7 @@ public class RecordsViewController {
                 ), "content"),
                 createStyledText("\nVital Signs\n\n", "header"),
                 createStyledText(String.format(
-                        "Blood Pressure : %d mmHg\nTemperature : %.1f °C\n\n",
+                        "Blood Pressure : %s mmHg\nTemperature : %.1f °C\n\n",
                         bloodPressure, temperature
                 ), "content"),
                 createStyledText("Snellen's Test\n\n", "header"),

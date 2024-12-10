@@ -336,12 +336,12 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bloodPressureLabel" layoutX="89.0" layoutY="55.0" prefHeight="19.0" prefWidth="45.0" text="200">
+                  <Label fx:id="bloodPressureLabel" layoutX="89.0" layoutY="55.0" prefHeight="19.0" text="200 / 200">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="119.0" layoutY="55.0" prefHeight="19.0" prefWidth="45.0" text="mmHg">
+                  <Label layoutX="153.0" layoutY="55.0" prefHeight="19.0" prefWidth="45.0" text="mmHg">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -356,7 +356,7 @@
                         <Font size="13.0" />
                      </font>
                   </Label>
-                  <Label layoutX="119.0" layoutY="73.0" prefHeight="19.0" prefWidth="45.0" text="°C">
+                  <Label layoutX="153.0" layoutY="73.0" prefHeight="19.0" prefWidth="45.0" text="°C">
                      <font>
                         <Font size="13.0" />
                      </font>
